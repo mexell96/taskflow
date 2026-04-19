@@ -168,9 +168,9 @@ flowchart LR
 
 ## Дорожная карта по этапам (только кратко)
 
-Отмечайте здесь **общий** прогресс. Подзадачи — только в [front/TODO.md](front/TODO.md) и [back/TODO.md](back/TODO.md).
+Отмечайте здесь **общий** прогресс. Подзадачи — только в [front/TODO.md](front/TODO.md) и [back/TODO.md](back/TODO.md). Выполненные пункты в чеклистах: `[ ]` → `[x]`; по желанию после `[x]` ставьте **✅**, чтобы в превью редактора было заметнее (см. шапку [front/TODO.md](front/TODO.md)).
 
-- [ ] **0** Окружение (Node, Angular CLI, DevTools) — [front/TODO.md](front/TODO.md) (блок до «Этап 1»), [back/TODO.md](back/TODO.md) (§0)
+- [x] ✅ **0** Окружение (Node, Angular CLI, DevTools) — [front/TODO.md](front/TODO.md) (блок до «Этап 1»), [back/TODO.md](back/TODO.md) (§0)
 - [ ] **1** Каркас `front/` (routing, SCSS, standalone, strict TS; **CSR** до этапа 10, см. [front/TODO.md](front/TODO.md))
 - [ ] **2** Домен и UI без сервера (модели, список проектов, Kanban без DnD)
 - [ ] **3** Роутинг `/projects`, `/projects/:id`, lazy/guard по необходимости
