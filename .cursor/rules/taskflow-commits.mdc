@@ -1,0 +1,20 @@
+---
+description: Commit message confirmation (AskQuestion) before git commit in Taskflow
+alwaysApply: true
+---
+
+# Git commit flow (Taskflow)
+
+When you are about to run **`git commit`** after making changes (or when the user asks to commit):
+
+1. **Do not** run `git commit` until the exact message is agreed.
+2. Use the **AskQuestion** tool once:
+   - **title:** `Confirm commit`
+   - **prompt:** Include a short intro, then the line **Proposed message:** on its own line, then the full message exactly as it will appear in `git commit -m "..."` (format **`T-<N> <type>: English subject`** per root `TODO.md`). Remind that **N** is the learner’s sequence number.
+   - **options:** at least two:
+     - **id:** `commit` — **label:** `Commit with this message` (or equally short English).
+     - **id:** `cancel` — **label:** `Cancel — I will reply in chat` (learner may send a different `-m` text next).
+3. **If** the user chooses **`commit`**, run `git commit` with **that exact** message in the same turn (after you receive the tool result). Ensure changes are staged (`git add` as needed) before committing.
+4. **If** the user chooses **`cancel`**, wait for their message with the revised wording or explicit instructions; do not commit until they confirm again.
+
+If there is nothing to commit, say so and skip AskQuestion.

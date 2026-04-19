@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "commitMsg",
+      "type": "promptString",
+      "description": "Commit message (paste from chat or edit). Quotes inside the message can break the shell — avoid them or commit from terminal manually.",
+      "default": "T-7 docs: "
+    }
+  ],
+  "tasks": [
+    {
+      "label": "git: commit staged (confirm message)",
+      "type": "shell",
+      "command": "git commit -m \"${input:commitMsg}\"",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "git: status",
+      "type": "shell",
+      "command": "git status -sb",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
