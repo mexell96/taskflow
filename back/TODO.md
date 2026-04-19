@@ -67,14 +67,14 @@
 
 **Project**
 
-- [ ] `id` — string или number (единый стиль на весь проект)
+- [ ] `id` — **string, UUID v4** (как в корневом [TODO.md](../TODO.md), раздел REST; на фронте генерация через пакет **`uuid`** до появления API)
 - [ ] `name` — string, обязательное
 - [ ] `description` — string, опционально
 - [ ] `createdAt` — ISO-8601 string
 
 **Task**
 
-- [ ] `id`, `projectId`, `title`, опционально `description`
+- [ ] `id`, `projectId` — **строки UUID v4**; `title`, опционально `description`
 - [ ] `status`: `"backlog"` | `"in_progress"` | `"done"`
 - [ ] `priority`: `"low"` | `"medium"` | `"high"`
 - [ ] `dueDate` — ISO string или `null`
@@ -85,17 +85,17 @@
 
 - [ ] В стартовых данных минимум **1** проект и **3+** задачи в **разных** `status`
 - [ ] Есть задача с `tags` непустыми и с `dueDate` в прошлом / будущем (для фильтров на фронте)
-- [ ] Пример минимальной структуры (подставьте свои `id`; тип `id` — как выбрали в §1.4):
+- [ ] Пример минимальной структуры (подставьте свои **валидные UUID** для `id` / `projectId`, см. корневой [TODO.md](../TODO.md)):
 
 ```json
 {
   "projects": [
-    { "id": "p1", "name": "Demo", "description": null, "createdAt": "2026-01-01T00:00:00.000Z" }
+    { "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "name": "Demo", "description": null, "createdAt": "2026-01-01T00:00:00.000Z" }
   ],
   "tasks": [
-    { "id": "t1", "projectId": "p1", "title": "Backlog task", "description": null, "status": "backlog", "priority": "low", "dueDate": null, "tags": ["demo"], "order": 0 },
-    { "id": "t2", "projectId": "p1", "title": "In progress", "description": null, "status": "in_progress", "priority": "medium", "dueDate": "2026-12-31T00:00:00.000Z", "tags": [], "order": 10 },
-    { "id": "t3", "projectId": "p1", "title": "Done", "description": null, "status": "done", "priority": "high", "dueDate": "2020-01-01T00:00:00.000Z", "tags": ["urgent"], "order": 20 }
+    { "id": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Backlog task", "description": null, "status": "backlog", "priority": "low", "dueDate": null, "tags": ["demo"], "order": 0 },
+    { "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "In progress", "description": null, "status": "in_progress", "priority": "medium", "dueDate": "2026-12-31T00:00:00.000Z", "tags": [], "order": 10 },
+    { "id": "d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Done", "description": null, "status": "done", "priority": "high", "dueDate": "2020-01-01T00:00:00.000Z", "tags": ["urgent"], "order": 20 }
   ]
 }
 ```

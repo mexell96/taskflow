@@ -129,7 +129,7 @@ flowchart LR
 
 Согласуйте префиксы с **proxy** в Angular или с **CORS** — один вариант зафиксировать в [back/TODO.md](back/TODO.md) и в `front/proxy.conf.json`.
 
-**Префикс путей (важно для Next):** ниже перечислены **логические** ресурсы REST. При **Next.js** (App Router) Route Handlers обычно висят на `**/api/...`**, то есть фактические URL чаще `**/api/projects**`, `**/api/tasks**`, `**/api/tasks/:id**` — задайте в `front/` базовый URL (например `environment.apiUrl = '/api'`) и proxy так, чтобы совпадало с [back/TODO.md](back/TODO.md). При **json-server** пути чаще **без** `/api`: ровно `**/projects`**, `**/tasks**`, `**/tasks/:id**` у корня сервера. Иной вариант (rewrite в `next.config`) — только если явно описали его в `back/README.md`.
+**Префикс путей (важно для Next):** ниже перечислены **логические** ресурсы REST. При **Next.js** (App Router) Route Handlers обычно висят на **`/api/...`**, то есть фактические URL чаще **`/api/projects`**, **`/api/tasks`**, **`/api/tasks/:id`** — задайте в `front/` базовый URL (например `environment.apiUrl = '/api'`) и proxy так, чтобы совпадало с [back/TODO.md](back/TODO.md). При **json-server** пути чаще **без** `/api`: ровно **`/projects`**, **`/tasks`**, **`/tasks/:id`** у корня сервера. Иной вариант (rewrite в `next.config`) — только если явно описали его в `back/README.md`.
 
 - `GET /projects` — список проектов
 - `GET /projects/:id` — один проект (часто с клиента после `GET /projects` или отдельный handler в Next: например `GET /api/projects/[id]`)
@@ -138,11 +138,13 @@ flowchart LR
 - `POST /tasks` — создать задачу
 - `PATCH /tasks/:id` — частично (`status`, `order`, поля формы)
 
-Этап **4** дорожной карты ниже = подключение `**back/`** + HTTP на фронте; детализация только в подпапочных TODO.
+Этап **4** дорожной карты ниже = подключение **`back/`** + HTTP на фронте; детализация только в подпапочных TODO.
 
-**Project:** `id`, `name`, `description?`, `createdAt` (ISO string).
+**Идентификаторы:** `Project.id` и `Task.id` (а также `Task.projectId`) — **строки в формате UUID v4** (RFC 4122). На фронте для новых сущностей до API используйте пакет **`uuid`** (`v4 as uuidv4`); в `back/` в JSON те же строковые UUID.
 
-**Task:** `id`, `projectId`, `title`, `description?`, `status` (`backlog` | `in_progress` | `done`), `priority` (`low` | `medium` | `high`), `dueDate?`, `tags[]`, `order` (число, для DnD).
+**Project:** `id` (UUID string), `name`, `description?`, `createdAt` (ISO string).
+
+**Task:** `id` (UUID string), `projectId` (UUID string), `title`, `description?`, `status` (`backlog` | `in_progress` | `done`), `priority` (`low` | `medium` | `high`), `dueDate?`, `tags[]`, `order` (число, для DnD).
 
 ---
 
@@ -174,7 +176,7 @@ flowchart LR
 
 - ✅ **0** Окружение (Node, Angular CLI, DevTools) — [front/TODO.md](front/TODO.md) (блок до «Этап 1»), [back/TODO.md](back/TODO.md) (§0)
 - ✅ **1** Каркас `front/` (routing, SCSS, standalone, strict TS; **CSR** до этапа 10, см. [front/TODO.md](front/TODO.md))
-- **2** Домен и UI без сервера (модели, список проектов, Kanban без DnD)
+- ✅ **2** Домен и UI без сервера (модели, список проектов, Kanban без DnD)
 - **3** Роутинг `/projects`, `/projects/:id`, lazy/guard по необходимости
 - **4** Данные: `back/` + HTTP на фронте (см. оба TODO в подпапках)
 - **5** Signals и синхронизация с API

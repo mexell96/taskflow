@@ -92,46 +92,48 @@
 
 ### 2.1. Типы и файлы моделей
 
-- [ ] Создать каталог для моделей, например `src/app/shared/models/`
-- [ ] **`project.model.ts`**
-  - [ ] Интерфейс или type alias `Project`: `id`, `name`, `description?`, `createdAt`
-  - [ ] Решить тип `id`: `string` | `number` (согласовать с тем, что вернёт `back/` — см. [back/TODO.md](../back/TODO.md))
-- [ ] **`task.model.ts`**
-  - [ ] `Task`: `id`, `projectId`, `title`, `description?`
-  - [ ] `status`: литеральный union `'backlog' | 'in_progress' | 'done'`
-  - [ ] **`priority`:** `'low' | 'medium' | 'high'` (зафиксировано для Taskflow)
-  - [ ] `dueDate?: string` (ISO) или `Date` — единообразно во всём приложении
-  - [ ] `tags: string[]`
-  - [ ] Позже для DnD: `order: number` — добавить в тип и в мок-данные заранее или в этапе 7
+- [x] ✅ Создать каталог для моделей, например `src/app/shared/models/`
+- [x] ✅ **`project.model.ts`**
+  - [x] ✅ Интерфейс или type alias `Project`: `id`, `name`, `description?`, `createdAt`
+  - [x] ✅ **`id`:** строка **UUID v4** (как в корневом [TODO.md](../TODO.md)); для новых сущностей на фронте — **`import { v4 as uuidv4 } from 'uuid'`** (зависимость `uuid` в `package.json`)
+- [x] ✅ **`task.model.ts`**
+  - [x] ✅ `Task`: `id`, `projectId`, `title`, `description?`
+  - [x] ✅ `status`: литеральный union `'backlog' | 'in_progress' | 'done'`
+  - [x] ✅ **`priority`:** `'low' | 'medium' | 'high'` (зафиксировано для Taskflow)
+  - [x] ✅ `dueDate?: string` (ISO) или `Date` — единообразно во всём приложении
+  - [x] ✅ `tags: string[]`
+  - [x] ✅ Позже для DnD: `order: number` — добавить в тип и в мок-данные заранее или в этапе 7
 
 ### 2.2. Данные до API (in-memory или мок-сервис)
 
-- [ ] Выбран способ: сервис-синглтон с `signal` / массив в сервисе / простой `BehaviorSubject` — **без** HTTP
-- [ ] Можно создать минимум один проект и несколько задач из UI
+- [x] ✅ Выбран способ: сервис-синглтон с `signal` / массив в сервисе / простой `BehaviorSubject` — **без** HTTP  
+  - **Signals:** `signal` + `update` / `set` в сервисе `providedIn: 'root'`; в шаблоне `store.items()` — Angular сам отслеживает чтение, мало шаблонного кода, естественный переход к этапу 5.  
+  - **`BehaviorSubject`:** храните данные в `BehaviorSubject`, отдавайте наружу как `Observable`, в шаблоне чаще `async` pipe или `subscribe` в классе (не забывать отписку). Удобно для отработки RxJS; для Taskflow по умолчанию проще **signals**.
+- [x] ✅ Можно создать минимум один проект и несколько задач из UI
 
 ### 2.3. Фича projects (список + создание)
 
-- [ ] Компонент или страница списка проектов
-- [ ] **Reactive form** создания: поля `name`, опционально `description`
-  - [ ] Кнопка submit добавляет проект в локальное хранилище с новым `id` и `createdAt`
+- [x] ✅ Компонент или страница списка проектов
+- [x] ✅ **Reactive form** создания: поля `name`, опционально `description`
+  - [x] ✅ Кнопка submit добавляет проект в локальное хранилище с новым `id` и `createdAt`
 
 ### 2.4. Фича tasks (доска без CDK)
 
-- [ ] Экран «один проект»: три колонки по `status` (`backlog`, `in_progress`, `done`)
-- [ ] В каждой колонке — список задач этого статуса (фильтр по `projectId` и `status`)
-- [ ] Смена статуса: кнопки «вперёд/назад» по колонкам **или** `<select>` со статусами — без `@angular/cdk` drag-drop
+- [x] ✅ Экран «один проект»: три колонки по `status` (`backlog`, `in_progress`, `done`)
+- [x] ✅ В каждой колонке — список задач этого статуса (фильтр по `projectId` и `status`)
+- [x] ✅ Смена статуса: кнопки «вперёд/назад» по колонкам **или** `<select>` со статусами — без `@angular/cdk` drag-drop
 
 ### 2.5. Декомпозиция компонентов
 
-- [ ] `ProjectList` — список + делегирование клика/роутинга
-- [ ] `ProjectCard` — краткое отображение проекта (`input` проекта)
-- [ ] `TaskBoard` — три колонки и координация событий
-- [ ] `TaskCard` — карточка задачи (`input` задачи, `output` при смене статуса или удалении)
+- [x] ✅ `ProjectList` — список + делегирование клика/роутинга
+- [x] ✅ `ProjectCard` — краткое отображение проекта (`input` проекта)
+- [x] ✅ `TaskBoard` — три колонки и координация событий
+- [x] ✅ `TaskCard` — карточка задачи (`input` задачи, `output` при смене статуса или удалении)
 
 ### 2.6. Шаблоны и API компонентов
 
-- [ ] В шаблонах: `@if`, `@for` (синтаксис control flow вашей версии Angular)
-- [ ] У дочерних: `input()` / `output()` (или эквивалент для вашей версии CLI)
+- [x] ✅ В шаблонах: `@if`, `@for` (синтаксис control flow вашей версии Angular)
+- [x] ✅ У дочерних: `input()` / `output()` (или эквивалент для вашей версии CLI)
 
 **Критерий этапа 2:** без запущенного `back/` создаются проекты и задачи, доска работает на локальных данных.
 
@@ -141,14 +143,14 @@
 
 ### 3.1. Маршруты
 
-- [ ] `''` или `home` — редирект на `/projects` или простая landing-заглушка
-- [ ] `projects` — компонент списка проектов
-- [ ] `projects/:id` — доска выбранного проекта (чтение `id` из `ActivatedRoute`)
+- [x] ✅ `''` или `home` — редирект на `/projects` или простая landing-заглушка
+- [x] ✅ `projects` — компонент списка проектов
+- [x] ✅ `projects/:id` — доска выбранного проекта (чтение `id` из `ActivatedRoute`)
 
 ### 3.2. Lazy и настройки (опционально)
 
 - [ ] Маршрут `settings` — заглушка
-- [ ] Подключён **lazy** через `loadComponent` (или `loadChildren` — по версии), чтобы не тянуть settings в основной бандл
+- [x] ✅ Подключён **lazy** через `loadComponent` (или `loadChildren` — по версии), чтобы не тянуть settings в основной бандл — для **`/projects`** и **`/projects/:id`** через `loadComponent` в [app.routes.ts](src/app/app.routes.ts); маршрут `settings` пока не добавлен
 
 ### 3.3. Guard
 
