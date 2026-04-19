@@ -80,7 +80,7 @@
 
 ### 1.4. (Опционально) Path aliases
 
-- [ ] После стабилизации импортов: при необходимости `@app/...` в `tsconfig` / `tsconfig.app.json` по гайду версии Angular
+- [x] ✅ После стабилизации импортов: при необходимости `@app/...` в `tsconfig` / `tsconfig.app.json` по гайду версии Angular — задано в [tsconfig.json](tsconfig.json): префикс **`@app/*`** → **`src/app/*`** (пример импорта в [main.ts](src/main.ts))
 
 **Критерий готовности этапа 1:** `AppComponent` + рабочий роут по умолчанию, SCSS, standalone, strict TS, **CSR**.
 
