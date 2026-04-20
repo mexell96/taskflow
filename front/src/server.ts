@@ -52,11 +52,14 @@ function readRequestBody(req: Request): Promise<Buffer | undefined> {
 app.use('/api', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const body = await readRequestBody(req);
-    const upstream = await fetch(`${apiTarget}${req.originalUrl}`, {
+    const requestInit: RequestInit = {
       method: req.method,
       headers: createProxyHeaders(req.headers),
-      body,
-    });
+    };
+    if (body) {
+      requestInit.body = new Uint8Array(body);
+    }
+    const upstream = await fetch(`${apiTarget}${req.originalUrl}`, requestInit);
 
     upstream.headers.forEach((value, key) => {
       if (key === 'transfer-encoding' || key === 'connection') {
