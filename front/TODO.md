@@ -34,7 +34,7 @@
     - **Что делает:** одноразово скачивает/кэширует CLI и запускает `ng version` без глобальной установки.  
     - **Где:** любая директория; для `ng new` ниже можно каждый раз вызывать через `npx @angular/cli@latest …`.  
     - **Успех:** тот же осмысленный вывод версий, что и у глобального `ng version`.
-- [ ] **Команда:** `ng version` (если выбран вариант A и `ng` в PATH)  
+- [x] ✅ **Команда:** `ng version` (если выбран вариант A и `ng` в PATH) — N/A для выбранного варианта B  
   - **Что делает:** показывает версию CLI и связанных пакетов Angular.  
   - **Где:** любая директория.  
   - **Успех:** нет красного текста об ошибке; видны `@angular/core` и др.
@@ -150,7 +150,7 @@
 ### 3.2. Lazy и настройки (опционально)
 
 - [x] ✅ Маршрут `settings` — заглушка
-- [x] ✅ Подключён **lazy** через `loadComponent` (или `loadChildren` — по версии), чтобы не тянуть settings в основной бандл — для **`/projects`** и **`/projects/:id`** через `loadComponent` в [app.routes.ts](src/app/app.routes.ts); маршрут `settings` пока не добавлен
+- [x] ✅ Подключён **lazy** через `loadComponent` (или `loadChildren` — по версии), чтобы не тянуть settings в основной бандл — для **`/projects`**, **`/projects/:id`** и `settings` через `loadComponent` в [app.routes.ts](src/app/app.routes.ts)
 
 ### 3.3. Guard
 
@@ -309,7 +309,7 @@
 **Статус:** [x] ✅ Готово. Реализация подтверждена тестами в:
 - `src/app/core/services/taskflow-store.service.spec.ts`
 - `src/app/core/services/project-api.service.spec.ts`, `src/app/core/services/task-api.service.spec.ts`
-- `src/app/features/projects/project-list.component.spec.ts`, `src/app/features/projects/task-card.component.spec.ts`, `src/app/features/projects/project-board.component.spec.ts`, `src/app/features/projects/task-board.component.spec.ts`
+- `src/app/features/projects/project-list.component.spec.ts`, `src/app/features/projects/project-board.component.spec.ts`, `src/app/features/tasks/task-card.component.spec.ts`, `src/app/features/tasks/task-board.component.spec.ts`
 - `e2e/routing-smoke.spec.ts`, `e2e/projects-flow.spec.ts`
 
 ### 9.1. Сервисы
@@ -394,16 +394,16 @@
 
 ## Ритм
 
-- [ ] После завершения крупного этапа — зафиксируйте изменения в Git **сами**. Сообщения — по шаблону **`T-<N> <тип>: …`** в [TODO.md](../TODO.md) (**«Сообщения коммитов»**): `T` = Taskflow, `N` = ваш порядковый номер коммита, `тип` = `feat` / `fix` / `docs` / `chore` / …; **текст после двоеточия только на английском**.
-- [ ] **Команда:** `git status`  
+- [x] ✅ Reference-only: после завершения крупного этапа фиксируйте изменения в Git **сами**. Сообщения — по шаблону **`T-<N> <тип>: …`** в [TODO.md](../TODO.md) (**«Сообщения коммитов»**): `T` = Taskflow, `N` = ваш порядковый номер коммита, `тип` = `feat` / `fix` / `docs` / `chore` / …; **текст после двоеточия только на английском**.
+- [x] ✅ Reference-only — **Команда:** `git status`  
   - **Что делает:** показывает изменённые и новые файлы относительно последнего коммита.  
   - **Где:** корень репозитория **`taskflow/`** (где лежит `.git`).  
   - **Успех:** список файлов; нет `fatal: not a git repository`.
-- [ ] **Команда:** `git add` + пути файлов (или `git add -A` осознанно)  
+- [x] ✅ Reference-only — **Команда:** `git add` + пути файлов (или `git add -A` осознанно)  
   - **Что делает:** переносит снимки файлов в **индекс** (staging) перед коммитом.  
   - **Где:** корень репозитория.  
   - **Успех:** `git status` показывает файлы в секции «Changes to be committed».
-- [ ] **Команда:** `git commit -m "T-12 feat: add task board columns"` (подставьте свой **N**, **тип** и **английское** описание по [TODO.md](../TODO.md), «Сообщения коммитов»)  
+- [x] ✅ Reference-only — **Команда:** `git commit -m "T-12 feat: add task board columns"` (подставьте свой **N**, **тип** и **английское** описание по [TODO.md](../TODO.md), «Сообщения коммитов»)  
   - **Что делает:** создаёт новый коммит из индекса; первая строка сообщения видна в `git log --oneline`.  
   - **Где:** корень репозитория.  
   - **Успех:** строка с хешем коммита, без ошибки; `git status` — «working tree clean» (если всё закоммичено).
