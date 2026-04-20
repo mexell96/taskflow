@@ -27,6 +27,12 @@ export type TaskEditValue = {
         <strong>{{ task().title }}</strong>
         <span class="pr">{{ task().priority }}</span>
       </div>
+      @if (task().description) {
+        <p class="description">{{ task().description }}</p>
+      }
+      @if (task().tags.length) {
+        <p class="tags">{{ task().tags.join(', ') }}</p>
+      }
       <label>
         <span i18n="@@taskCardStatusLabel">Status</span>
         <select
@@ -74,6 +80,17 @@ export type TaskEditValue = {
       align-items: baseline;
       gap: 0.5rem;
       margin-bottom: 0.35rem;
+    }
+    .description {
+      margin: 0 0 0.4rem;
+      color: #555;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    .tags {
+      margin: 0 0 0.45rem;
+      color: #666;
+      font-size: 0.8rem;
     }
     .pr {
       font-size: 0.75rem;
@@ -160,7 +177,7 @@ export class TaskCardComponent {
       dueDate: value.dueDate || undefined,
       tags: value.tags
         .split(',')
-        .map((tag) => tag.trim())
+        .map((tag: string) => tag.trim())
         .filter(Boolean),
       status: this.task().status,
     });
