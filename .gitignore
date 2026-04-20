@@ -1,0 +1,22 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Node / build artifacts (all workspaces)
+**/node_modules/
+**/dist/
+**/coverage/
+**/.angular/
+
+# Test artifactsц
+**/test-results/
+**/playwright-report/
+**/blob-report/
+
+# Logs
+**/npm-debug.log*
+**/yarn-error.log*
