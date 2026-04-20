@@ -132,6 +132,34 @@ export class TaskflowStore {
       });
   }
 
+  updateProject(projectId: string, name: string, description?: string) {
+    const current = this._projects().find((project: Project) => project.id === projectId);
+    if (!current) {
+      return;
+    }
+
+    const trimmedName = name.trim();
+    const trimmedDescription = description?.trim();
+    const optimistic: Project = {
+      ...current,
+      name: trimmedName,
+      description: trimmedDescription || undefined,
+    };
+    this.clearApiErrorMessage();
+    this._projects.update((list: Project[]) => list.map((item: Project) => (item.id === projectId ? optimistic : item)));
+
+    this.projectApi.patchProject(projectId, { name: trimmedName, description: trimmedDescription || undefined }).subscribe({
+      next: (project: Project) => {
+        this.clearApiErrorMessage();
+        this._projects.update((list: Project[]) => list.map((item: Project) => (item.id === project.id ? project : item)));
+      },
+      error: (error: unknown) => {
+        this._projects.update((list: Project[]) => list.map((item: Project) => (item.id === current.id ? current : item)));
+        this.logApiError('Failed to update project', error);
+      },
+    });
+  }
+
   addTask(projectId: string, title: string, priority: TaskPriority = 'medium', dueDate?: string) {
     const siblings = this._tasks().filter((task: Task) => task.projectId === projectId);
     const maxOrder = siblings.reduce((max: number, task: Task) => Math.max(max, task.order), 0);
@@ -235,6 +263,49 @@ export class TaskflowStore {
     };
 
     this.moveRequestQueue = this.moveRequestQueue.then(runPatch, runPatch);
+  }
+
+  updateTask(
+    taskId: string,
+    patch: Pick<Task, 'title' | 'description' | 'priority' | 'dueDate' | 'tags' | 'status'>,
+  ) {
+    const current = this._tasks().find((task: Task) => task.id === taskId);
+    if (!current) {
+      return;
+    }
+
+    const optimistic: Task = {
+      ...current,
+      ...patch,
+      title: patch.title.trim(),
+      description: patch.description?.trim() || undefined,
+      dueDate: patch.dueDate || undefined,
+      tags: patch.tags.map((tag) => tag.trim()).filter(Boolean),
+    };
+    this.clearApiErrorMessage();
+    this._tasks.update((list: Task[]) => list.map((task: Task) => (task.id === taskId ? optimistic : task)));
+
+    this.taskApi
+      .patchTask(taskId, {
+        title: optimistic.title,
+        description: optimistic.description,
+        status: optimistic.status,
+        priority: optimistic.priority,
+        dueDate: optimistic.dueDate,
+        tags: optimistic.tags,
+      })
+      .subscribe({
+      next: (updatedTask: Task) => {
+        this.clearApiErrorMessage();
+        this._tasks.update((list: Task[]) =>
+          list.map((task: Task) => (task.id === updatedTask.id ? updatedTask : task)),
+        );
+      },
+      error: (error: unknown) => {
+        this._tasks.update((list: Task[]) => list.map((task: Task) => (task.id === current.id ? current : task)));
+        this.logApiError('Failed to update task', error);
+      },
+      });
   }
 
   private isApiError(error: unknown): error is ApiError {

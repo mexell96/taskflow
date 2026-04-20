@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { DbFileService } from './db-file.service';
 import type { Project } from './domain.model';
@@ -7,6 +11,7 @@ type CreateProjectDto = {
   name?: string;
   description?: string;
 };
+type PatchProjectDto = Partial<Pick<Project, 'name' | 'description'>>;
 
 @Injectable()
 export class ProjectsService {
@@ -43,5 +48,33 @@ export class ProjectsService {
     state.projects.push(newProject);
     await this.db.writeDb(state);
     return newProject;
+  }
+
+  async patchProject(id: string, dto: PatchProjectDto): Promise<Project> {
+    const state = await this.db.readDb();
+    const index = state.projects.findIndex((item) => item.id === id);
+    if (index === -1) {
+      throw new NotFoundException({ message: `Project ${id} not found` });
+    }
+
+    if (dto.name !== undefined) {
+      const name = dto.name.trim();
+      if (!name) {
+        throw new BadRequestException({ message: 'name must not be empty' });
+      }
+    }
+
+    const current = state.projects[index];
+    const updatedProject: Project = {
+      ...current,
+      ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
+      ...(dto.description !== undefined
+        ? { description: dto.description.trim() || undefined }
+        : {}),
+    };
+
+    state.projects[index] = updatedProject;
+    await this.db.writeDb(state);
+    return updatedProject;
   }
 }

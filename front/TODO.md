@@ -249,20 +249,20 @@
 
 ### 6.4. Редактирование записи (projects/tasks)
 
-- [ ] Добавить UI-режим редактирования проекта (inline или dialog) с предзаполнением `name`/`description`
-- [ ] Добавить UI-режим редактирования задачи: `title`, `description`, `priority`, `dueDate`, `tags` (и `status` при необходимости)
-- [ ] Использовать отдельную форму edit-flow (или переиспользовать create-форму с явным режимом `create|edit`)
-- [ ] Валидации edit-flow:
-  - [ ] `title`/`name` обязательны, `minLength` как в create-flow
-  - [ ] для `dueDate` зафиксировать правило: разрешаем прошлую дату для уже созданной задачи или блокируем (одно поведение на весь UI)
-- [ ] Сервис/API-слой:
-  - [ ] `ProjectApiService`: добавить `patchProject(id, partial)` -> `PATCH /api/projects/:id`
-  - [ ] `TaskApiService`: использовать `patchTask(id, partial)` для edit-формы, не только для DnD/status
-- [ ] Store/signal-синхронизация: после успешного PATCH обновлять локальный state без полного `reload`
-- [ ] UX:
-  - [ ] кнопки `Edit`/`Save`/`Cancel`
-  - [ ] блокировка `Save` при невалидной форме или отсутствии изменений (`pristine`)
-  - [ ] optimistic update (опционально) + rollback при ошибке
+- [x] ✅ Добавить UI-режим редактирования проекта (inline или dialog) с предзаполнением `name`/`description`
+- [x] ✅ Добавить UI-режим редактирования задачи: `title`, `description`, `priority`, `dueDate`, `tags` (и `status` при необходимости)
+- [x] ✅ Использовать отдельную форму edit-flow (или переиспользовать create-форму с явным режимом `create|edit`)
+- [x] ✅ Валидации edit-flow:
+  - [x] ✅ `title`/`name` обязательны, `minLength` как в create-flow
+  - [x] ✅ для `dueDate` зафиксировать правило: разрешаем прошлую дату для уже созданной задачи или блокируем (одно поведение на весь UI) — выбрано разрешение прошлой даты в edit-flow
+- [x] ✅ Сервис/API-слой:
+  - [x] ✅ `ProjectApiService`: добавить `patchProject(id, partial)` -> `PATCH /api/projects/:id`
+  - [x] ✅ `TaskApiService`: использовать `patchTask(id, partial)` для edit-формы, не только для DnD/status
+- [x] ✅ Store/signal-синхронизация: после успешного PATCH обновлять локальный state без полного `reload`
+- [x] ✅ UX:
+  - [x] ✅ кнопки `Edit`/`Save`/`Cancel`
+  - [x] ✅ блокировка `Save` при невалидной форме или отсутствии изменений (`pristine`)
+  - [x] ✅ optimistic update (опционально) + rollback при ошибке
 
 ---
 

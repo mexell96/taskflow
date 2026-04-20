@@ -3,7 +3,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
-import { TaskCardComponent } from './task-card.component';
+import { TaskCardComponent, type TaskEditValue } from './task-card.component';
 
 @Component({
   selector: 'app-task-board',
@@ -34,6 +34,7 @@ import { TaskCardComponent } from './task-card.component';
               <app-task-card
                 [task]="task"
                 (statusChange)="store.setTaskStatus(task.id, $event)"
+                (editTask)="onEditTask(task.id, $event)"
               />
             </div>
           }
@@ -180,5 +181,9 @@ export class TaskBoardComponent {
 
   private labelForStatus(status: TaskStatus): string {
     return this.columns.find((column) => column.status === status)?.label ?? status;
+  }
+
+  onEditTask(taskId: string, value: TaskEditValue) {
+    this.store.updateTask(taskId, value);
   }
 }

@@ -225,12 +225,12 @@
 
 ### 2.6.a. `PATCH /api/projects/:id` в `ProjectsController`
 
-- [ ] **`PATCH`**: найти проект по `id` из params
-  - [ ] Нет проекта — **404**
-  - [ ] Частичное слияние: разрешённые поля (`name`, `description`)
-  - [ ] Валидация `name`: непустая строка после `trim`
-  - [ ] Запрет на изменение системных полей (`id`, `createdAt`)
-  - [ ] Ответ **200** с обновлённой сущностью
+- [x] ✅ **`PATCH`**: найти проект по `id` из params
+  - [x] ✅ Нет проекта — **404**
+  - [x] ✅ Частичное слияние: разрешённые поля (`name`, `description`)
+  - [x] ✅ Валидация `name`: непустая строка после `trim`
+  - [x] ✅ Запрет на изменение системных полей (`id`, `createdAt`)
+  - [x] ✅ Ответ **200** с обновлённой сущностью
 
 ### 2.7. Один проект по id (опционально для фронта)
 
@@ -294,7 +294,7 @@
   - **Что делает:** PATCH частично обновляет задачу (здесь — статус).  
   - **Где:** терминал.  
   - **Успех:** **200** и тело обновлённой задачи.
-- [ ] **Команда:** `curl -s -X PATCH "http://localhost:3001/api/projects/<id>" -H "Content-Type: application/json" -d '{"name":"Demo updated","description":"Updated from edit flow"}'`  
+- [x] ✅ **Команда:** `curl -s -X PATCH "http://localhost:3001/api/projects/<id>" -H "Content-Type: application/json" -d '{"name":"Demo updated","description":"Updated from edit flow"}'`  
   - **Что делает:** PATCH частично обновляет проект (name/description) для фронтового edit-flow.  
   - **Где:** терминал.  
   - **Успех:** **200** и тело обновлённого проекта.

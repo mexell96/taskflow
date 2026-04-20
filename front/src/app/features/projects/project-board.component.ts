@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
@@ -20,6 +20,16 @@ import { TaskCreateDialogComponent, type CreateTaskDialogValue } from '../tasks/
         <h2>{{ p.name }}</h2>
         @if (p.description) {
           <p class="muted">{{ p.description }}</p>
+        }
+        <button type="button" class="edit-project-btn" (click)="toggleProjectEdit()">
+          {{ isProjectEditOpen() ? 'Cancel edit' : 'Edit project' }}
+        </button>
+        @if (isProjectEditOpen()) {
+          <form class="project-edit" [formGroup]="projectEditForm" (ngSubmit)="saveProjectEdit()">
+            <input formControlName="name" placeholder="Project name" />
+            <input formControlName="description" placeholder="Description (optional)" />
+            <button type="submit" [disabled]="projectEditForm.invalid || projectEditForm.pristine">Save project</button>
+          </form>
         }
 
       <input
@@ -94,6 +104,16 @@ import { TaskCreateDialogComponent, type CreateTaskDialogValue } from '../tasks/
     }
     .open-add-task {
       margin-top: 1.25rem;
+    }
+    .edit-project-btn {
+      margin: 0.25rem 0 0.4rem;
+    }
+    .project-edit {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+      max-width: 40rem;
     }
   `,
 })
@@ -180,6 +200,11 @@ export class ProjectBoardComponent {
   });
 
   readonly isTaskDialogOpen = signal(false);
+  readonly isProjectEditOpen = signal(false);
+  readonly projectEditForm = this.fb.nonNullable.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    description: [''],
+  });
 
   openTaskDialog(trigger: HTMLElement) {
     this.restoreFocusElement = trigger;
@@ -202,5 +227,34 @@ export class ProjectBoardComponent {
     }
     this.store.addTask(p.id, value.title, value.priority, value.dueDate);
     this.closeTaskDialog();
+  }
+
+  toggleProjectEdit() {
+    if (this.isProjectEditOpen()) {
+      this.isProjectEditOpen.set(false);
+      return;
+    }
+    const project = this.project();
+    if (!project) {
+      return;
+    }
+    this.projectEditForm.reset({
+      name: project.name,
+      description: project.description ?? '',
+    });
+    this.isProjectEditOpen.set(true);
+  }
+
+  saveProjectEdit() {
+    if (this.projectEditForm.invalid) {
+      return;
+    }
+    const project = this.project();
+    if (!project) {
+      return;
+    }
+    const value = this.projectEditForm.getRawValue();
+    this.store.updateProject(project.id, value.name, value.description || undefined);
+    this.isProjectEditOpen.set(false);
   }
 }

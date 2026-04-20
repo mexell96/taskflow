@@ -9,6 +9,7 @@ export type CreateProjectDto = {
   name: string;
   description?: string;
 };
+export type UpdateProjectDto = Partial<Pick<Project, 'name' | 'description'>>;
 
 @Injectable({ providedIn: 'root' })
 export class ProjectApiService {
@@ -40,5 +41,9 @@ export class ProjectApiService {
 
   createProject(dto: CreateProjectDto): Observable<Project> {
     return this.http.post<Project>(this.baseUrl, dto);
+  }
+
+  patchProject(id: string, dto: UpdateProjectDto): Observable<Project> {
+    return this.http.patch<Project>(`${this.baseUrl}/${id}`, dto);
   }
 }
