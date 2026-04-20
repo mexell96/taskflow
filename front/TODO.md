@@ -368,9 +368,9 @@
 
 ## Этап 12. PWA
 
-- [ ] `ng add @angular/pwa`
-- [ ] Иконки и `manifest` проверены
-- [ ] В dev: убедиться, что запросы к API не отваливаются из-за Service Worker (настройка `ngsw-config` или dev-исключения по доке)
+- [x] ✅ `ng add @angular/pwa`
+- [x] ✅ Иконки и `manifest` добавлены и проверены (`public/icons/*`, `public/manifest.webmanifest`)
+- [x] ✅ В dev API не ломается из-за SW: `provideServiceWorker(... enabled: !isDevMode())`, `GET /api/projects` через dev proxy работает, `ngsw-worker.js` в dev не регистрируется
 
 ---
 
