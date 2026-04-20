@@ -1,22 +1,32 @@
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
-import type { TaskStatus } from '@app/shared/models/task.model';
+import type { Task, TaskStatus } from '@app/shared/models/task.model';
 import { TaskCardComponent } from './task-card.component';
 
 @Component({
   selector: 'app-task-board',
-  imports: [TaskCardComponent],
+  imports: [TaskCardComponent, CdkDropList, CdkDrag],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="board">
       @for (col of columns; track col.status) {
-        <section class="col">
+        <section
+          class="col"
+          cdkDropList
+          [id]="dropListId(col.status)"
+          [cdkDropListData]="columnTasks()[col.status]"
+          [cdkDropListConnectedTo]="connectedDropListIds(col.status)"
+          (cdkDropListDropped)="onDrop($event, col.status)"
+        >
           <h3>{{ col.label }}</h3>
           @for (task of columnTasks()[col.status]; track task.id) {
-            <app-task-card
-              [task]="task"
-              (statusChange)="store.setTaskStatus(task.id, $event)"
-            />
+            <div cdkDrag [cdkDragData]="task">
+              <app-task-card
+                [task]="task"
+                (statusChange)="store.setTaskStatus(task.id, $event)"
+              />
+            </div>
           }
         </section>
       }
@@ -70,4 +80,51 @@ export class TaskBoardComponent {
       done: byStatus('done'),
     };
   });
+
+  dropListId(status: TaskStatus): string {
+    return `task-board-${this.projectId()}-${status}`;
+  }
+
+  connectedDropListIds(currentStatus: TaskStatus): string[] {
+    return this.columns.filter((column) => column.status !== currentStatus).map((column) => this.dropListId(column.status));
+  }
+
+  onDrop(event: CdkDragDrop<Task[]>, targetStatus: TaskStatus) {
+    const source = [...event.previousContainer.data];
+    const target = event.previousContainer === event.container ? source : [...event.container.data];
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(target, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(source, target, event.previousIndex, event.currentIndex);
+    }
+
+    const moved = target[event.currentIndex];
+    if (!moved) {
+      return;
+    }
+
+    const order = this.calculateOrder(target, event.currentIndex, moved.id);
+    this.store.moveTask(moved.id, targetStatus, order);
+  }
+
+  private calculateOrder(tasks: Task[], index: number, movedId: string): number {
+    const previous = tasks[index - 1];
+    const next = tasks[index + 1];
+
+    if (!previous && !next) {
+      return 10;
+    }
+    if (!previous && next) {
+      return next.id === movedId ? next.order : next.order - 10;
+    }
+    if (previous && !next) {
+      return previous.id === movedId ? previous.order : previous.order + 10;
+    }
+
+    if (!previous || !next) {
+      return 10;
+    }
+    return (previous.order + next.order) / 2;
+  }
 }

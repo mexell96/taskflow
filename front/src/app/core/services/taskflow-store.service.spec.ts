@@ -106,7 +106,7 @@ describe('TaskflowStore', () => {
     store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
     expect(taskApi.getTasks).toHaveBeenCalledWith('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
-    expect(store.tasks().filter((task) => task.projectId === 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')).toEqual(
+    expect(store.tasks().filter((task: Task) => task.projectId === 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')).toEqual(
       apiTasks,
     );
   });
@@ -150,8 +150,37 @@ describe('TaskflowStore', () => {
     expect(taskApi.patchTask).toHaveBeenCalledWith('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', {
       status: 'in_progress',
     });
-    const updated = store.tasks().find((task) => task.id === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12');
+    const updated = store.tasks().find((task: Task) => task.id === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12');
     expect(updated?.status).toBe('in_progress');
+  });
+
+  it('moves task with status and order via patch endpoint', async () => {
+    const store = TestBed.inject(TaskflowStore);
+
+    store.moveTask('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'done', 55);
+    await Promise.resolve();
+
+    expect(taskApi.patchTask).toHaveBeenCalledWith('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', {
+      status: 'done',
+      order: 55,
+    });
+  });
+
+  it('queues moveTask patch requests sequentially', async () => {
+    const store = TestBed.inject(TaskflowStore);
+
+    store.moveTask('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'done', 30);
+    store.moveTask('c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13', 'backlog', 5);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(taskApi.patchTask).toHaveBeenNthCalledWith(1, 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', {
+      status: 'done',
+      order: 30,
+    });
+    expect(taskApi.patchTask).toHaveBeenNthCalledWith(2, 'c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13', {
+      status: 'backlog',
+      order: 5,
+    });
   });
 
   it('logs typed API errors without throwing from addTask', () => {

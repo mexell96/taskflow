@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import type { ApiError } from '@app/core/models/api-error.model';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
@@ -59,6 +60,7 @@ export class TaskflowStore {
   private readonly _projects = signal<Project[]>([...seedProjects]);
   private readonly _tasks = signal<Task[]>([...seedTasks]);
   private readonly _apiErrorMessage = signal<string | null>(null);
+  private moveRequestQueue: Promise<void> = Promise.resolve();
 
   readonly projects = this._projects.asReadonly();
   readonly tasks = this._tasks.asReadonly();
@@ -194,6 +196,45 @@ export class TaskflowStore {
         this.logApiError('Failed to update task status', error);
       },
     });
+  }
+
+  moveTask(taskId: string, status: TaskStatus, order: number) {
+    const current = this._tasks().find((task: Task) => task.id === taskId);
+    if (!current) {
+      return;
+    }
+    this.clearApiErrorMessage();
+    this._tasks.update((list: Task[]) =>
+      list.map((task: Task) => (task.id === taskId ? { ...task, status, order } : task)),
+    );
+
+    const runPatch = async () => {
+      try {
+        const updatedTask = await firstValueFrom(this.taskApi.patchTask(taskId, { status, order }));
+        this.clearApiErrorMessage();
+        this._tasks.update((list: Task[]) =>
+          list.map((task: Task) => {
+            if (task.id !== updatedTask.id) {
+              return task;
+            }
+            // Do not override a newer optimistic DnD state queued after this request.
+            return task.status === status && task.order === order ? updatedTask : task;
+          }),
+        );
+      } catch (error: unknown) {
+        this._tasks.update((list: Task[]) =>
+          list.map((task: Task) => {
+            if (task.id !== current.id) {
+              return task;
+            }
+            return task.status === status && task.order === order ? current : task;
+          }),
+        );
+        this.logApiError('Failed to move task', error);
+      }
+    };
+
+    this.moveRequestQueue = this.moveRequestQueue.then(runPatch, runPatch);
   }
 
   private isApiError(error: unknown): error is ApiError {
