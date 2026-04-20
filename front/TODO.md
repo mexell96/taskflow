@@ -6,7 +6,7 @@
 
 **Зафиксировано под этот проект:** при старте — **CSR** (без SSR в `ng new` или SSR отключить до этапа 10); поле **`priority`** у задачи — **`'low' | 'medium' | 'high'`**. Где хранить **signal-store** — выбрать после короткого чтения (подпункты в этапе 5).
 
-**Префикс URL API:** логические пути в [TODO.md](../TODO.md); фактически при **Next** на бэке чаще база **`/api`** (`environment.apiUrl = '/api'`), при **json-server** — часто пустая база **`''`**. Один вариант зафиксировать вместе с [back/TODO.md](../back/TODO.md) и `proxy.conf.json`.
+**Префикс URL API:** логические пути в [TODO.md](../TODO.md); при **Nest** на бэке база **`/api`** (`environment.apiUrl = '/api'`). Зафиксировать вместе с [back/TODO.md](../back/TODO.md) и `proxy.conf.json`.
 
 ---
 
@@ -176,8 +176,7 @@
 ### 4.2. URL и proxy
 
 - [ ] В `environment*.ts` — `apiUrl` (без дублирования magic string в сервисах)
-  - [ ] **Next:** обычно `apiUrl: '/api'` (итоговые пути вида `/api/projects`) — как в [TODO.md](../TODO.md), абзац про префикс
-  - [ ] **json-server:** часто `apiUrl: ''` и пути сервисов `/projects`, `/tasks` (корень ресурса json-server)
+  - [ ] **Nest:** обычно `apiUrl: '/api'` (итоговые пути вида `/api/projects`) — как в [TODO.md](../TODO.md), абзац про префикс
 - [ ] `proxy.conf.json` + запись в `angular.json` (`serve.options.proxyConfig`) для `ng serve` — см. [back/TODO.md](../back/TODO.md)
 - [ ] Проверка: в DevTools → Network запрос уходит на тот же origin, что и приложение, а **target** в proxy — порт `back/`
 - [ ] (Если включён SSR раньше этапа 10) Убедиться, что серверный рендер не бьётся в `localhost` без proxy — по доке Angular для SSR
