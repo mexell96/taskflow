@@ -91,11 +91,22 @@ export class TasksService {
     if (dto.priority && !allowedPriorities.includes(dto.priority)) {
       throw new BadRequestException({ message: 'invalid priority value' });
     }
+    if (dto.projectId) {
+      const projectId = dto.projectId.trim();
+      if (!projectId) {
+        throw new BadRequestException({ message: 'projectId must not be empty' });
+      }
+      const projectExists = state.projects.some((project) => project.id === projectId);
+      if (!projectExists) {
+        throw new NotFoundException({ message: `Project ${projectId} not found` });
+      }
+    }
 
     const current = state.tasks[index];
     const updatedTask: Task = {
       ...current,
       ...dto,
+      projectId: dto.projectId?.trim() ?? current.projectId,
       title: dto.title?.trim() ?? current.title,
       description: dto.description?.trim() || current.description,
     };
