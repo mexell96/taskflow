@@ -309,8 +309,9 @@
 ### 9.1. Сервисы
 
 - [x] ✅ `TestBed.configureTestingModule` использован для unit-тестов `TaskflowStore` с моками API-сервисов (без реального HTTP)
-- [ ] Тест `ProjectApiService`: успешный GET, разбор тела
-- [ ] Тест ошибки: `HttpErrorResponse`, проверка маппинга в `ApiError`
+- [x] ✅ Тест `ProjectApiService`: успешный GET, разбор тела
+- [x] ✅ Тест ошибки: `HttpErrorResponse`, проверка маппинга в `ApiError`
+- [x] ✅ Тест `TaskApiService`: `getTasks(projectId)` (query-параметр) и `createTask(dto)` (`POST` body)
 
 ### 9.2. Компоненты
 
