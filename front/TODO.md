@@ -179,7 +179,7 @@
   - [x] ✅ **Nest:** обычно `apiUrl: '/api'` (итоговые пути вида `/api/projects`) — как в [TODO.md](../TODO.md), абзац про префикс
 - [x] ✅ `proxy.conf.json` + запись в `angular.json` (`serve.options.proxyConfig`) для `ng serve` — см. [back/TODO.md](../back/TODO.md)
 - [x] ✅ Проверка: запрос `http://localhost:4200/api/projects` уходит через фронтовый origin и возвращает JSON с `back` (порт `3001`)
-- [ ] (Если включён SSR раньше этапа 10) Убедиться, что серверный рендер не бьётся в `localhost` без proxy — по доке Angular для SSR
+- [x] ✅ Для SSR добавлен express-proxy `'/api' -> API_TARGET` (по умолчанию `http://localhost:3001`), чтобы серверный рендер не бился в localhost браузерного контекста
 
 ### 4.3. Сервисы API
 
