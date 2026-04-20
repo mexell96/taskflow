@@ -65,6 +65,21 @@ describe('ProjectListComponent', () => {
     expect(addProject).not.toHaveBeenCalled();
   });
 
+  it('shows minLength validation message for short project name', () => {
+    const fixture = TestBed.createComponent(ProjectListComponent);
+    fixture.detectChanges();
+
+    const nameInput = fixture.debugElement.queryAll(By.css('input'))[0].nativeElement as HTMLInputElement;
+    nameInput.value = 'ab';
+    nameInput.dispatchEvent(new Event('input'));
+    nameInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+
+    const error = fixture.debugElement.query(By.css('.field-error'));
+    expect(error.nativeElement.textContent).toContain('Project name must be at least 3 characters.');
+    expect(addProject).not.toHaveBeenCalled();
+  });
+
   it('shows API error banner for user', () => {
     const fixture = TestBed.createComponent(ProjectListComponent);
     apiErrorMessageSignal.set('Projects unavailable');

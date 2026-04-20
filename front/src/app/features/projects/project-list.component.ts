@@ -16,6 +16,9 @@ import { ProjectCardComponent } from './project-card.component';
 
     <form [formGroup]="form" (ngSubmit)="create()" class="create">
       <input formControlName="name" placeholder="Name" />
+      @if (form.controls.name.invalid && (form.controls.name.dirty || form.controls.name.touched)) {
+        <small class="field-error">Project name must be at least 3 characters.</small>
+      }
       <input formControlName="description" placeholder="Description (optional)" />
       <button type="submit" [disabled]="form.invalid">Create project</button>
     </form>
@@ -46,6 +49,12 @@ import { ProjectCardComponent } from './project-card.component';
       border-radius: 6px;
       max-width: 40rem;
     }
+    .field-error {
+      color: #8a1f1f;
+      font-size: 0.8rem;
+      flex-basis: 100%;
+      margin-top: -0.2rem;
+    }
     .list {
       max-width: 40rem;
     }
@@ -56,7 +65,7 @@ export class ProjectListComponent {
   readonly store = inject(TaskflowStore);
 
   readonly form = this.fb.nonNullable.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
   });
 

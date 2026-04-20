@@ -22,6 +22,9 @@ import { TaskBoardComponent } from './task-board.component';
 
       <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="add">
         <input formControlName="title" placeholder="New task title" />
+        @if (taskForm.controls.title.invalid && (taskForm.controls.title.dirty || taskForm.controls.title.touched)) {
+          <small class="field-error">Task title must be at least 3 characters.</small>
+        }
         <select formControlName="priority">
           <option value="low">low</option>
           <option value="medium">medium</option>
@@ -48,6 +51,12 @@ import { TaskBoardComponent } from './task-board.component';
       gap: 0.5rem;
       margin-top: 1.25rem;
       align-items: center;
+    }
+    .field-error {
+      color: #8a1f1f;
+      font-size: 0.8rem;
+      flex-basis: 100%;
+      margin-top: -0.2rem;
     }
   `,
 })
@@ -79,7 +88,7 @@ export class ProjectBoardComponent {
   });
 
   readonly taskForm = this.fb.nonNullable.group({
-    title: ['', Validators.required],
+    title: ['', [Validators.required, Validators.minLength(3)]],
     priority: this.fb.nonNullable.control<'low' | 'medium' | 'high'>('medium'),
   });
 
