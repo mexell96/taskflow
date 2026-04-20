@@ -105,6 +105,34 @@ flowchart LR
 - `POST /api/tasks`
 - `PATCH /api/tasks/:id`
 
+## Как поменять язык
+
+В проекте настроены локали `en-US` (исходная) и `ru`.
+
+- Где настраивается:
+  - `front/angular.json` -> `i18n.sourceLocale` и `i18n.locales.ru`
+  - переводы: `front/src/locale/messages.ru.xlf`
+
+- Сборка всех локалей:
+  ```bash
+  cd front
+  npm run build:i18n
+  ```
+
+- Сборка только русского:
+  ```bash
+  cd front
+  npm run build:i18n:ru
+  ```
+
+- Обновить файл переводов после изменения `i18n`-строк:
+  ```bash
+  cd front
+  npm run extract:i18n
+  ```
+
+Важно: сейчас переключение языка работает как build-time i18n (через локализованные сборки), а не как runtime-переключатель кнопкой внутри UI.
+
 ## Полезные команды
 
 Frontend (`front`)
