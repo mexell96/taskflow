@@ -1,3 +1,4 @@
+import { makeStateKey, TransferState } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -63,5 +64,25 @@ describe('ProjectApiService', () => {
       message: 'Projects unavailable',
       url: '/api/projects',
     });
+  });
+
+  it('reads projects from TransferState cache on browser', () => {
+    const transferState = TestBed.inject(TransferState);
+    const stateKey = makeStateKey<Array<{ id: string; name: string; createdAt: string }>>('api-projects-list');
+    const cached = [
+      {
+        id: 'cached-project',
+        name: 'Cached project',
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
+    ];
+    transferState.set(stateKey, cached);
+
+    service.getProjects().subscribe((projects) => {
+      expect(projects).toEqual(cached);
+    });
+
+    httpMock.expectNone('/api/projects');
+    expect(transferState.hasKey(stateKey)).toBe(false);
   });
 });

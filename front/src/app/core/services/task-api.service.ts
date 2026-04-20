@@ -1,8 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import type { Task } from '@app/shared/models/task.model';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 export type CreateTaskDto = {
   projectId: string;
@@ -25,12 +26,29 @@ export type UpdateTaskDto = Partial<
 @Injectable({ providedIn: 'root' })
 export class TaskApiService {
   private readonly http = inject(HttpClient);
+  private readonly transferState = inject(TransferState);
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly baseUrl = `${environment.apiUrl}/tasks`;
 
   getTasks(projectId: string): Observable<Task[]> {
-    return this.http.get<Task[]>(this.baseUrl, {
-      params: { projectId },
-    });
+    const stateKey = makeStateKey<Task[]>(`api-tasks-${projectId}`);
+    if (isPlatformBrowser(this.platformId) && this.transferState.hasKey(stateKey)) {
+      const cached = this.transferState.get(stateKey, []);
+      this.transferState.remove(stateKey);
+      return of(cached);
+    }
+
+    return this.http
+      .get<Task[]>(this.baseUrl, {
+        params: { projectId },
+      })
+      .pipe(
+        tap((tasks) => {
+          if (isPlatformServer(this.platformId)) {
+            this.transferState.set(stateKey, tasks);
+          }
+        }),
+      );
   }
 
   createTask(dto: CreateTaskDto): Observable<Task> {

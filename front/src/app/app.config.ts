@@ -4,13 +4,18 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { apiErrorInterceptor } from './core/interceptors/api-error.interceptor';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideClientHydration, withEventReplay, withHttpTransferCacheOptions } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([apiErrorInterceptor])),
     provideRouter(routes),
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(
+      withEventReplay(),
+      withHttpTransferCacheOptions({
+        filter: (req) => req.url.startsWith('/api/'),
+      }),
+    ),
   ],
 };

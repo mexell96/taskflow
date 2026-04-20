@@ -1,3 +1,4 @@
+import { makeStateKey, TransferState } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -60,5 +61,32 @@ describe('TaskApiService', () => {
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(payload);
     req.flush(response);
+  });
+
+  it('reads tasks from TransferState cache on browser', () => {
+    const transferState = TestBed.inject(TransferState);
+    const projectId = 'cached-project-id';
+    const stateKey = makeStateKey<Array<{ id: string; projectId: string; title: string; status: 'backlog'; priority: 'low'; tags: string[]; order: number }>>(
+      `api-tasks-${projectId}`,
+    );
+    const cached = [
+      {
+        id: 'cached-task',
+        projectId,
+        title: 'Cached task',
+        status: 'backlog' as const,
+        priority: 'low' as const,
+        tags: [],
+        order: 0,
+      },
+    ];
+    transferState.set(stateKey, cached);
+
+    service.getTasks(projectId).subscribe((tasks) => {
+      expect(tasks).toEqual(cached);
+    });
+
+    httpMock.expectNone(`/api/tasks?projectId=${projectId}`);
+    expect(transferState.hasKey(stateKey)).toBe(false);
   });
 });
