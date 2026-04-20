@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
@@ -138,6 +139,8 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
 export class ProjectBoardComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
+  private readonly title = inject(Title);
+  private readonly meta = inject(Meta);
   readonly store = inject(TaskflowStore);
 
   private readonly paramId = toSignal(this.route.paramMap.pipe(map((p: ParamMap) => p.get('id'))), {
@@ -151,6 +154,24 @@ export class ProjectBoardComponent {
         return;
       }
       this.store.loadTasks(id);
+    });
+
+    effect(() => {
+      const project = this.project();
+      if (!project) {
+        this.title.setTitle('Project not found | Taskflow');
+        this.meta.updateTag({
+          name: 'description',
+          content: 'Requested Taskflow project was not found.',
+        });
+        return;
+      }
+
+      this.title.setTitle(`${project.name} | Taskflow`);
+      this.meta.updateTag({
+        name: 'description',
+        content: project.description?.trim() || `Task board for project ${project.name}.`,
+      });
     });
   }
 
