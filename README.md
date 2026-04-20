@@ -5,6 +5,10 @@ Taskflow разделен на два независимых приложени�
 - `front` - Angular frontend (UI, SSR, PWA, i18n)
 - `back` - NestJS backend API
 
+## Релизы
+
+- Гайд по релизам через теги: [RELEASE.md](RELEASE.md)
+
 ## Требования
 
 - Node.js 20+ (рекомендуется для текущего стека Angular/Nest)
