@@ -11,6 +11,9 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
   if (!value) {
     return null;
   }
+  // Strategy choice for stage 6.2:
+  // strict "not in the past" applies to NEW task creation only.
+  // If task edit flow is added later, this validator should be relaxed there.
   const selected = new Date(value);
   if (Number.isNaN(selected.getTime())) {
     return { invalidDate: true };
