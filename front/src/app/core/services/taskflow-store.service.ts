@@ -58,16 +58,28 @@ export class TaskflowStore {
   private readonly taskApi = inject(TaskApiService);
   private readonly _projects = signal<Project[]>([...seedProjects]);
   private readonly _tasks = signal<Task[]>([...seedTasks]);
+  private readonly _apiErrorMessage = signal<string | null>(null);
 
   readonly projects = this._projects.asReadonly();
   readonly tasks = this._tasks.asReadonly();
+  readonly apiErrorMessage = this._apiErrorMessage.asReadonly();
+
+  private clearApiErrorMessage() {
+    this._apiErrorMessage.set(null);
+  }
+
+  private setApiErrorMessage(message: string) {
+    this._apiErrorMessage.set(message);
+  }
 
   private logApiError(context: string, error: unknown) {
     if (this.isApiError(error)) {
       console.log(`${context}: ${error.status} ${error.message}`, error.url);
+      this.setApiErrorMessage(error.message);
       return;
     }
     console.log(context, error);
+    this.setApiErrorMessage('Unexpected API error');
   }
 
   constructor() {
@@ -77,6 +89,7 @@ export class TaskflowStore {
   loadProjects() {
     this.projectApi.getProjects().subscribe({
       next: (projects: Project[]) => {
+        this.clearApiErrorMessage();
         this._projects.set(projects);
       },
       error: (error: unknown) => {
@@ -88,6 +101,7 @@ export class TaskflowStore {
   loadTasks(projectId: string) {
     this.taskApi.getTasks(projectId).subscribe({
       next: (tasks: Task[]) => {
+        this.clearApiErrorMessage();
         this._tasks.update((list: Task[]) => [
           ...list.filter((task: Task) => task.projectId !== projectId),
           ...tasks,
@@ -107,6 +121,7 @@ export class TaskflowStore {
       })
       .subscribe({
         next: (project: Project) => {
+          this.clearApiErrorMessage();
           this._projects.update((list: Project[]) => [...list, project]);
         },
         error: (error: unknown) => {
@@ -129,6 +144,7 @@ export class TaskflowStore {
       })
       .subscribe({
         next: (task: Task) => {
+          this.clearApiErrorMessage();
           this._tasks.update((list: Task[]) => [...list, task]);
         },
         error: (error: unknown) => {
@@ -140,6 +156,7 @@ export class TaskflowStore {
   setTaskStatus(taskId: string, status: TaskStatus) {
     this.taskApi.patchTask(taskId, { status }).subscribe({
       next: (updatedTask: Task) => {
+        this.clearApiErrorMessage();
         this._tasks.update((list: Task[]) =>
           list.map((task: Task) => (task.id === updatedTask.id ? updatedTask : task)),
         );

@@ -10,6 +10,10 @@ import { ProjectCardComponent } from './project-card.component';
   template: `
     <h1>Projects</h1>
 
+    @if (store.apiErrorMessage(); as errorMessage) {
+      <p class="error-banner" role="alert">{{ errorMessage }}</p>
+    }
+
     <form [formGroup]="form" (ngSubmit)="create()" class="create">
       <input formControlName="name" placeholder="Name" />
       <input formControlName="description" placeholder="Description (optional)" />
@@ -32,6 +36,15 @@ import { ProjectCardComponent } from './project-card.component';
       gap: 0.5rem;
       margin-bottom: 1rem;
       align-items: center;
+    }
+    .error-banner {
+      margin: 0 0 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #f3b4b4;
+      background: #fdecec;
+      color: #8a1f1f;
+      border-radius: 6px;
+      max-width: 40rem;
     }
     .list {
       max-width: 40rem;
