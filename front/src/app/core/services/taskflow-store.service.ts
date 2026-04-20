@@ -1,7 +1,8 @@
-import { Injectable, signal } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
+import { inject, Injectable, signal } from '@angular/core';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
+import { ProjectApiService } from './project-api.service';
+import { TaskApiService } from './task-api.service';
 
 const SEED_PROJECT_ID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
 const SEED_TASK_BACKLOG = 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12';
@@ -52,46 +53,91 @@ const seedTasks: Task[] = [
 
 @Injectable({ providedIn: 'root' })
 export class TaskflowStore {
+  private readonly projectApi = inject(ProjectApiService);
+  private readonly taskApi = inject(TaskApiService);
   private readonly _projects = signal<Project[]>([...seedProjects]);
   private readonly _tasks = signal<Task[]>([...seedTasks]);
 
   readonly projects = this._projects.asReadonly();
   readonly tasks = this._tasks.asReadonly();
 
-  addProject(name: string, description?: string): Project {
-    const project: Project = {
-      id: uuidv4(),
-      name: name.trim(),
-      description: description?.trim() || undefined,
-      createdAt: new Date().toISOString(),
-    };
-    this._projects.update((list) => [...list, project]);
-    return project;
+  constructor() {
+    this.loadProjects();
   }
 
-  addTask(
-    projectId: string,
-    title: string,
-    priority: TaskPriority = 'medium',
-  ): Task {
-    const siblings = this._tasks().filter((t) => t.projectId === projectId);
-    const maxOrder = siblings.reduce((m, t) => Math.max(m, t.order), 0);
-    const task: Task = {
-      id: uuidv4(),
-      projectId,
-      title: title.trim(),
-      status: 'backlog',
-      priority,
-      tags: [],
-      order: maxOrder + 10,
-    };
-    this._tasks.update((list) => [...list, task]);
-    return task;
+  loadProjects() {
+    this.projectApi.getProjects().subscribe({
+      next: (projects: Project[]) => {
+        this._projects.set(projects);
+      },
+      error: (error: unknown) => {
+        console.log('Failed to load projects', error);
+      },
+    });
+  }
+
+  loadTasks(projectId: string) {
+    this.taskApi.getTasks(projectId).subscribe({
+      next: (tasks: Task[]) => {
+        this._tasks.update((list: Task[]) => [
+          ...list.filter((task: Task) => task.projectId !== projectId),
+          ...tasks,
+        ]);
+      },
+      error: (error: unknown) => {
+        console.log('Failed to load tasks', error);
+      },
+    });
+  }
+
+  addProject(name: string, description?: string) {
+    this.projectApi
+      .createProject({
+        name: name.trim(),
+        description: description?.trim() || undefined,
+      })
+      .subscribe({
+        next: (project: Project) => {
+          this._projects.update((list: Project[]) => [...list, project]);
+        },
+        error: (error: unknown) => {
+          console.log('Failed to create project', error);
+        },
+      });
+  }
+
+  addTask(projectId: string, title: string, priority: TaskPriority = 'medium') {
+    const siblings = this._tasks().filter((task: Task) => task.projectId === projectId);
+    const maxOrder = siblings.reduce((max: number, task: Task) => Math.max(max, task.order), 0);
+    this.taskApi
+      .createTask({
+        projectId,
+        title: title.trim(),
+        priority,
+        status: 'backlog',
+        tags: [],
+        order: maxOrder + 10,
+      })
+      .subscribe({
+        next: (task: Task) => {
+          this._tasks.update((list: Task[]) => [...list, task]);
+        },
+        error: (error: unknown) => {
+          console.log('Failed to create task', error);
+        },
+      });
   }
 
   setTaskStatus(taskId: string, status: TaskStatus) {
-    this._tasks.update((list) =>
-      list.map((t) => (t.id === taskId ? { ...t, status } : t)),
-    );
+    this.taskApi.patchTask(taskId, { status }).subscribe({
+      next: (updatedTask: Task) => {
+        this._tasks.update((list: Task[]) =>
+          list.map((task: Task) => (task.id === updatedTask.id ? updatedTask : task)),
+        );
+      },
+      error: (error: unknown) => {
+        console.log('Failed to update task status', error);
+      },
+    });
   }
 }

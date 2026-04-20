@@ -170,27 +170,27 @@
 
 ### 4.1. Подключение HttpClient
 
-- [ ] В `app.config.ts` (или bootstrap standalone): `provideHttpClient()`
+- [x] ✅ В `app.config.ts` (или bootstrap standalone): `provideHttpClient()`
 - [ ] Если позже включите SSR: добавить `withFetch()` по документации **той** версии Angular, которую используете
 
 ### 4.2. URL и proxy
 
-- [ ] В `environment*.ts` — `apiUrl` (без дублирования magic string в сервисах)
-  - [ ] **Nest:** обычно `apiUrl: '/api'` (итоговые пути вида `/api/projects`) — как в [TODO.md](../TODO.md), абзац про префикс
-- [ ] `proxy.conf.json` + запись в `angular.json` (`serve.options.proxyConfig`) для `ng serve` — см. [back/TODO.md](../back/TODO.md)
-- [ ] Проверка: в DevTools → Network запрос уходит на тот же origin, что и приложение, а **target** в proxy — порт `back/`
+- [x] ✅ В `environment*.ts` — `apiUrl` (без дублирования magic string в сервисах)
+  - [x] ✅ **Nest:** обычно `apiUrl: '/api'` (итоговые пути вида `/api/projects`) — как в [TODO.md](../TODO.md), абзац про префикс
+- [x] ✅ `proxy.conf.json` + запись в `angular.json` (`serve.options.proxyConfig`) для `ng serve` — см. [back/TODO.md](../back/TODO.md)
+- [x] ✅ Проверка: запрос `http://localhost:4200/api/projects` уходит через фронтовый origin и возвращает JSON с `back` (порт `3001`)
 - [ ] (Если включён SSR раньше этапа 10) Убедиться, что серверный рендер не бьётся в `localhost` без proxy — по доке Angular для SSR
 
 ### 4.3. Сервисы API
 
-- [ ] `core/services/project-api.service.ts` (или согласованная вами структура папок)
-  - [ ] `getProjects(): Observable<Project[]>`
-  - [ ] `getProject(id)` — если бэк не отдаёт один ресурс, временно фильтровать на клиенте и **пометить** техдолг
-  - [ ] `createProject(dto)` — `POST`, разбор ответа в `Project`
-- [ ] `core/services/task-api.service.ts`
-  - [ ] `getTasks(projectId)`
-  - [ ] `createTask(dto)`
-  - [ ] `patchTask(id, partial)` для `status`, `order`, полей формы
+- [x] ✅ `core/services/project-api.service.ts` (или согласованная вами структура папок)
+  - [x] ✅ `getProjects(): Observable<Project[]>`
+  - [x] ✅ `getProject(id)`
+  - [x] ✅ `createProject(dto)` — `POST`, разбор ответа в `Project`
+- [x] ✅ `core/services/task-api.service.ts`
+  - [x] ✅ `getTasks(projectId)`
+  - [x] ✅ `createTask(dto)`
+  - [x] ✅ `patchTask(id, partial)` для `status`, `order`, полей формы
 
 ### 4.4. Interceptors
 
@@ -199,7 +199,7 @@
 
 ### 4.5. Компоненты и RxJS
 
-- [ ] На экране `projects/:id`: при смене параметра маршрута — перезагрузка задач через `switchMap` / `map` от `route.paramMap`
+- [x] ✅ На экране `projects/:id`: при смене параметра маршрута — перезагрузка задач через `map` от `route.paramMap` + `effect`
 - [ ] Подписки в компонентах с `takeUntilDestroyed()` где нет async pipe
 - [ ] Предпочтение **async pipe** для потоков, отдаваемых в шаблон из сервиса/store
 

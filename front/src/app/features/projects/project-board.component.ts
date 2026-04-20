@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import { TaskBoardComponent } from './task-board.component';
@@ -56,16 +56,26 @@ export class ProjectBoardComponent {
   private readonly fb = inject(FormBuilder);
   readonly store = inject(TaskflowStore);
 
-  private readonly paramId = toSignal(this.route.paramMap.pipe(map((p) => p.get('id'))), {
+  private readonly paramId = toSignal(this.route.paramMap.pipe(map((p: ParamMap) => p.get('id'))), {
     initialValue: null,
   });
+
+  constructor() {
+    effect(() => {
+      const id = this.paramId();
+      if (!id) {
+        return;
+      }
+      this.store.loadTasks(id);
+    });
+  }
 
   readonly project = computed(() => {
     const id = this.paramId();
     if (!id) {
       return null;
     }
-    return this.store.projects().find((pr) => pr.id === id) ?? null;
+    return this.store.projects().find((project: { id: string }) => project.id === id) ?? null;
   });
 
   readonly taskForm = this.fb.nonNullable.group({
