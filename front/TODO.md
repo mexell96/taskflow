@@ -306,6 +306,12 @@
 
 Кратко: **store первым** → **HTTP-тесты с этапом 4** → **компоненты после этапа 3** → **E2E в конце**.
 
+**Статус:** [x] ✅ Готово. Реализация подтверждена тестами в:
+- `src/app/core/services/taskflow-store.service.spec.ts`
+- `src/app/core/services/project-api.service.spec.ts`, `src/app/core/services/task-api.service.spec.ts`
+- `src/app/features/projects/project-list.component.spec.ts`, `src/app/features/projects/task-card.component.spec.ts`, `src/app/features/projects/project-board.component.spec.ts`, `src/app/features/projects/task-board.component.spec.ts`
+- `e2e/routing-smoke.spec.ts`, `e2e/projects-flow.spec.ts`
+
 ### 9.1. Сервисы
 
 - [x] ✅ `TestBed.configureTestingModule` использован для unit-тестов `TaskflowStore` с моками API-сервисов (без реального HTTP)

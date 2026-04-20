@@ -178,13 +178,13 @@ flowchart LR
 - ✅ **0** Окружение (Node, Angular CLI, DevTools) — [front/TODO.md](front/TODO.md) (блок до «Этап 1»), [back/TODO.md](back/TODO.md) (§0)
 - ✅ **1** Каркас `front/` (routing, SCSS, standalone, strict TS; **CSR** до этапа 10, см. [front/TODO.md](front/TODO.md))
 - ✅ **2** Домен и UI без сервера (модели, список проектов, Kanban без DnD)
-- **3** Роутинг `/projects`, `/projects/:id`, lazy/guard по необходимости
-- **4** Данные: `back/` + HTTP на фронте (см. оба TODO в подпапках)
-- **5** Signals и синхронизация с API
-- **6** Формы и базовая a11y
-- **7** CDK DnD, `order`, PATCH
-- **8** Фильтры, debounce, `track` в `@for`
-- **9** Тесты (unit, негативные сценарии; E2E по желанию)
+- ✅ **3** Роутинг `/projects`, `/projects/:id`, lazy/guard по необходимости
+- ✅ **4** Данные: `back/` + HTTP на фронте (см. оба TODO в подпапках)
+- ✅ **5** Signals и синхронизация с API
+- ✅ **6** Формы и базовая a11y
+- ✅ **7** CDK DnD, `order`, PATCH
+- ✅ **8** Фильтры, debounce, `track` в `@for`
+- ✅ **9** Тесты (unit, негативные сценарии; E2E по желанию)
 - **10** SSR, TransferState, Title/Meta
 - **11** i18n
 - **12** PWA
