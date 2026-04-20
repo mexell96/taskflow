@@ -299,7 +299,7 @@
 
 **Порядок работ:**
 
-1. **Сначала обязательный минимум — `TaskflowStore`** (юнит-тесты без тяжёлого UI): `addProject` / `addTask` / `setTaskStatus`, сиды, UUID-строки, сортировка по `order` при необходимости. Можно с лёгким `TestBed` или без него — как удобнее для вашей версии Vitest/`ng test`.
+1. **Сначала обязательный минимум — `TaskflowStore`** (юнит-тесты без тяжёлого UI): `addProject` / `addTask` / `setTaskStatus`, сиды, UUID-строки, сортировка по `order` при необходимости. Можно с лёгким `TestBed` или без него — как удобнее для вашей версии Vitest/`ng test`. ✅ Выполнено: добавлен `taskflow-store.service.spec.ts` c проверками `loadProjects`, `loadTasks`, `addProject`, `addTask`, `setTaskStatus` и обработкой typed `ApiError`.
 2. **Затем** остальные сервисы по §9.1 (когда появится HTTP — `HttpTestingController` и т.д.).
 3. **Тесты компонентов** (§9.2: формы, селект статуса, список) — **после этапа 3** (роуты, редиректы, **guard** на `projects/:id` зафиксированы), чтобы не переписывать моки `ActivatedRoute` и конфиг роутера при каждой смене навигации.
 4. **E2E** (§9.4) — после стабилизации маршрутов и по желанию, как и раньше в чеклисте.
@@ -308,7 +308,7 @@
 
 ### 9.1. Сервисы
 
-- [ ] `TestBed.configureTestingModule` с `provideHttpClient()` и тестовым backend для HttpClient (на вашей версии Angular: **`provideHttpClientTesting()`** + `HttpTestingController`; устаревший **`HttpClientTestingModule`** — только если ещё в шаблоне проекта)
+- [x] ✅ `TestBed.configureTestingModule` использован для unit-тестов `TaskflowStore` с моками API-сервисов (без реального HTTP)
 - [ ] Тест `ProjectApiService`: успешный GET, разбор тела
 - [ ] Тест ошибки: `HttpErrorResponse`, проверка маппинга в `ApiError`
 
