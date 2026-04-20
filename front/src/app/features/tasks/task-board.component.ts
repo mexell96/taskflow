@@ -20,7 +20,15 @@ import { TaskCardComponent } from './task-card.component';
           [cdkDropListConnectedTo]="connectedDropListIds(col.status)"
           (cdkDropListDropped)="onDrop($event, col.status)"
         >
-          <h3>{{ col.label }}</h3>
+          <h3>
+            @if (col.status === 'backlog') {
+              <span i18n="@@taskBoardColumnBacklog">Backlog</span>
+            } @else if (col.status === 'in_progress') {
+              <span i18n="@@taskBoardColumnInProgress">In progress</span>
+            } @else {
+              <span i18n="@@taskBoardColumnDone">Done</span>
+            }
+          </h3>
           @for (task of columnTasks()[col.status]; track task.id) {
             <div cdkDrag [cdkDragData]="task">
               <app-task-card

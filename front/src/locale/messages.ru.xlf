@@ -31,6 +31,12 @@
         <target>только просроченные</target>
       </segment>
     </unit>
+    <unit id="projectBoardOpenAddTaskButton">
+      <segment>
+        <source>Add task</source>
+        <target>Добавить задачу</target>
+      </segment>
+    </unit>
     <unit id="projectBoardTaskTitlePlaceholder">
       <segment>
         <source>New task title</source>
@@ -101,6 +107,36 @@
       <segment>
         <source>Status</source>
         <target>Статус</target>
+      </segment>
+    </unit>
+    <unit id="taskBoardColumnBacklog">
+      <segment>
+        <source>Backlog</source>
+        <target>Бэклог</target>
+      </segment>
+    </unit>
+    <unit id="taskBoardColumnInProgress">
+      <segment>
+        <source>In progress</source>
+        <target>В работе</target>
+      </segment>
+    </unit>
+    <unit id="taskBoardColumnDone">
+      <segment>
+        <source>Done</source>
+        <target>Готово</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardDialogTitle">
+      <segment>
+        <source>Add task</source>
+        <target>Добавить задачу</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardCancelButton">
+      <segment>
+        <source>Cancel</source>
+        <target>Отмена</target>
       </segment>
     </unit>
     <unit id="settingsTitle">

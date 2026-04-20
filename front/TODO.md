@@ -360,8 +360,8 @@
 ## Этап 11. i18n
 
 - [x] ✅ Выбраны две локали: `en-US` (source) и `ru`
-- [x] ✅ Ключевые строки UI вынесены в i18n-сообщения (projects/settings формы и подписи)
-- [x] ✅ Выполнен `ng extract-i18n` (`src/locale/messages.xlf`, 20 messages)
+- [x] ✅ Ключевые строки UI вынесены в i18n-сообщения (projects/settings + task board/dialog)
+- [x] ✅ Выполнен `ng extract-i18n` (`src/locale/messages.xlf`, 26 messages)
 - [x] ✅ Настроена стратегия сборки локалей по доке Angular (`angular.json i18n` + `build:i18n`/`build:i18n:ru`)
 
 ---
