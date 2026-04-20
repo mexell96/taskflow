@@ -189,7 +189,7 @@ flowchart LR
 - ✅ **11** i18n
 - ✅ **12** PWA
 - ✅ **13** Доступность
-- **14** На вырост: ACL, toasts, история, Nest + WebSocket и др. — см. [back/TODO.md](back/TODO.md) §6 «На вырост»
+- **14** На вырост: ACL, toasts, история, Nest + WebSocket и др. — опциональный post-MVP этап, см. [back/TODO.md](back/TODO.md) §6 «На вырост»
 
 **Ориентир папок во `front/`:** `core/`, `shared/`, `features/projects/`, `features/tasks/` — см. [front/TODO.md](front/TODO.md).
 
