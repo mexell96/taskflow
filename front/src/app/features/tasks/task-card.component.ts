@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import type { Task, TaskStatus } from '@app/shared/models/task.model';
 import type { TaskPriority } from '@app/shared/models/task.model';
@@ -14,7 +15,7 @@ export type TaskEditValue = {
 
 @Component({
   selector: 'app-task-card',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     tabindex: '0',
@@ -29,6 +30,9 @@ export type TaskEditValue = {
       </div>
       @if (task().description) {
         <p class="description">{{ task().description }}</p>
+      }
+      @if (task().dueDate) {
+        <p class="due-date">due: {{ task().dueDate | date: 'dd.MM.yyyy' }}</p>
       }
       @if (task().tags.length) {
         <p class="tags">{{ task().tags.join(', ') }}</p>
@@ -90,6 +94,11 @@ export type TaskEditValue = {
     .tags {
       margin: 0 0 0.45rem;
       color: #666;
+      font-size: 0.8rem;
+    }
+    .due-date {
+      margin: 0 0 0.35rem;
+      color: #6b4d00;
       font-size: 0.8rem;
     }
     .pr {
