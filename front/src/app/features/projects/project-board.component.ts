@@ -6,7 +6,7 @@ import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { TaskPriority } from '@app/shared/models/task.model';
-import { TaskBoardComponent } from './task-board.component';
+import { TaskBoardComponent } from '../tasks/task-board.component';
 
 function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value as string | null;

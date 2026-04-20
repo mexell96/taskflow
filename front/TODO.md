@@ -385,10 +385,10 @@
 
 ## Структура папок (ориентир)
 
-- [ ] `src/app/core/` — HTTP, interceptors, guards, глобальные singleton-сервисы
-- [ ] `src/app/shared/` — модели, мелкие UI-примитивы, пайпы
-- [ ] `src/app/features/projects/` — список, карточка, страница проекта
-- [ ] `src/app/features/tasks/` — доска, карточка задачи, фильтры
+- [x] ✅ `src/app/core/` — HTTP, interceptors, guards, глобальные singleton-сервисы
+- [x] ✅ `src/app/shared/` — модели, мелкие UI-примитивы, пайпы
+- [x] ✅ `src/app/features/projects/` — список, карточка, страница проекта
+- [x] ✅ `src/app/features/tasks/` — доска, карточка задачи, фильтры
 
 ---
 
