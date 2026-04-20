@@ -48,7 +48,9 @@ export class ProjectListComponent {
   });
 
   create() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      return;
+    }
     const v = this.form.getRawValue();
     this.store.addProject(v.name, v.description || undefined);
     this.form.reset();

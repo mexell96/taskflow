@@ -56,14 +56,15 @@ export class ProjectBoardComponent {
   private readonly fb = inject(FormBuilder);
   readonly store = inject(TaskflowStore);
 
-  private readonly paramId = toSignal(
-    this.route.paramMap.pipe(map((p) => p.get('id'))),
-    { initialValue: null },
-  );
+  private readonly paramId = toSignal(this.route.paramMap.pipe(map((p) => p.get('id'))), {
+    initialValue: null,
+  });
 
   readonly project = computed(() => {
     const id = this.paramId();
-    if (!id) return null;
+    if (!id) {
+      return null;
+    }
     return this.store.projects().find((pr) => pr.id === id) ?? null;
   });
 
@@ -74,7 +75,9 @@ export class ProjectBoardComponent {
 
   addTask() {
     const p = this.project();
-    if (!p || this.taskForm.invalid) return;
+    if (!p || this.taskForm.invalid) {
+      return;
+    }
     const v = this.taskForm.getRawValue();
     this.store.addTask(p.id, v.title, v.priority);
     this.taskForm.reset({ title: '', priority: 'medium' });
