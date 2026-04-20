@@ -1,5 +1,12 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
+import { catchError, tap, throwError } from 'rxjs';
 import type { ApiError } from '@app/core/models/api-error.model';
 
 function toApiError(error: HttpErrorResponse): ApiError {
@@ -18,11 +25,21 @@ function toApiError(error: HttpErrorResponse): ApiError {
   };
 }
 
-export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
+export const apiErrorInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+) => {
   const startedAt = Date.now();
   console.log(`[HTTP] -> ${req.method} ${req.urlWithParams}`);
 
   return next(req).pipe(
+    tap((event: HttpEvent<unknown>) => {
+      if (event instanceof HttpResponse) {
+        console.log(
+          `[HTTP] <- ${req.method} ${req.urlWithParams} ${event.status} (${Date.now() - startedAt}ms)`,
+        );
+      }
+    }),
     catchError((error: unknown) => {
       if (error instanceof HttpErrorResponse) {
         const apiError = toApiError(error);
