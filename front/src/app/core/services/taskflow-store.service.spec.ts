@@ -132,6 +132,7 @@ describe('TaskflowStore', () => {
       projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
       title: 'New task',
       priority: 'high',
+      dueDate: undefined,
       status: 'backlog',
       tags: [],
       order: 30,

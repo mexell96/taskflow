@@ -65,4 +65,26 @@ describe('ProjectBoardComponent', () => {
     expect(error.nativeElement.textContent).toContain('Task title must be at least 3 characters.');
     expect(addTask).not.toHaveBeenCalled();
   });
+
+  it('shows past-date validation message for dueDate', () => {
+    const fixture = TestBed.createComponent(ProjectBoardComponent);
+    fixture.detectChanges();
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayValue = yesterday.toISOString().slice(0, 10);
+
+    const dueDateInput = fixture.debugElement.query(By.css('input[formControlName="dueDate"]'))
+      .nativeElement as HTMLInputElement;
+    dueDateInput.value = yesterdayValue;
+    dueDateInput.dispatchEvent(new Event('input'));
+    dueDateInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+
+    const errorMessages = fixture.debugElement.queryAll(By.css('.field-error'));
+    expect(errorMessages.some((item) =>
+      item.nativeElement.textContent.includes('Due date cannot be in the past for new tasks.'),
+    )).toBe(true);
+    expect(addTask).not.toHaveBeenCalled();
+  });
 });

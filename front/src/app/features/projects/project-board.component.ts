@@ -1,10 +1,25 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import { TaskBoardComponent } from './task-board.component';
+
+function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value as string | null;
+  if (!value) {
+    return null;
+  }
+  const selected = new Date(value);
+  if (Number.isNaN(selected.getTime())) {
+    return { invalidDate: true };
+  }
+  selected.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return selected < today ? { pastDate: true } : null;
+}
 
 @Component({
   selector: 'app-project-board',
@@ -24,6 +39,10 @@ import { TaskBoardComponent } from './task-board.component';
         <input formControlName="title" placeholder="New task title" />
         @if (taskForm.controls.title.invalid && (taskForm.controls.title.dirty || taskForm.controls.title.touched)) {
           <small class="field-error">Task title must be at least 3 characters.</small>
+        }
+        <input formControlName="dueDate" type="date" />
+        @if (taskForm.controls.dueDate.errors?.['pastDate'] && (taskForm.controls.dueDate.dirty || taskForm.controls.dueDate.touched)) {
+          <small class="field-error">Due date cannot be in the past for new tasks.</small>
         }
         <select formControlName="priority">
           <option value="low">low</option>
@@ -89,6 +108,7 @@ export class ProjectBoardComponent {
 
   readonly taskForm = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
+    dueDate: ['', [dueDateNotInPastValidator]],
     priority: this.fb.nonNullable.control<'low' | 'medium' | 'high'>('medium'),
   });
 
@@ -98,7 +118,7 @@ export class ProjectBoardComponent {
       return;
     }
     const v = this.taskForm.getRawValue();
-    this.store.addTask(p.id, v.title, v.priority);
-    this.taskForm.reset({ title: '', priority: 'medium' });
+    this.store.addTask(p.id, v.title, v.priority, v.dueDate || undefined);
+    this.taskForm.reset({ title: '', dueDate: '', priority: 'medium' });
   }
 }

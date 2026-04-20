@@ -130,7 +130,7 @@ export class TaskflowStore {
       });
   }
 
-  addTask(projectId: string, title: string, priority: TaskPriority = 'medium') {
+  addTask(projectId: string, title: string, priority: TaskPriority = 'medium', dueDate?: string) {
     const siblings = this._tasks().filter((task: Task) => task.projectId === projectId);
     const maxOrder = siblings.reduce((max: number, task: Task) => Math.max(max, task.order), 0);
     const optimisticTask: Task = {
@@ -139,6 +139,7 @@ export class TaskflowStore {
       title: title.trim(),
       status: 'backlog',
       priority,
+      dueDate: dueDate || undefined,
       tags: [],
       order: maxOrder + 10,
     };
@@ -150,6 +151,7 @@ export class TaskflowStore {
         projectId,
         title: optimisticTask.title,
         priority,
+        dueDate,
         status: optimisticTask.status,
         tags: optimisticTask.tags,
         order: optimisticTask.order,
