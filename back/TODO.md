@@ -113,8 +113,8 @@
   ],
   "tasks": [
     { "id": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Backlog task", "description": null, "status": "backlog", "priority": "low", "dueDate": null, "tags": ["demo"], "order": 0 },
-    { "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "In progress", "description": null, "status": "in_progress", "priority": "medium", "dueDate": "2026-12-31T00:00:00.000Z", "tags": [], "order": 10 },
-    { "id": "d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Done", "description": null, "status": "done", "priority": "high", "dueDate": "2020-01-01T00:00:00.000Z", "tags": ["urgent"], "order": 20 }
+    { "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "In progress", "description": null, "status": "in_progress", "priority": "medium", "dueDate": "2026-12-31", "tags": [], "order": 10 },
+    { "id": "d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Done", "description": null, "status": "done", "priority": "high", "dueDate": "2020-01-01", "tags": ["urgent"], "order": 20 }
   ]
 }
 ```

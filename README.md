@@ -74,6 +74,7 @@ taskflow/
 - `front/src/app/features` - функциональные модули/экраны (`projects`, `tasks`, `settings`)
 - `front/src/app/core` - инфраструктура приложения (services, guards, interceptors, models)
 - `front/src/app/shared` - общие UI/domain части
+- В карточке задачи отображаются `description`, `dueDate` (формат `dd.MM.yyyy`) и `tags`; create/edit формы поддерживают эти поля
 
 Структура backend (основные части):
 
