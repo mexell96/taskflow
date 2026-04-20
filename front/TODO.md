@@ -247,6 +247,23 @@
 - [x] ✅ Сообщения об ошибках видны рядом с полем
 - [x] ✅ Связь поля с ошибкой: `aria-describedby` / `aria-invalid` по рекомендациям a11y
 
+### 6.4. Редактирование записи (projects/tasks)
+
+- [ ] Добавить UI-режим редактирования проекта (inline или dialog) с предзаполнением `name`/`description`
+- [ ] Добавить UI-режим редактирования задачи: `title`, `description`, `priority`, `dueDate`, `tags` (и `status` при необходимости)
+- [ ] Использовать отдельную форму edit-flow (или переиспользовать create-форму с явным режимом `create|edit`)
+- [ ] Валидации edit-flow:
+  - [ ] `title`/`name` обязательны, `minLength` как в create-flow
+  - [ ] для `dueDate` зафиксировать правило: разрешаем прошлую дату для уже созданной задачи или блокируем (одно поведение на весь UI)
+- [ ] Сервис/API-слой:
+  - [ ] `ProjectApiService`: добавить `patchProject(id, partial)` -> `PATCH /api/projects/:id`
+  - [ ] `TaskApiService`: использовать `patchTask(id, partial)` для edit-формы, не только для DnD/status
+- [ ] Store/signal-синхронизация: после успешного PATCH обновлять локальный state без полного `reload`
+- [ ] UX:
+  - [ ] кнопки `Edit`/`Save`/`Cancel`
+  - [ ] блокировка `Save` при невалидной форме или отсутствии изменений (`pristine`)
+  - [ ] optimistic update (опционально) + rollback при ошибке
+
 ---
 
 ## Этап 7. CDK Drag-and-Drop
