@@ -49,6 +49,7 @@ const seedDb: DbSchema = {
 @Injectable()
 export class DbFileService {
   private readonly dbPath = this.resolveDbPath();
+  private writeQueue: Promise<void> = Promise.resolve();
 
   async readDb(): Promise<DbSchema> {
     await this.ensureDbFile();
@@ -57,7 +58,11 @@ export class DbFileService {
   }
 
   async writeDb(db: DbSchema): Promise<void> {
-    await writeFile(this.dbPath, JSON.stringify(db, null, 2), 'utf-8');
+    const writeTask = this.writeQueue.then(() =>
+      writeFile(this.dbPath, JSON.stringify(db, null, 2), 'utf-8'),
+    );
+    this.writeQueue = writeTask.catch(() => undefined);
+    await writeTask;
   }
 
   private resolveDbPath(): string {
