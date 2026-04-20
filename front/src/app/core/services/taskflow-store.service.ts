@@ -160,17 +160,26 @@ export class TaskflowStore {
     });
   }
 
-  addTask(projectId: string, title: string, priority: TaskPriority = 'medium', dueDate?: string) {
+  addTask(
+    projectId: string,
+    title: string,
+    priority: TaskPriority = 'medium',
+    dueDate?: string,
+    description?: string,
+    tags: string[] = [],
+  ) {
     const siblings = this._tasks().filter((task: Task) => task.projectId === projectId);
     const maxOrder = siblings.reduce((max: number, task: Task) => Math.max(max, task.order), 0);
+    const normalizedTags = tags.map((tag: string) => tag.trim()).filter(Boolean);
     const optimisticTask: Task = {
       id: `temp-${Date.now()}`,
       projectId,
       title: title.trim(),
+      description: description?.trim() || undefined,
       status: 'backlog',
       priority,
       dueDate: dueDate || undefined,
-      tags: [],
+      tags: normalizedTags,
       order: maxOrder + 10,
     };
     this.clearApiErrorMessage();
@@ -180,10 +189,11 @@ export class TaskflowStore {
       .createTask({
         projectId,
         title: optimisticTask.title,
+        description: optimisticTask.description,
         priority,
         dueDate,
         status: optimisticTask.status,
-        tags: optimisticTask.tags,
+        tags: normalizedTags,
         order: optimisticTask.order,
       })
       .subscribe({

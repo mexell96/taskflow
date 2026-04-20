@@ -225,7 +225,7 @@ export class ProjectBoardComponent {
     if (!p) {
       return;
     }
-    this.store.addTask(p.id, value.title, value.priority, value.dueDate);
+    this.store.addTask(p.id, value.title, value.priority, value.dueDate, value.description, value.tags);
     this.closeTaskDialog();
   }
 

@@ -4,8 +4,10 @@ import type { TaskPriority } from '@app/shared/models/task.model';
 
 export type CreateTaskDialogValue = {
   title: string;
+  description?: string;
   priority: TaskPriority;
   dueDate?: string;
+  tags: string[];
 };
 
 function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
@@ -48,6 +50,7 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
               >Task title must be at least 3 characters.</small
             >
           }
+          <input formControlName="description" placeholder="Description (optional)" />
           <input
             formControlName="dueDate"
             type="date"
@@ -64,6 +67,7 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
             <option value="medium">medium</option>
             <option value="high">high</option>
           </select>
+          <input formControlName="tags" placeholder="tags,comma,separated" />
           <div class="dialog-actions">
             <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>
             <button type="button" (click)="cancel.emit()" i18n="@@projectBoardCancelButton">Cancel</button>
@@ -119,8 +123,10 @@ export class TaskCreateDialogComponent implements AfterViewInit {
 
   readonly taskForm = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
+    description: [''],
     dueDate: ['', [dueDateNotInPastValidator]],
     priority: this.fb.nonNullable.control<'low' | 'medium' | 'high'>('medium'),
+    tags: [''],
   });
   readonly titleHasError = () => {
     const title = this.taskForm.controls.title;
@@ -144,9 +150,14 @@ export class TaskCreateDialogComponent implements AfterViewInit {
     const value = this.taskForm.getRawValue();
     this.submitTask.emit({
       title: value.title,
+      description: value.description || undefined,
       priority: value.priority,
       dueDate: value.dueDate || undefined,
+      tags: value.tags
+        .split(',')
+        .map((tag: string) => tag.trim())
+        .filter(Boolean),
     });
-    this.taskForm.reset({ title: '', dueDate: '', priority: 'medium' });
+    this.taskForm.reset({ title: '', description: '', dueDate: '', priority: 'medium', tags: '' });
   }
 }
