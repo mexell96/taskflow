@@ -1,4 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
@@ -58,6 +59,7 @@ import { TaskCardComponent } from './task-card.component';
 })
 export class TaskBoardComponent {
   readonly store = inject(TaskflowStore);
+  private readonly liveAnnouncer = inject(LiveAnnouncer);
   projectId = input.required<string>();
   searchTerm = input('');
   priorityFilter = input<'' | TaskPriority>('');
@@ -125,6 +127,10 @@ export class TaskBoardComponent {
   }
 
   onDrop(event: CdkDragDrop<Task[]>, targetStatus: TaskStatus) {
+    if (event.previousContainer === event.container && event.previousIndex === event.currentIndex) {
+      return;
+    }
+
     const source = [...event.previousContainer.data];
     const target = event.previousContainer === event.container ? source : [...event.container.data];
 
@@ -141,6 +147,7 @@ export class TaskBoardComponent {
 
     const order = this.calculateOrder(target, event.currentIndex, moved.id);
     this.store.moveTask(moved.id, targetStatus, order);
+    this.liveAnnouncer.announce(`Task ${moved.title} moved to ${this.labelForStatus(targetStatus)}.`, 'polite');
   }
 
   private calculateOrder(tasks: Task[], index: number, movedId: string): number {
@@ -161,5 +168,9 @@ export class TaskBoardComponent {
       return 10;
     }
     return (previous.order + next.order) / 2;
+  }
+
+  private labelForStatus(status: TaskStatus): string {
+    return this.columns.find((column) => column.status === status)?.label ?? status;
   }
 }

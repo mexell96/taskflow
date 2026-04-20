@@ -35,4 +35,22 @@ describe('TaskCardComponent', () => {
 
     expect(emitSpy).toHaveBeenCalledWith('done');
   });
+
+  it('focuses status select on Enter and Space from card root', () => {
+    const fixture = TestBed.createComponent(TaskCardComponent);
+    fixture.componentRef.setInput('task', task);
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
+
+    host.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(select);
+
+    host.blur();
+    host.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(select);
+  });
 });

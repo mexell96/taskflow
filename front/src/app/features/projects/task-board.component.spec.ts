@@ -1,4 +1,5 @@
 import type { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
@@ -38,10 +39,12 @@ describe('TaskBoardComponent', () => {
   ]);
   const setTaskStatus = vi.fn();
   const moveTask = vi.fn();
+  const announce = vi.fn();
 
   beforeEach(async () => {
     setTaskStatus.mockReset();
     moveTask.mockReset();
+    announce.mockReset();
 
     await TestBed.configureTestingModule({
       imports: [TaskBoardComponent],
@@ -53,6 +56,12 @@ describe('TaskBoardComponent', () => {
             tasks: tasksSignal.asReadonly(),
             setTaskStatus,
             moveTask,
+          },
+        },
+        {
+          provide: LiveAnnouncer,
+          useValue: {
+            announce,
           },
         },
       ],
@@ -77,6 +86,28 @@ describe('TaskBoardComponent', () => {
     component.onDrop(event, 'done');
 
     expect(moveTask).toHaveBeenCalledWith('task-1', 'done', 10);
+    expect(announce).toHaveBeenCalledWith('Task First moved to Done.', 'polite');
+  });
+
+  it('does not announce for noop drop in same position', () => {
+    const fixture = TestBed.createComponent(TaskBoardComponent);
+    fixture.componentRef.setInput('projectId', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance;
+    const backlogTasks = component.columnTasks().backlog;
+    const sameContainer = { data: backlogTasks };
+    const event = {
+      previousContainer: sameContainer,
+      container: sameContainer,
+      previousIndex: 0,
+      currentIndex: 0,
+    } as CdkDragDrop<Task[]>;
+
+    component.onDrop(event, 'backlog');
+
+    expect(moveTask).not.toHaveBeenCalled();
+    expect(announce).not.toHaveBeenCalled();
   });
 
   it('filters tasks by searchTerm', () => {

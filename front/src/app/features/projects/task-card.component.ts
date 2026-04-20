@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, input, output, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import type { Task, TaskStatus } from '@app/shared/models/task.model';
 
@@ -6,6 +6,11 @@ import type { Task, TaskStatus } from '@app/shared/models/task.model';
   selector: 'app-task-card',
   imports: [FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    tabindex: '0',
+    '(keydown.enter)': 'focusStatusSelect($event)',
+    '(keydown.space)': 'focusStatusSelect($event)',
+  },
   template: `
     <div class="card">
       <div class="head">
@@ -15,6 +20,7 @@ import type { Task, TaskStatus } from '@app/shared/models/task.model';
       <label>
         <span i18n="@@taskCardStatusLabel">Status</span>
         <select
+          #statusSelect
           [ngModel]="task().status"
           (ngModelChange)="onStatus($event)"
         >
@@ -59,8 +65,14 @@ import type { Task, TaskStatus } from '@app/shared/models/task.model';
 export class TaskCardComponent {
   task = input.required<Task>();
   statusChange = output<TaskStatus>();
+  private readonly statusSelect = viewChild<ElementRef<HTMLSelectElement>>('statusSelect');
 
   onStatus(value: string) {
     this.statusChange.emit(value as TaskStatus);
+  }
+
+  focusStatusSelect(event: Event) {
+    event.preventDefault();
+    this.statusSelect()?.nativeElement.focus();
   }
 }

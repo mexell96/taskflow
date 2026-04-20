@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
@@ -31,12 +31,13 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
   imports: [RouterLink, TaskBoardComponent, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (project(); as p) {
-      <p><a routerLink="/projects" i18n="@@projectBoardBackToProjects">← Projects</a></p>
-      <h2>{{ p.name }}</h2>
-      @if (p.description) {
-        <p class="muted">{{ p.description }}</p>
-      }
+    <main>
+      @if (project(); as p) {
+        <p><a routerLink="/projects" i18n="@@projectBoardBackToProjects">← Projects</a></p>
+        <h2>{{ p.name }}</h2>
+        @if (p.description) {
+          <p class="muted">{{ p.description }}</p>
+        }
 
       <input
         [formControl]="searchControl"
@@ -71,41 +72,57 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
         [overdueOnly]="overdueOnly()"
       />
 
-      <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="add">
-        <input
-          formControlName="title"
-          placeholder="New task title"
-          i18n-placeholder="@@projectBoardTaskTitlePlaceholder"
-          [attr.aria-invalid]="titleHasError() ? 'true' : 'false'"
-          [attr.aria-describedby]="titleHasError() ? 'task-title-error' : null"
-        />
-        @if (titleHasError()) {
-          <small id="task-title-error" class="field-error" i18n="@@projectBoardTaskTitleMinLengthError"
-            >Task title must be at least 3 characters.</small
-          >
+        <button #openTaskDialogButton type="button" class="open-add-task" (click)="openTaskDialog(openTaskDialogButton)">
+          Add task
+        </button>
+
+        @if (isTaskDialogOpen()) {
+          <section class="dialog-backdrop">
+            <section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="add-task-title">
+              <h3 id="add-task-title">Add task</h3>
+              <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="add" (keydown.escape)="closeTaskDialog()">
+              <input
+                #taskTitleInput
+                formControlName="title"
+                placeholder="New task title"
+                i18n-placeholder="@@projectBoardTaskTitlePlaceholder"
+                [attr.aria-invalid]="titleHasError() ? 'true' : 'false'"
+                [attr.aria-describedby]="titleHasError() ? 'task-title-error' : null"
+              />
+              @if (titleHasError()) {
+                <small id="task-title-error" class="field-error" i18n="@@projectBoardTaskTitleMinLengthError"
+                  >Task title must be at least 3 characters.</small
+                >
+              }
+              <input
+                formControlName="dueDate"
+                type="date"
+                [attr.aria-invalid]="dueDateHasError() ? 'true' : 'false'"
+                [attr.aria-describedby]="dueDateHasError() ? 'task-due-date-error' : null"
+              />
+              @if (dueDateHasError()) {
+                <small id="task-due-date-error" class="field-error" i18n="@@projectBoardTaskDueDatePastError"
+                  >Due date cannot be in the past for new tasks.</small
+                >
+              }
+              <select formControlName="priority">
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+              </select>
+                <div class="dialog-actions">
+                  <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>
+                  <button type="button" (click)="closeTaskDialog()">Cancel</button>
+                </div>
+              </form>
+            </section>
+          </section>
         }
-        <input
-          formControlName="dueDate"
-          type="date"
-          [attr.aria-invalid]="dueDateHasError() ? 'true' : 'false'"
-          [attr.aria-describedby]="dueDateHasError() ? 'task-due-date-error' : null"
-        />
-        @if (dueDateHasError()) {
-          <small id="task-due-date-error" class="field-error" i18n="@@projectBoardTaskDueDatePastError"
-            >Due date cannot be in the past for new tasks.</small
-          >
-        }
-        <select formControlName="priority">
-          <option value="low">low</option>
-          <option value="medium">medium</option>
-          <option value="high">high</option>
-        </select>
-        <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>
-      </form>
-    } @else {
-      <p i18n="@@projectBoardNotFound">Project not found.</p>
-      <a routerLink="/projects" i18n="@@projectBoardBackToList">Back to list</a>
-    }
+      } @else {
+        <p i18n="@@projectBoardNotFound">Project not found.</p>
+        <a routerLink="/projects" i18n="@@projectBoardBackToList">Back to list</a>
+      }
+    </main>
   `,
   styles: `
     h2 {
@@ -144,6 +161,32 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
       flex-basis: 100%;
       margin-top: -0.2rem;
     }
+    .open-add-task {
+      margin-top: 1.25rem;
+    }
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+    .dialog-panel {
+      width: min(32rem, 100%);
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 1rem;
+    }
+    .dialog-panel h3 {
+      margin: 0 0 0.75rem;
+    }
+    .dialog-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
   `,
 })
 export class ProjectBoardComponent {
@@ -151,6 +194,8 @@ export class ProjectBoardComponent {
   private readonly fb = inject(FormBuilder);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
+  private readonly taskTitleInput = viewChild<ElementRef<HTMLInputElement>>('taskTitleInput');
+  private restoreFocusElement: HTMLElement | null = null;
   readonly store = inject(TaskflowStore);
 
   private readonly paramId = toSignal(this.route.paramMap.pipe(map((p: ParamMap) => p.get('id'))), {
@@ -239,6 +284,24 @@ export class ProjectBoardComponent {
   readonly dueDateHasError = () =>
     !!this.taskForm.controls.dueDate.errors?.['pastDate'] &&
     (this.taskForm.controls.dueDate.dirty || this.taskForm.controls.dueDate.touched);
+  readonly isTaskDialogOpen = signal(false);
+
+  openTaskDialog(trigger: HTMLElement) {
+    this.restoreFocusElement = trigger;
+    this.isTaskDialogOpen.set(true);
+    queueMicrotask(() => {
+      this.taskTitleInput()?.nativeElement.focus();
+    });
+  }
+
+  closeTaskDialog() {
+    this.isTaskDialogOpen.set(false);
+    const target = this.restoreFocusElement;
+    this.restoreFocusElement = null;
+    queueMicrotask(() => {
+      target?.focus();
+    });
+  }
 
   addTask() {
     const p = this.project();
@@ -248,5 +311,6 @@ export class ProjectBoardComponent {
     const v = this.taskForm.getRawValue();
     this.store.addTask(p.id, v.title, v.priority, v.dueDate || undefined);
     this.taskForm.reset({ title: '', dueDate: '', priority: 'medium' });
+    this.closeTaskDialog();
   }
 }

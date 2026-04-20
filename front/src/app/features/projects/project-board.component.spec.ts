@@ -53,6 +53,8 @@ describe('ProjectBoardComponent', () => {
   it('shows minLength validation message for short task title', () => {
     const fixture = TestBed.createComponent(ProjectBoardComponent);
     fixture.detectChanges();
+    (fixture.nativeElement as HTMLElement).querySelector('.open-add-task')?.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
 
     const titleInput = fixture.debugElement.query(By.css('input[formControlName="title"]'))
       .nativeElement as HTMLInputElement;
@@ -70,6 +72,8 @@ describe('ProjectBoardComponent', () => {
 
   it('shows past-date validation message for dueDate', () => {
     const fixture = TestBed.createComponent(ProjectBoardComponent);
+    fixture.detectChanges();
+    (fixture.nativeElement as HTMLElement).querySelector('.open-add-task')?.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
     const yesterday = new Date();
@@ -92,5 +96,28 @@ describe('ProjectBoardComponent', () => {
     expect(dueDateInput.getAttribute('aria-invalid')).toBe('true');
     expect(dueDateInput.getAttribute('aria-describedby')).toBe('task-due-date-error');
     expect(addTask).not.toHaveBeenCalled();
+  });
+
+  it('focuses first field on dialog open and returns focus on close', async () => {
+    const fixture = TestBed.createComponent(ProjectBoardComponent);
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const openButton = host.querySelector('.open-add-task') as HTMLButtonElement;
+    openButton.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const titleInput = host.querySelector('input[formControlName="title"]') as HTMLInputElement;
+    expect(document.activeElement).toBe(titleInput);
+
+    const cancelButton = Array.from(host.querySelectorAll('button')).find((button) => button.textContent?.includes('Cancel')) as
+      | HTMLButtonElement
+      | undefined;
+    cancelButton?.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(document.activeElement).toBe(openButton);
   });
 });
