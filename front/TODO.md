@@ -348,8 +348,8 @@
 
 ### 10.3. Браузерные API
 
-- [ ] Нет обращения к `window` / `document` / `localStorage` в конструкторе сервисов/компонентов без платформенной проверки
-- [ ] Использовать `afterNextRender`, `isPlatformBrowser`, инжект `DOCUMENT` где уместно
+- [x] ✅ Нет обращения к `window` / `document` / `localStorage` в конструкторе сервисов/компонентов без платформенной проверки (проведён аудит фронта)
+- [x] ✅ Использовать `afterNextRender`, `isPlatformBrowser`, инжект `DOCUMENT` где уместно (`isPlatformBrowser`/`isPlatformServer` уже используются в SSR data-flow; доп. обёртки не требуются)
 
 ### 10.4. SEO
 
