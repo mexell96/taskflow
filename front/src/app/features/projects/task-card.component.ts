@@ -13,7 +13,7 @@ import type { Task, TaskStatus } from '@app/shared/models/task.model';
         <span class="pr">{{ task().priority }}</span>
       </div>
       <label>
-        Status
+        <span i18n="@@taskCardStatusLabel">Status</span>
         <select
           [ngModel]="task().status"
           (ngModelChange)="onStatus($event)"

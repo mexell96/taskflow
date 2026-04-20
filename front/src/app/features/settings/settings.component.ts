@@ -6,9 +6,9 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1>Settings</h1>
-    <p>Settings page placeholder.</p>
-    <a routerLink="/projects">Back to projects</a>
+    <h1 i18n="@@settingsTitle">Settings</h1>
+    <p i18n="@@settingsPlaceholder">Settings page placeholder.</p>
+    <a routerLink="/projects" i18n="@@settingsBackToProjects">Back to projects</a>
   `,
 })
 export class SettingsComponent {}

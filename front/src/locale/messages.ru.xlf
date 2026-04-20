@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US" trgLang="ru">
+  <file id="ngi18n" original="ng.template">
+    <unit id="projectBoardBackToProjects">
+      <segment>
+        <source>← Projects</source>
+        <target>← Проекты</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardSearchPlaceholder">
+      <segment>
+        <source>Search tasks by title</source>
+        <target>Поиск задач по названию</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardAllPriorities">
+      <segment>
+        <source>All priorities</source>
+        <target>Все приоритеты</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardAllTags">
+      <segment>
+        <source>All tags</source>
+        <target>Все теги</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardOverdueOnly">
+      <segment>
+        <source>overdue only</source>
+        <target>только просроченные</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskTitlePlaceholder">
+      <segment>
+        <source>New task title</source>
+        <target>Название новой задачи</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskTitleMinLengthError">
+      <segment>
+        <source>Task title must be at least 3 characters.</source>
+        <target>Название задачи должно быть не короче 3 символов.</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskDueDatePastError">
+      <segment>
+        <source>Due date cannot be in the past for new tasks.</source>
+        <target>Для новых задач дата не может быть в прошлом.</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardAddTaskButton">
+      <segment>
+        <source>Add task</source>
+        <target>Добавить задачу</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardNotFound">
+      <segment>
+        <source>Project not found.</source>
+        <target>Проект не найден.</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardBackToList">
+      <segment>
+        <source>Back to list</source>
+        <target>Назад к списку</target>
+      </segment>
+    </unit>
+    <unit id="projectListTitle">
+      <segment>
+        <source>Projects</source>
+        <target>Проекты</target>
+      </segment>
+    </unit>
+    <unit id="projectListNamePlaceholder">
+      <segment>
+        <source>Name</source>
+        <target>Название</target>
+      </segment>
+    </unit>
+    <unit id="projectListNameMinLengthError">
+      <segment>
+        <source>Project name must be at least 3 characters.</source>
+        <target>Название проекта должно быть не короче 3 символов.</target>
+      </segment>
+    </unit>
+    <unit id="projectListDescriptionPlaceholder">
+      <segment>
+        <source>Description (optional)</source>
+        <target>Описание (необязательно)</target>
+      </segment>
+    </unit>
+    <unit id="projectListCreateButton">
+      <segment>
+        <source>Create project</source>
+        <target>Создать проект</target>
+      </segment>
+    </unit>
+    <unit id="taskCardStatusLabel">
+      <segment>
+        <source>Status</source>
+        <target>Статус</target>
+      </segment>
+    </unit>
+    <unit id="settingsTitle">
+      <segment>
+        <source>Settings</source>
+        <target>Настройки</target>
+      </segment>
+    </unit>
+    <unit id="settingsPlaceholder">
+      <segment>
+        <source>Settings page placeholder.</source>
+        <target>Заглушка страницы настроек.</target>
+      </segment>
+    </unit>
+    <unit id="settingsBackToProjects">
+      <segment>
+        <source>Back to projects</source>
+        <target>Назад к проектам</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

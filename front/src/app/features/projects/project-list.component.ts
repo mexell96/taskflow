@@ -9,7 +9,7 @@ import { ProjectCardComponent } from './project-card.component';
   imports: [ReactiveFormsModule, ProjectCardComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1>Projects</h1>
+    <h1 i18n="@@projectListTitle">Projects</h1>
 
     @if (store.apiErrorMessage(); as errorMessage) {
       <p class="error-banner" role="alert">{{ errorMessage }}</p>
@@ -19,14 +19,21 @@ import { ProjectCardComponent } from './project-card.component';
       <input
         formControlName="name"
         placeholder="Name"
+        i18n-placeholder="@@projectListNamePlaceholder"
         [attr.aria-invalid]="nameHasError() ? 'true' : 'false'"
         [attr.aria-describedby]="nameHasError() ? 'project-name-error' : null"
       />
       @if (nameHasError()) {
-        <small id="project-name-error" class="field-error">Project name must be at least 3 characters.</small>
+        <small id="project-name-error" class="field-error" i18n="@@projectListNameMinLengthError"
+          >Project name must be at least 3 characters.</small
+        >
       }
-      <input formControlName="description" placeholder="Description (optional)" />
-      <button type="submit" [disabled]="form.invalid">Create project</button>
+      <input
+        formControlName="description"
+        placeholder="Description (optional)"
+        i18n-placeholder="@@projectListDescriptionPlaceholder"
+      />
+      <button type="submit" [disabled]="form.invalid" i18n="@@projectListCreateButton">Create project</button>
     </form>
 
     <section class="list">

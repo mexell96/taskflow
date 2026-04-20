@@ -32,29 +32,34 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (project(); as p) {
-      <p><a routerLink="/projects">← Projects</a></p>
+      <p><a routerLink="/projects" i18n="@@projectBoardBackToProjects">← Projects</a></p>
       <h2>{{ p.name }}</h2>
       @if (p.description) {
         <p class="muted">{{ p.description }}</p>
       }
 
-      <input [formControl]="searchControl" placeholder="Search tasks by title" class="search" />
+      <input
+        [formControl]="searchControl"
+        placeholder="Search tasks by title"
+        i18n-placeholder="@@projectBoardSearchPlaceholder"
+        class="search"
+      />
       <div class="filters">
         <select [formControl]="priorityFilterControl">
-          <option value="">All priorities</option>
+          <option value="" i18n="@@projectBoardAllPriorities">All priorities</option>
           <option value="low">low</option>
           <option value="medium">medium</option>
           <option value="high">high</option>
         </select>
         <select [formControl]="tagFilterControl">
-          <option value="">All tags</option>
+          <option value="" i18n="@@projectBoardAllTags">All tags</option>
           @for (tag of availableTags(); track tag) {
             <option [value]="tag">{{ tag }}</option>
           }
         </select>
         <label class="overdue">
           <input type="checkbox" [formControl]="overdueOnlyControl" />
-          overdue only
+          <span i18n="@@projectBoardOverdueOnly">overdue only</span>
         </label>
       </div>
 
@@ -70,11 +75,14 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
         <input
           formControlName="title"
           placeholder="New task title"
+          i18n-placeholder="@@projectBoardTaskTitlePlaceholder"
           [attr.aria-invalid]="titleHasError() ? 'true' : 'false'"
           [attr.aria-describedby]="titleHasError() ? 'task-title-error' : null"
         />
         @if (titleHasError()) {
-          <small id="task-title-error" class="field-error">Task title must be at least 3 characters.</small>
+          <small id="task-title-error" class="field-error" i18n="@@projectBoardTaskTitleMinLengthError"
+            >Task title must be at least 3 characters.</small
+          >
         }
         <input
           formControlName="dueDate"
@@ -83,18 +91,20 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
           [attr.aria-describedby]="dueDateHasError() ? 'task-due-date-error' : null"
         />
         @if (dueDateHasError()) {
-          <small id="task-due-date-error" class="field-error">Due date cannot be in the past for new tasks.</small>
+          <small id="task-due-date-error" class="field-error" i18n="@@projectBoardTaskDueDatePastError"
+            >Due date cannot be in the past for new tasks.</small
+          >
         }
         <select formControlName="priority">
           <option value="low">low</option>
           <option value="medium">medium</option>
           <option value="high">high</option>
         </select>
-        <button type="submit" [disabled]="taskForm.invalid">Add task</button>
+        <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>
       </form>
     } @else {
-      <p>Project not found.</p>
-      <a routerLink="/projects">Back to list</a>
+      <p i18n="@@projectBoardNotFound">Project not found.</p>
+      <a routerLink="/projects" i18n="@@projectBoardBackToList">Back to list</a>
     }
   `,
   styles: `

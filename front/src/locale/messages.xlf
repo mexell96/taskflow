@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US">
+  <file id="ngi18n" original="ng.template">
+    <unit id="projectBoardBackToProjects">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:35,37</note>
+      </notes>
+      <segment>
+        <source>← Projects</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardSearchPlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:43,44</note>
+      </notes>
+      <segment>
+        <source>Search tasks by title</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardAllPriorities">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:49,50</note>
+      </notes>
+      <segment>
+        <source>All priorities</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardAllTags">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:55,56</note>
+      </notes>
+      <segment>
+        <source>All tags</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardOverdueOnly">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:62,65</note>
+      </notes>
+      <segment>
+        <source>overdue only</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskTitlePlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:77,78</note>
+      </notes>
+      <segment>
+        <source>New task title</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskTitleMinLengthError">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:84,88</note>
+      </notes>
+      <segment>
+        <source>Task title must be at least 3 characters.</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskDueDatePastError">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:95,98</note>
+      </notes>
+      <segment>
+        <source>Due date cannot be in the past for new tasks.</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardAddTaskButton">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:103,106</note>
+      </notes>
+      <segment>
+        <source>Add task</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardNotFound">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:106,107</note>
+      </notes>
+      <segment>
+        <source>Project not found.</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardBackToList">
+      <notes>
+        <note category="location">src/app/features/projects/project-board.component.ts:107,112</note>
+      </notes>
+      <segment>
+        <source>Back to list</source>
+      </segment>
+    </unit>
+    <unit id="projectListTitle">
+      <notes>
+        <note category="location">src/app/features/projects/project-list.component.ts:12,14</note>
+      </notes>
+      <segment>
+        <source>Projects</source>
+      </segment>
+    </unit>
+    <unit id="projectListNamePlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/project-list.component.ts:22</note>
+      </notes>
+      <segment>
+        <source>Name</source>
+      </segment>
+    </unit>
+    <unit id="projectListNameMinLengthError">
+      <notes>
+        <note category="location">src/app/features/projects/project-list.component.ts:28,32</note>
+      </notes>
+      <segment>
+        <source>Project name must be at least 3 characters.</source>
+      </segment>
+    </unit>
+    <unit id="projectListDescriptionPlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/project-list.component.ts:33,34</note>
+      </notes>
+      <segment>
+        <source>Description (optional)</source>
+      </segment>
+    </unit>
+    <unit id="projectListCreateButton">
+      <notes>
+        <note category="location">src/app/features/projects/project-list.component.ts:36,39</note>
+      </notes>
+      <segment>
+        <source>Create project</source>
+      </segment>
+    </unit>
+    <unit id="taskCardStatusLabel">
+      <notes>
+        <note category="location">src/app/features/projects/task-card.component.ts:16,18</note>
+      </notes>
+      <segment>
+        <source>Status</source>
+      </segment>
+    </unit>
+    <unit id="settingsTitle">
+      <notes>
+        <note category="location">src/app/features/settings/settings.component.ts:9,10</note>
+      </notes>
+      <segment>
+        <source>Settings</source>
+      </segment>
+    </unit>
+    <unit id="settingsPlaceholder">
+      <notes>
+        <note category="location">src/app/features/settings/settings.component.ts:10,11</note>
+      </notes>
+      <segment>
+        <source>Settings page placeholder.</source>
+      </segment>
+    </unit>
+    <unit id="settingsBackToProjects">
+      <notes>
+        <note category="location">src/app/features/settings/settings.component.ts:11,14</note>
+      </notes>
+      <segment>
+        <source>Back to projects</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>
