@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { access, readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { isAbsolute, resolve } from 'node:path';
 import type { DbSchema } from './domain.model';
 
 const seedDb: DbSchema = {
@@ -66,6 +66,10 @@ export class DbFileService {
   }
 
   private resolveDbPath(): string {
+    const envPath = process.env.TASKFLOW_DB_PATH?.trim();
+    if (envPath) {
+      return isAbsolute(envPath) ? envPath : resolve(process.cwd(), envPath);
+    }
     const localPath = resolve(process.cwd(), 'db.json');
     const monorepoPath = resolve(process.cwd(), 'back', 'db.json');
     return process.cwd().endsWith('/back') ? localPath : monorepoPath;
