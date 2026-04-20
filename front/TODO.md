@@ -171,7 +171,7 @@
 ### 4.1. Подключение HttpClient
 
 - [x] ✅ В `app.config.ts` (или bootstrap standalone): `provideHttpClient()`
-- [ ] Если позже включите SSR: добавить `withFetch()` по документации **той** версии Angular, которую используете
+- [x] ✅ Для SSR добавлен `withFetch()` в `provideHttpClient(...)` (Angular 21 docs)
 
 ### 4.2. URL и proxy
 
