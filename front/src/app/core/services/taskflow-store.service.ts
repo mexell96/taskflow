@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
+import type { ApiError } from '@app/core/models/api-error.model';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
 import { ProjectApiService } from './project-api.service';
@@ -61,6 +62,14 @@ export class TaskflowStore {
   readonly projects = this._projects.asReadonly();
   readonly tasks = this._tasks.asReadonly();
 
+  private logApiError(context: string, error: unknown) {
+    if (this.isApiError(error)) {
+      console.log(`${context}: ${error.status} ${error.message}`, error.url);
+      return;
+    }
+    console.log(context, error);
+  }
+
   constructor() {
     this.loadProjects();
   }
@@ -71,7 +80,7 @@ export class TaskflowStore {
         this._projects.set(projects);
       },
       error: (error: unknown) => {
-        console.log('Failed to load projects', error);
+        this.logApiError('Failed to load projects', error);
       },
     });
   }
@@ -85,7 +94,7 @@ export class TaskflowStore {
         ]);
       },
       error: (error: unknown) => {
-        console.log('Failed to load tasks', error);
+        this.logApiError('Failed to load tasks', error);
       },
     });
   }
@@ -101,7 +110,7 @@ export class TaskflowStore {
           this._projects.update((list: Project[]) => [...list, project]);
         },
         error: (error: unknown) => {
-          console.log('Failed to create project', error);
+          this.logApiError('Failed to create project', error);
         },
       });
   }
@@ -123,7 +132,7 @@ export class TaskflowStore {
           this._tasks.update((list: Task[]) => [...list, task]);
         },
         error: (error: unknown) => {
-          console.log('Failed to create task', error);
+          this.logApiError('Failed to create task', error);
         },
       });
   }
@@ -136,8 +145,19 @@ export class TaskflowStore {
         );
       },
       error: (error: unknown) => {
-        console.log('Failed to update task status', error);
+        this.logApiError('Failed to update task status', error);
       },
     });
+  }
+
+  private isApiError(error: unknown): error is ApiError {
+    return (
+      typeof error === 'object' &&
+      error !== null &&
+      'status' in error &&
+      'message' in error &&
+      typeof (error as { status?: unknown }).status === 'number' &&
+      typeof (error as { message?: unknown }).message === 'string'
+    );
   }
 }
