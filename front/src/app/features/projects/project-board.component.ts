@@ -39,13 +39,23 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
       <app-task-board [projectId]="p.id" />
 
       <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="add">
-        <input formControlName="title" placeholder="New task title" />
-        @if (taskForm.controls.title.invalid && (taskForm.controls.title.dirty || taskForm.controls.title.touched)) {
-          <small class="field-error">Task title must be at least 3 characters.</small>
+        <input
+          formControlName="title"
+          placeholder="New task title"
+          [attr.aria-invalid]="titleHasError() ? 'true' : 'false'"
+          [attr.aria-describedby]="titleHasError() ? 'task-title-error' : null"
+        />
+        @if (titleHasError()) {
+          <small id="task-title-error" class="field-error">Task title must be at least 3 characters.</small>
         }
-        <input formControlName="dueDate" type="date" />
-        @if (taskForm.controls.dueDate.errors?.['pastDate'] && (taskForm.controls.dueDate.dirty || taskForm.controls.dueDate.touched)) {
-          <small class="field-error">Due date cannot be in the past for new tasks.</small>
+        <input
+          formControlName="dueDate"
+          type="date"
+          [attr.aria-invalid]="dueDateHasError() ? 'true' : 'false'"
+          [attr.aria-describedby]="dueDateHasError() ? 'task-due-date-error' : null"
+        />
+        @if (dueDateHasError()) {
+          <small id="task-due-date-error" class="field-error">Due date cannot be in the past for new tasks.</small>
         }
         <select formControlName="priority">
           <option value="low">low</option>
@@ -114,6 +124,14 @@ export class ProjectBoardComponent {
     dueDate: ['', [dueDateNotInPastValidator]],
     priority: this.fb.nonNullable.control<'low' | 'medium' | 'high'>('medium'),
   });
+
+  readonly titleHasError = () =>
+    this.taskForm.controls.title.invalid &&
+    (this.taskForm.controls.title.dirty || this.taskForm.controls.title.touched);
+
+  readonly dueDateHasError = () =>
+    !!this.taskForm.controls.dueDate.errors?.['pastDate'] &&
+    (this.taskForm.controls.dueDate.dirty || this.taskForm.controls.dueDate.touched);
 
   addTask() {
     const p = this.project();

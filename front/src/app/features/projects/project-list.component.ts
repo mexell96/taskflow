@@ -15,9 +15,14 @@ import { ProjectCardComponent } from './project-card.component';
     }
 
     <form [formGroup]="form" (ngSubmit)="create()" class="create">
-      <input formControlName="name" placeholder="Name" />
-      @if (form.controls.name.invalid && (form.controls.name.dirty || form.controls.name.touched)) {
-        <small class="field-error">Project name must be at least 3 characters.</small>
+      <input
+        formControlName="name"
+        placeholder="Name"
+        [attr.aria-invalid]="nameHasError() ? 'true' : 'false'"
+        [attr.aria-describedby]="nameHasError() ? 'project-name-error' : null"
+      />
+      @if (nameHasError()) {
+        <small id="project-name-error" class="field-error">Project name must be at least 3 characters.</small>
       }
       <input formControlName="description" placeholder="Description (optional)" />
       <button type="submit" [disabled]="form.invalid">Create project</button>
@@ -68,6 +73,9 @@ export class ProjectListComponent {
     name: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
   });
+
+  readonly nameHasError = () =>
+    this.form.controls.name.invalid && (this.form.controls.name.dirty || this.form.controls.name.touched);
 
   create() {
     if (this.form.invalid) {

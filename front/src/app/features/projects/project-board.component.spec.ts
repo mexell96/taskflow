@@ -63,6 +63,8 @@ describe('ProjectBoardComponent', () => {
 
     const error = fixture.debugElement.query(By.css('.field-error'));
     expect(error.nativeElement.textContent).toContain('Task title must be at least 3 characters.');
+    expect(titleInput.getAttribute('aria-invalid')).toBe('true');
+    expect(titleInput.getAttribute('aria-describedby')).toBe('task-title-error');
     expect(addTask).not.toHaveBeenCalled();
   });
 
@@ -82,9 +84,13 @@ describe('ProjectBoardComponent', () => {
     fixture.detectChanges();
 
     const errorMessages = fixture.debugElement.queryAll(By.css('.field-error'));
-    expect(errorMessages.some((item) =>
-      item.nativeElement.textContent.includes('Due date cannot be in the past for new tasks.'),
-    )).toBe(true);
+    expect(
+      errorMessages.some((item: { nativeElement: { textContent: string } }) =>
+        item.nativeElement.textContent.includes('Due date cannot be in the past for new tasks.'),
+      ),
+    ).toBe(true);
+    expect(dueDateInput.getAttribute('aria-invalid')).toBe('true');
+    expect(dueDateInput.getAttribute('aria-describedby')).toBe('task-due-date-error');
     expect(addTask).not.toHaveBeenCalled();
   });
 });

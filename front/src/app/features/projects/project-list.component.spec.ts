@@ -77,6 +77,8 @@ describe('ProjectListComponent', () => {
 
     const error = fixture.debugElement.query(By.css('.field-error'));
     expect(error.nativeElement.textContent).toContain('Project name must be at least 3 characters.');
+    expect(nameInput.getAttribute('aria-invalid')).toBe('true');
+    expect(nameInput.getAttribute('aria-describedby')).toBe('project-name-error');
     expect(addProject).not.toHaveBeenCalled();
   });
 
