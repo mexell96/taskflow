@@ -133,27 +133,51 @@ export class TaskflowStore {
   addTask(projectId: string, title: string, priority: TaskPriority = 'medium') {
     const siblings = this._tasks().filter((task: Task) => task.projectId === projectId);
     const maxOrder = siblings.reduce((max: number, task: Task) => Math.max(max, task.order), 0);
+    const optimisticTask: Task = {
+      id: `temp-${Date.now()}`,
+      projectId,
+      title: title.trim(),
+      status: 'backlog',
+      priority,
+      tags: [],
+      order: maxOrder + 10,
+    };
+    this.clearApiErrorMessage();
+    this._tasks.update((list: Task[]) => [...list, optimisticTask]);
+
     this.taskApi
       .createTask({
         projectId,
-        title: title.trim(),
+        title: optimisticTask.title,
         priority,
-        status: 'backlog',
-        tags: [],
-        order: maxOrder + 10,
+        status: optimisticTask.status,
+        tags: optimisticTask.tags,
+        order: optimisticTask.order,
       })
       .subscribe({
         next: (task: Task) => {
           this.clearApiErrorMessage();
-          this._tasks.update((list: Task[]) => [...list, task]);
+          this._tasks.update((list: Task[]) =>
+            list.map((item: Task) => (item.id === optimisticTask.id ? task : item)),
+          );
         },
         error: (error: unknown) => {
+          this._tasks.update((list: Task[]) => list.filter((item: Task) => item.id !== optimisticTask.id));
           this.logApiError('Failed to create task', error);
         },
       });
   }
 
   setTaskStatus(taskId: string, status: TaskStatus) {
+    const current = this._tasks().find((task: Task) => task.id === taskId);
+    if (!current) {
+      return;
+    }
+    this.clearApiErrorMessage();
+    this._tasks.update((list: Task[]) =>
+      list.map((task: Task) => (task.id === taskId ? { ...task, status } : task)),
+    );
+
     this.taskApi.patchTask(taskId, { status }).subscribe({
       next: (updatedTask: Task) => {
         this.clearApiErrorMessage();
@@ -162,6 +186,9 @@ export class TaskflowStore {
         );
       },
       error: (error: unknown) => {
+        this._tasks.update((list: Task[]) =>
+          list.map((task: Task) => (task.id === current.id ? current : task)),
+        );
         this.logApiError('Failed to update task status', error);
       },
     });
