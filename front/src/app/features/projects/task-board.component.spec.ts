@@ -31,7 +31,8 @@ describe('TaskBoardComponent', () => {
       title: 'Second',
       status: 'backlog',
       priority: 'medium',
-      tags: [],
+      dueDate: '2000-01-01T00:00:00.000Z',
+      tags: ['urgent'],
       order: 20,
     },
   ]);
@@ -76,5 +77,25 @@ describe('TaskBoardComponent', () => {
     component.onDrop(event, 'done');
 
     expect(moveTask).toHaveBeenCalledWith('task-1', 'done', 10);
+  });
+
+  it('filters tasks by searchTerm', () => {
+    const fixture = TestBed.createComponent(TaskBoardComponent);
+    fixture.componentRef.setInput('projectId', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+    fixture.componentRef.setInput('searchTerm', 'sec');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.columnTasks().backlog.map((task: Task) => task.id)).toEqual(['task-2']);
+  });
+
+  it('filters tasks by priority, tag and overdue options', () => {
+    const fixture = TestBed.createComponent(TaskBoardComponent);
+    fixture.componentRef.setInput('projectId', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+    fixture.componentRef.setInput('priorityFilter', 'medium');
+    fixture.componentRef.setInput('tagFilter', 'urgent');
+    fixture.componentRef.setInput('overdueOnly', true);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.columnTasks().backlog.map((task: Task) => task.id)).toEqual(['task-2']);
   });
 });

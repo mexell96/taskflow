@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@a
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
+import type { TaskPriority } from '@app/shared/models/task.model';
 import { TaskBoardComponent } from './task-board.component';
 
 function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
@@ -36,7 +37,33 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
         <p class="muted">{{ p.description }}</p>
       }
 
-      <app-task-board [projectId]="p.id" />
+      <input [formControl]="searchControl" placeholder="Search tasks by title" class="search" />
+      <div class="filters">
+        <select [formControl]="priorityFilterControl">
+          <option value="">All priorities</option>
+          <option value="low">low</option>
+          <option value="medium">medium</option>
+          <option value="high">high</option>
+        </select>
+        <select [formControl]="tagFilterControl">
+          <option value="">All tags</option>
+          @for (tag of availableTags(); track tag) {
+            <option [value]="tag">{{ tag }}</option>
+          }
+        </select>
+        <label class="overdue">
+          <input type="checkbox" [formControl]="overdueOnlyControl" />
+          overdue only
+        </label>
+      </div>
+
+      <app-task-board
+        [projectId]="p.id"
+        [searchTerm]="searchTerm()"
+        [priorityFilter]="priorityFilter()"
+        [tagFilter]="tagFilter()"
+        [overdueOnly]="overdueOnly()"
+      />
 
       <form [formGroup]="taskForm" (ngSubmit)="addTask()" class="add">
         <input
@@ -84,6 +111,22 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
       margin-top: 1.25rem;
       align-items: center;
     }
+    .search {
+      width: min(32rem, 100%);
+      margin-top: 0.75rem;
+    }
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .overdue {
+      display: inline-flex;
+      gap: 0.35rem;
+      align-items: center;
+    }
     .field-error {
       color: #8a1f1f;
       font-size: 0.8rem;
@@ -123,6 +166,39 @@ export class ProjectBoardComponent {
     title: ['', [Validators.required, Validators.minLength(3)]],
     dueDate: ['', [dueDateNotInPastValidator]],
     priority: this.fb.nonNullable.control<'low' | 'medium' | 'high'>('medium'),
+  });
+  readonly searchControl = this.fb.nonNullable.control('');
+  readonly priorityFilterControl = this.fb.nonNullable.control<'' | TaskPriority>('');
+  readonly tagFilterControl = this.fb.nonNullable.control('');
+  readonly overdueOnlyControl = this.fb.nonNullable.control(false);
+  readonly searchTerm = toSignal(
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      map((value: string) => value.trim().toLowerCase()),
+    ),
+    { initialValue: '' },
+  );
+  readonly priorityFilter = toSignal(this.priorityFilterControl.valueChanges, { initialValue: '' as '' | TaskPriority });
+  readonly tagFilter = toSignal(
+    this.tagFilterControl.valueChanges.pipe(map((value: string) => value.trim().toLowerCase())),
+    { initialValue: '' },
+  );
+  readonly overdueOnly = toSignal(this.overdueOnlyControl.valueChanges, { initialValue: false });
+  readonly availableTags = computed(() => {
+    const id = this.paramId();
+    if (!id) {
+      return [] as string[];
+    }
+    return Array.from(
+      new Set(
+        this.store
+          .tasks()
+          .filter((task: { projectId: string }) => task.projectId === id)
+          .flatMap((task: { tags: string[] }) => task.tags)
+          .filter((tag: string) => !!tag),
+      ),
+    ).sort();
   });
 
   readonly titleHasError = () =>

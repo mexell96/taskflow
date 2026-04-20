@@ -1,7 +1,7 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
-import type { Task, TaskStatus } from '@app/shared/models/task.model';
+import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
 import { TaskCardComponent } from './task-card.component';
 
 @Component({
@@ -59,6 +59,10 @@ import { TaskCardComponent } from './task-card.component';
 export class TaskBoardComponent {
   readonly store = inject(TaskflowStore);
   projectId = input.required<string>();
+  searchTerm = input('');
+  priorityFilter = input<'' | TaskPriority>('');
+  tagFilter = input('');
+  overdueOnly = input(false);
 
   readonly columns: { status: TaskStatus; label: string }[] = [
     { status: 'backlog', label: 'Backlog' },
@@ -68,10 +72,41 @@ export class TaskBoardComponent {
 
   readonly columnTasks = computed(() => {
     const id = this.projectId();
+    const term = this.searchTerm().trim().toLowerCase();
+    const priority = this.priorityFilter();
+    const tag = this.tagFilter().trim().toLowerCase();
+    const overdueOnly = this.overdueOnly();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const byStatus = (s: TaskStatus) =>
       this.store
         .tasks()
-        .filter((t) => t.projectId === id && t.status === s)
+        .filter((t) => {
+          if (t.projectId !== id || t.status !== s) {
+            return false;
+          }
+          if (term && !t.title.toLowerCase().includes(term)) {
+            return false;
+          }
+          if (priority && t.priority !== priority) {
+            return false;
+          }
+          if (tag && !t.tags.some((item) => item.toLowerCase() === tag)) {
+            return false;
+          }
+          if (!overdueOnly) {
+            return true;
+          }
+          if (!t.dueDate) {
+            return false;
+          }
+          const due = new Date(t.dueDate);
+          if (Number.isNaN(due.getTime())) {
+            return false;
+          }
+          due.setHours(0, 0, 0, 0);
+          return due < today;
+        })
         .sort((a, b) => a.order - b.order);
 
     return {
