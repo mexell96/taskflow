@@ -20,6 +20,11 @@ Angular components in `src/app` use separate files for logic, template, and styl
 - `*.component.html` for the template
 - `*.component.css` for component-scoped styles
 
+Feature folders can also contain component subfolders when a screen grows. Current examples:
+
+- `src/app/features/projects/list`, `src/app/features/projects/board`, `src/app/features/projects/card`
+- `src/app/features/tasks/board`, `src/app/features/tasks/card`, `src/app/features/tasks/create-dialog`
+
 When adding or updating a component, keep `templateUrl` and `styleUrl` relative to the component TypeScript file so the structure stays consistent across the app.
 
 ## Code scaffolding

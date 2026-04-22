@@ -326,7 +326,7 @@
 **Статус:** [x] ✅ Готово. Реализация подтверждена тестами в:
 - `src/app/core/services/taskflow-store.service.spec.ts`
 - `src/app/core/services/project-api.service.spec.ts`, `src/app/core/services/task-api.service.spec.ts`
-- `src/app/features/projects/project-list.component.spec.ts`, `src/app/features/projects/project-board.component.spec.ts`, `src/app/features/tasks/task-card.component.spec.ts`, `src/app/features/tasks/task-board.component.spec.ts`
+- `src/app/features/projects/list/project-list.component.spec.ts`, `src/app/features/projects/board/project-board.component.spec.ts`, `src/app/features/tasks/card/task-card.component.spec.ts`, `src/app/features/tasks/board/task-board.component.spec.ts`
 - `e2e/routing-smoke.spec.ts`, `e2e/projects-flow.spec.ts`
 
 ### 9.1. Сервисы
@@ -404,8 +404,8 @@
 
 - [x] ✅ `src/app/core/` — HTTP, interceptors, guards, глобальные singleton-сервисы
 - [x] ✅ `src/app/shared/` — модели, мелкие UI-примитивы, пайпы
-- [x] ✅ `src/app/features/projects/` — список, карточка, страница проекта
-- [x] ✅ `src/app/features/tasks/` — доска, карточка задачи, фильтры
+- [x] ✅ `src/app/features/projects/` — фича проектов с подпапками `list/`, `board/`, `card/`
+- [x] ✅ `src/app/features/tasks/` — фича задач с подпапками `board/`, `card/`, `create-dialog/`
 
 ---
 

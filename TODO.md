@@ -191,6 +191,6 @@ flowchart LR
 - ✅ **13** Доступность
 - **14** На вырост: ACL, toasts, история, Nest + WebSocket и др. — опциональный post-MVP этап, см. [back/TODO.md](back/TODO.md) §6 «На вырост»
 
-**Ориентир папок во `front/`:** `core/`, `shared/`, `features/projects/`, `features/tasks/` — см. [front/TODO.md](front/TODO.md).
+**Ориентир папок во `front/`:** `core/`, `shared/`, `features/projects/`, `features/tasks/`; внутри фич допустимы подпапки по компонентам, например `projects/{list,board,card}` и `tasks/{board,card,create-dialog}` — см. [front/TODO.md](front/TODO.md).
 
 **Ритм:** после крупного этапа — **коммит в Git** сами; сообщения — по разделу **«Сообщения коммитов»** выше; шаги `git` — в [front/TODO.md](front/TODO.md) («Ритм»).

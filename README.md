@@ -75,6 +75,7 @@ taskflow/
 - `front/src/app/core` - инфраструктура приложения (services, guards, interceptors, models)
 - `front/src/app/shared` - общие UI/domain части
 - Angular-компоненты в `front/src/app` разделены по файлам: `*.component.ts`, `*.component.html`, `*.component.css`
+- Внутри feature-папок крупные компоненты разложены по подпапкам: например `features/projects/{list,board,card}` и `features/tasks/{board,card,create-dialog}`
 - В карточке задачи отображаются `description`, `dueDate` (формат `dd.MM.yyyy`) и `tags`; create/edit формы поддерживают эти поля
 
 Структура backend (основные части):
