@@ -6,7 +6,7 @@ export const routes: Routes = [
   {
     path: 'projects',
     loadComponent: () =>
-      import('./features/projects/project-list.component').then(
+      import('./features/projects/list/project-list.component').then(
         (m) => m.ProjectListComponent,
       ),
   },
@@ -14,7 +14,7 @@ export const routes: Routes = [
     path: 'projects/:id',
     canActivate: [projectExistsGuard],
     loadComponent: () =>
-      import('./features/projects/project-board.component').then(
+      import('./features/projects/board/project-board.component').then(
         (m) => m.ProjectBoardComponent,
       ),
   },
