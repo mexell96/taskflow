@@ -6,8 +6,8 @@ import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { TaskPriority } from '@app/shared/models/task.model';
-import { TaskBoardComponent } from '../../tasks/task-board.component';
-import { TaskCreateDialogComponent, type CreateTaskDialogValue } from '../../tasks/task-create-dialog.component';
+import { TaskBoardComponent } from '../../tasks/board/task-board.component';
+import { TaskCreateDialogComponent, type CreateTaskDialogValue } from '../../tasks/create-dialog/task-create-dialog.component';
 
 @Component({
   selector: 'app-project-board',
