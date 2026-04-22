@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="head">
+    <strong>{{ task().title }}</strong>
+    <span class="pr">{{ task().priority }}</span>
+  </div>
+  @if (task().description) {
+    <p class="description">{{ task().description }}</p>
+  }
+  @if (task().dueDate) {
+    <p class="due-date">due: {{ task().dueDate | date: 'dd.MM.yyyy' }}</p>
+  }
+  @if (task().tags.length) {
+    <p class="tags">{{ task().tags.join(', ') }}</p>
+  }
+  <label>
+    <span i18n="@@taskCardStatusLabel">Status</span>
+    <select #statusSelect [ngModel]="task().status" (ngModelChange)="onStatus($event)">
+      <option value="backlog">backlog</option>
+      <option value="in_progress">in_progress</option>
+      <option value="done">done</option>
+    </select>
+  </label>
+  <button type="button" class="edit-btn" (click)="startEdit()">{{ isEditOpen() ? 'Cancel' : 'Edit' }}</button>
+
+  @if (isEditOpen()) {
+    <form class="edit-form" [formGroup]="editForm" (ngSubmit)="saveEdit()">
+      <input formControlName="title" placeholder="Title" />
+      <input formControlName="description" placeholder="Description (optional)" />
+      <select formControlName="priority">
+        <option value="low">low</option>
+        <option value="medium">medium</option>
+        <option value="high">high</option>
+      </select>
+      <input formControlName="dueDate" type="date" />
+      <input formControlName="tags" placeholder="tags,comma,separated" />
+      <div class="edit-actions">
+        <button type="submit" [disabled]="editForm.invalid || editForm.pristine">Save</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  }
+</div>

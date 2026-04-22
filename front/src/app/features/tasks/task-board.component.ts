@@ -9,62 +9,8 @@ import { TaskCardComponent, type TaskEditValue } from './task-card.component';
   selector: 'app-task-board',
   imports: [TaskCardComponent, CdkDropList, CdkDrag],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="board">
-      @for (col of columns; track col.status) {
-        <section
-          class="col"
-          cdkDropList
-          [id]="dropListId(col.status)"
-          [cdkDropListData]="columnTasks()[col.status]"
-          [cdkDropListConnectedTo]="connectedDropListIds(col.status)"
-          (cdkDropListDropped)="onDrop($event, col.status)"
-        >
-          <h3>
-            @if (col.status === 'backlog') {
-              <span i18n="@@taskBoardColumnBacklog">Backlog</span>
-            } @else if (col.status === 'in_progress') {
-              <span i18n="@@taskBoardColumnInProgress">In progress</span>
-            } @else {
-              <span i18n="@@taskBoardColumnDone">Done</span>
-            }
-          </h3>
-          @for (task of columnTasks()[col.status]; track task.id) {
-            <div cdkDrag [cdkDragData]="task">
-              <app-task-card
-                [task]="task"
-                (statusChange)="store.setTaskStatus(task.id, $event)"
-                (editTask)="onEditTask(task.id, $event)"
-              />
-            </div>
-          }
-        </section>
-      }
-    </div>
-  `,
-  styles: `
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .col {
-      min-height: 120px;
-      border: 1px dashed #bbb;
-      border-radius: 8px;
-      padding: 0.5rem;
-    }
-    h3 {
-      margin: 0 0 0.5rem;
-      font-size: 0.95rem;
-    }
-    @media (max-width: 720px) {
-      .board {
-        grid-template-columns: 1fr;
-      }
-    }
-  `,
+  templateUrl: './task-board.component.html',
+  styleUrl: './task-board.component.css',
 })
 export class TaskBoardComponent {
   readonly store = inject(TaskflowStore);

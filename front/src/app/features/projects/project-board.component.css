@@ -1,0 +1,43 @@
+h2 {
+  margin-bottom: 0.25rem;
+}
+
+.muted {
+  color: #555;
+  margin-top: 0;
+}
+
+.search {
+  width: min(32rem, 100%);
+  margin-top: 0.75rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.overdue {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.open-add-task {
+  margin-top: 1.25rem;
+}
+
+.edit-project-btn {
+  margin: 0.25rem 0 0.4rem;
+}
+
+.project-edit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  max-width: 40rem;
+}

@@ -5,12 +5,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-settings',
   imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <main>
-      <h1 i18n="@@settingsTitle">Settings</h1>
-      <p i18n="@@settingsPlaceholder">Settings page placeholder.</p>
-      <a routerLink="/projects" i18n="@@settingsBackToProjects">Back to projects</a>
-    </main>
-  `,
+  templateUrl: './settings.component.html',
+  styleUrl: './settings.component.css',
 })
 export class SettingsComponent {}

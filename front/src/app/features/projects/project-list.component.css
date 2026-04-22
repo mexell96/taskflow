@@ -1,0 +1,32 @@
+h1 {
+  margin-top: 0;
+}
+
+.create {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.error-banner {
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #f3b4b4;
+  background: #fdecec;
+  color: #8a1f1f;
+  border-radius: 6px;
+  max-width: 40rem;
+}
+
+.field-error {
+  color: #8a1f1f;
+  font-size: 0.8rem;
+  flex-basis: 100%;
+  margin-top: -0.2rem;
+}
+
+.list {
+  max-width: 40rem;
+}

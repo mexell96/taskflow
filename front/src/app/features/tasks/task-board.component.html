@@ -1,0 +1,31 @@
+<div class="board">
+  @for (col of columns; track col.status) {
+    <section
+      class="col"
+      cdkDropList
+      [id]="dropListId(col.status)"
+      [cdkDropListData]="columnTasks()[col.status]"
+      [cdkDropListConnectedTo]="connectedDropListIds(col.status)"
+      (cdkDropListDropped)="onDrop($event, col.status)"
+    >
+      <h3>
+        @if (col.status === 'backlog') {
+          <span i18n="@@taskBoardColumnBacklog">Backlog</span>
+        } @else if (col.status === 'in_progress') {
+          <span i18n="@@taskBoardColumnInProgress">In progress</span>
+        } @else {
+          <span i18n="@@taskBoardColumnDone">Done</span>
+        }
+      </h3>
+      @for (task of columnTasks()[col.status]; track task.id) {
+        <div cdkDrag [cdkDragData]="task">
+          <app-task-card
+            [task]="task"
+            (statusChange)="store.setTaskStatus(task.id, $event)"
+            (editTask)="onEditTask(task.id, $event)"
+          />
+        </div>
+      }
+    </section>
+  }
+</div>

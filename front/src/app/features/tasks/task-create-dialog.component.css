@@ -1,0 +1,41 @@
+.add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  align-items: center;
+}
+
+.field-error {
+  color: #8a1f1f;
+  font-size: 0.8rem;
+  flex-basis: 100%;
+  margin-top: -0.2rem;
+}
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.dialog-panel {
+  width: min(32rem, 100%);
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 1rem;
+}
+
+.dialog-panel h3 {
+  margin: 0 0 0.75rem;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}

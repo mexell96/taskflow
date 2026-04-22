@@ -1,0 +1,42 @@
+<section class="dialog-backdrop">
+  <section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="add-task-title">
+    <h3 id="add-task-title" i18n="@@projectBoardDialogTitle">Add task</h3>
+    <form [formGroup]="taskForm" (ngSubmit)="submit()" class="add" (keydown.escape)="cancel.emit()">
+      <input
+        #taskTitleInput
+        formControlName="title"
+        placeholder="New task title"
+        i18n-placeholder="@@projectBoardTaskTitlePlaceholder"
+        [attr.aria-invalid]="titleHasError() ? 'true' : 'false'"
+        [attr.aria-describedby]="titleHasError() ? 'task-title-error' : null"
+      />
+      @if (titleHasError()) {
+        <small id="task-title-error" class="field-error" i18n="@@projectBoardTaskTitleMinLengthError"
+          >Task title must be at least 3 characters.</small
+        >
+      }
+      <input formControlName="description" placeholder="Description (optional)" />
+      <input
+        formControlName="dueDate"
+        type="date"
+        [attr.aria-invalid]="dueDateHasError() ? 'true' : 'false'"
+        [attr.aria-describedby]="dueDateHasError() ? 'task-due-date-error' : null"
+      />
+      @if (dueDateHasError()) {
+        <small id="task-due-date-error" class="field-error" i18n="@@projectBoardTaskDueDatePastError"
+          >Due date cannot be in the past for new tasks.</small
+        >
+      }
+      <select formControlName="priority">
+        <option value="low">low</option>
+        <option value="medium">medium</option>
+        <option value="high">high</option>
+      </select>
+      <input formControlName="tags" placeholder="tags,comma,separated" />
+      <div class="dialog-actions">
+        <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>
+        <button type="button" (click)="cancel.emit()" i18n="@@projectBoardCancelButton">Cancel</button>
+      </div>
+    </form>
+  </section>
+</section>

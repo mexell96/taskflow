@@ -8,72 +8,8 @@ import { ProjectCardComponent } from './project-card.component';
   selector: 'app-project-list',
   imports: [ReactiveFormsModule, ProjectCardComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <main>
-      <h1 i18n="@@projectListTitle">Projects</h1>
-
-      @if (store.apiErrorMessage(); as errorMessage) {
-        <p class="error-banner" role="alert">{{ errorMessage }}</p>
-      }
-
-      <form [formGroup]="form" (ngSubmit)="create()" class="create">
-        <input
-          formControlName="name"
-          placeholder="Name"
-          i18n-placeholder="@@projectListNamePlaceholder"
-          [attr.aria-invalid]="nameHasError() ? 'true' : 'false'"
-          [attr.aria-describedby]="nameHasError() ? 'project-name-error' : null"
-        />
-        @if (nameHasError()) {
-          <small id="project-name-error" class="field-error" i18n="@@projectListNameMinLengthError"
-            >Project name must be at least 3 characters.</small
-          >
-        }
-        <input
-          formControlName="description"
-          placeholder="Description (optional)"
-          i18n-placeholder="@@projectListDescriptionPlaceholder"
-        />
-        <button type="submit" [disabled]="form.invalid" i18n="@@projectListCreateButton">Create project</button>
-      </form>
-
-      <section class="list">
-        @for (p of store.projects(); track p.id) {
-          <app-project-card [project]="p" />
-        }
-      </section>
-    </main>
-  `,
-  styles: `
-    h1 {
-      margin-top: 0;
-    }
-    .create {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      align-items: center;
-    }
-    .error-banner {
-      margin: 0 0 0.75rem;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid #f3b4b4;
-      background: #fdecec;
-      color: #8a1f1f;
-      border-radius: 6px;
-      max-width: 40rem;
-    }
-    .field-error {
-      color: #8a1f1f;
-      font-size: 0.8rem;
-      flex-basis: 100%;
-      margin-top: -0.2rem;
-    }
-    .list {
-      max-width: 40rem;
-    }
-  `,
+  templateUrl: './project-list.component.html',
+  styleUrl: './project-list.component.css',
 })
 export class ProjectListComponent {
   private readonly fb = inject(FormBuilder);
