@@ -16,7 +16,17 @@ Taskflow разделен на два независимых приложени�
 
 ## Быстрый старт
 
-Установите зависимости в обоих приложениях:
+Сначала установите root-зависимости репозитория (git hooks и pre-commit tooling):
+
+```bash
+npm install
+```
+
+- Что делает: устанавливает зависимости из `taskflow/package.json` и активирует `husky` hooks через `prepare`.
+- Где запускать: в корне репозитория `taskflow/`.
+- Признак успеха: нет `npm ERR!`, появился `node_modules/` в корне, команды pre-commit доступны.
+
+После этого установите зависимости в обоих приложениях:
 
 ```bash
 cd front
@@ -64,9 +74,12 @@ Frontend работает на `http://localhost:4200`.
 
 ```text
 taskflow/
-  front/    # Angular приложение
-  back/     # NestJS API
-  TODO.md   # дорожная карта проекта
+  front/              # Angular приложение
+  back/               # NestJS API
+  .husky/             # git hooks
+  package.json        # root tooling (husky/lint-staged)
+  .lintstagedrc.cjs   # pre-commit правила
+  TODO.md             # дорожная карта проекта
 ```
 
 Структура frontend (основные части):
@@ -74,7 +87,7 @@ taskflow/
 - `front/src/app/features` - функциональные модули/экраны (`projects`, `tasks`, `settings`)
 - `front/src/app/core` - инфраструктура приложения (services, guards, interceptors, models)
 - `front/src/app/shared` - общие UI/domain части
-- Angular-компоненты в `front/src/app` разделены по файлам: `*.component.ts`, `*.component.html`, `*.component.css`
+- Angular-компоненты в `front/src/app` разделены по файлам: `*.component.ts`, `*.component.html`, `*.component.css|scss`
 - Внутри feature-папок крупные компоненты разложены по подпапкам: например `features/projects/{list,board,card}` и `features/tasks/{board,card,create-dialog}`
 - В карточке задачи отображаются `description`, `dueDate` (формат `dd.MM.yyyy`) и `tags`; create/edit формы поддерживают эти поля
 
@@ -105,7 +118,7 @@ flowchart LR
 - `GET /api/projects/:id`
 - `POST /api/projects` (`name` обязателен, `description?`, `author?`)
 - `PATCH /api/projects/:id` (частичное обновление `name?`, `description?`, `author?`)
-- `GET /api/tasks`
+- `GET /api/tasks?projectId=<project-id>` (для списка задач конкретного проекта)
 - `POST /api/tasks`
 - `PATCH /api/tasks/:id`
 

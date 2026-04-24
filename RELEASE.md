@@ -54,6 +54,8 @@ npm run test
 npm run build
 ```
 
+Примечание: в текущем `back/package.json` команда `npm run lint` запускается с `--fix`, поэтому может менять файлы. Перед релизом после lint повторно проверьте `git status`.
+
 Опционально (если используете в релизном критерии):
 
 ```bash
@@ -116,14 +118,17 @@ EOF
 
 ```md
 ## Что вошло
+
 - Frontend: ...
 - Backend: ...
 - Docs/Infra: ...
 
 ## Миграции / breaking changes
+
 - Нет / список изменений
 
 ## Проверки
+
 - front: lint/test/build ✅
 - back: lint/test/build ✅
 - e2e: ✅ / пропущено (почему)

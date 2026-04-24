@@ -38,10 +38,10 @@
 
 - [x] ✅ Каталог `taskflow/back/` существует (рядом с `front/`)
 - [x] ✅ Этот файл `back/TODO.md` не удаляется при генерации Nest (при конфликте — временно перенести или создать проект в подпапке и перенести файлы)
-- [ ] После выбора стека: короткий **`back/README.md`**
-  - [ ] Команда запуска `npm run start:dev`
-  - [ ] Порт и базовый URL
-  - [ ] Примеры `curl` для smoke-test (см. раздел 4)
+- [x] ✅ После выбора стека: короткий **`back/README.md`**
+  - [x] ✅ Команда запуска `npm run start:dev`
+  - [x] ✅ Порт и базовый URL
+  - [x] ✅ Примеры `curl` для smoke-test (см. раздел 4)
 
 ### 1.0. Быстрый маршрут: поднять Nest с нуля
 
@@ -225,15 +225,15 @@
 
 Зафиксируйте в README итоговые URL. Пример с префиксом **`/api`**:
 
-| Метод     | Путь (пример)       | Файл                                  |
-| --------- | ------------------- | ------------------------------------- |
-| GET, POST | `/api/projects`     | `src/projects/projects.controller.ts` |
-| PATCH     | `/api/projects/:id` | `src/projects/projects.controller.ts` |
-| GET, POST | `/api/tasks`        | `src/tasks/tasks.controller.ts`       |
-| PATCH     | `/api/tasks/:id`    | `src/tasks/tasks.controller.ts`       |
+| Метод     | Путь (пример)       | Файл                         |
+| --------- | ------------------- | ---------------------------- |
+| GET, POST | `/api/projects`     | `src/projects.controller.ts` |
+| PATCH     | `/api/projects/:id` | `src/projects.controller.ts` |
+| GET, POST | `/api/tasks`        | `src/tasks.controller.ts`    |
+| PATCH     | `/api/tasks/:id`    | `src/tasks.controller.ts`    |
 
 - [ ] Таблица (или список) в `back/README.md` скопирована/актуализирована под ваш код
-- [ ] **`GET /api/tasks`**: обязательный query **`projectId`**; без него — **400** или пустой массив (решение зафиксировать)
+- [x] ✅ **`GET /api/tasks`**: обязательный query **`projectId`**; без него — **400** (решение зафиксировано)
 
 ### 2.3. Хранилище MVP: `db.json`
 
@@ -310,7 +310,7 @@
 
 ## 3. После запуска Nest
 
-- [ ] В начале **`back/README.md`** одной строкой: **активен Nest**
+- [x] ✅ В начале **`back/README.md`** одной строкой: **активен Nest**
 - [ ] Проверить, что `front/environment*.ts` и `front/proxy.conf.json` используют базу `/api` и порт `3001`
 
 ---
