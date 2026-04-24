@@ -207,7 +207,17 @@ npm run lint
 
 - Страницы размещаются в `front/src/app/features/<feature-name>/`.
 - Главная страница: `front/src/app/features/home/home.component.ts`.
+- Страница списка проектов: `front/src/app/features/projects/list/project-list.component.ts`.
+- Страница доски проекта: `front/src/app/features/projects/board/project-board.component.ts`.
+- Страница настроек: `front/src/app/features/settings/settings.component.ts`.
 - About страница: `front/src/app/features/about/about.component.ts`.
 - Корневой маршрут `''` загружает Home через lazy `loadComponent`.
+- Маршрут `'projects'` загружает список проектов через lazy `loadComponent`.
+- Маршрут `'projects/:id'` загружает доску проекта через lazy `loadComponent` (с guard проверки проекта).
+- Маршрут `'settings'` загружает страницу настроек через lazy `loadComponent`.
 - Маршрут `'about'` загружает About через lazy `loadComponent`.
 - Маршрут `**` перенаправляет на `''` как fallback.
+
+## Дорожная карта (актуализация)
+
+- Этап липкого верхнего меню зафиксирован как **этап 14** в `front/TODO.md`.

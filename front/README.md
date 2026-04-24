@@ -77,7 +77,18 @@ For more information on using the Angular CLI, including detailed command refere
 
 - Place page components in `src/app/features/<feature-name>/`.
 - Home page: `src/app/features/home/home.component.ts`.
+- Projects list page: `src/app/features/projects/list/project-list.component.ts`.
+- Project board page: `src/app/features/projects/board/project-board.component.ts`.
+- Settings page: `src/app/features/settings/settings.component.ts`.
 - About page: `src/app/features/about/about.component.ts`.
 - Root route `''` loads Home with lazy `loadComponent`.
+- `'projects'` route loads Projects list with lazy `loadComponent`.
+- `'projects/:id'` route loads Project board with lazy `loadComponent` (with project guard).
+- `'settings'` route loads Settings with lazy `loadComponent`.
 - `'about'` route loads About with lazy `loadComponent`.
 - Wildcard route `**` redirects to `''`.
+
+## Current docs roadmap note
+
+- Frontend checklist is maintained in `front/TODO.md`.
+- Sticky top menu is tracked as **Stage 14** in `front/TODO.md`.
