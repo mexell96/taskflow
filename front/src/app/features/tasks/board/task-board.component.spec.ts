@@ -1,11 +1,12 @@
-import type { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import type { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
+
+import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
-import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import { TaskBoardComponent } from './task-board.component';
 
 describe('TaskBoardComponent', () => {
@@ -116,7 +117,9 @@ describe('TaskBoardComponent', () => {
     fixture.componentRef.setInput('searchTerm', 'sec');
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.columnTasks().backlog.map((task: Task) => task.id)).toEqual(['task-2']);
+    expect(fixture.componentInstance.columnTasks().backlog.map((task: Task) => task.id)).toEqual([
+      'task-2',
+    ]);
   });
 
   it('filters tasks by priority, tag and overdue options', () => {
@@ -127,6 +130,8 @@ describe('TaskBoardComponent', () => {
     fixture.componentRef.setInput('overdueOnly', true);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.columnTasks().backlog.map((task: Task) => task.id)).toEqual(['task-2']);
+    expect(fixture.componentInstance.columnTasks().backlog.map((task: Task) => task.id)).toEqual([
+      'task-2',
+    ]);
   });
 });

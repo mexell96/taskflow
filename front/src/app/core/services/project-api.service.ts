@@ -1,9 +1,10 @@
-import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import type { Project } from '@app/shared/models/project.model';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
+import { Observable, of, tap } from 'rxjs';
+
+import type { Project } from '@app/shared/models/project.model';
+import { environment } from '../../../environments/environment';
 
 export type CreateProjectDto = {
   name: string;

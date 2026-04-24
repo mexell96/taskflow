@@ -1,5 +1,20 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, output, viewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  output,
+  viewChild,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+
 import type { TaskPriority } from '@app/shared/models/task.model';
 
 export type CreateTaskDialogValue = {

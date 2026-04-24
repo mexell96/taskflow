@@ -7,6 +7,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { catchError, tap, throwError } from 'rxjs';
+
 import type { ApiError } from '@app/core/models/api-error.model';
 
 function toApiError(error: HttpErrorResponse): ApiError {

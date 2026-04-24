@@ -1,12 +1,13 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { convertToParamMap, type ParamMap, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, type ParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
+
+import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
-import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import { ProjectBoardComponent } from './project-board.component';
 
 describe('ProjectBoardComponent', () => {
@@ -35,7 +36,9 @@ describe('ProjectBoardComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: of<ParamMap>(convertToParamMap({ id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })),
+            paramMap: of<ParamMap>(
+              convertToParamMap({ id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' }),
+            ),
           },
         },
         {
@@ -56,7 +59,9 @@ describe('ProjectBoardComponent', () => {
   it('shows minLength validation message for short task title', () => {
     const fixture = TestBed.createComponent(ProjectBoardComponent);
     fixture.detectChanges();
-    (fixture.nativeElement as HTMLElement).querySelector('.open-add-task')?.dispatchEvent(new Event('click'));
+    (fixture.nativeElement as HTMLElement)
+      .querySelector('.open-add-task')
+      ?.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
     const titleInput = fixture.debugElement.query(By.css('input[formControlName="title"]'))
@@ -76,7 +81,9 @@ describe('ProjectBoardComponent', () => {
   it('shows past-date validation message for dueDate', () => {
     const fixture = TestBed.createComponent(ProjectBoardComponent);
     fixture.detectChanges();
-    (fixture.nativeElement as HTMLElement).querySelector('.open-add-task')?.dispatchEvent(new Event('click'));
+    (fixture.nativeElement as HTMLElement)
+      .querySelector('.open-add-task')
+      ?.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
     const yesterday = new Date();
@@ -114,9 +121,9 @@ describe('ProjectBoardComponent', () => {
     const titleInput = host.querySelector('input[formControlName="title"]') as HTMLInputElement;
     expect(document.activeElement).toBe(titleInput);
 
-    const cancelButton = Array.from(host.querySelectorAll('button')).find((button) => button.textContent?.includes('Cancel')) as
-      | HTMLButtonElement
-      | undefined;
+    const cancelButton = Array.from(host.querySelectorAll('button')).find((button) =>
+      button.textContent?.includes('Cancel'),
+    ) as HTMLButtonElement | undefined;
     cancelButton?.click();
     fixture.detectChanges();
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -144,7 +151,8 @@ describe('ProjectBoardComponent', () => {
     authorInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const form = fixture.debugElement.query(By.css('.project-edit')).nativeElement as HTMLFormElement;
+    const form = fixture.debugElement.query(By.css('.project-edit'))
+      .nativeElement as HTMLFormElement;
     form.dispatchEvent(new Event('submit'));
 
     expect(updateProject).toHaveBeenCalledWith(

@@ -1,6 +1,15 @@
-import { ChangeDetectionStrategy, Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import type { Task, TaskStatus } from '@app/shared/models/task.model';
 import type { TaskPriority } from '@app/shared/models/task.model';
 

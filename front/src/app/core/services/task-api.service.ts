@@ -1,9 +1,10 @@
-import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import type { Task } from '@app/shared/models/task.model';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
+import { Observable, of, tap } from 'rxjs';
+
+import type { Task } from '@app/shared/models/task.model';
+import { environment } from '../../../environments/environment';
 
 export type CreateTaskDto = {
   projectId: string;

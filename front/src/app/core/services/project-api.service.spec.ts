@@ -1,7 +1,8 @@
-import { makeStateKey, TransferState } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { makeStateKey, TransferState } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { apiErrorInterceptor } from '@app/core/interceptors/api-error.interceptor';
 import type { ApiError } from '@app/core/models/api-error.model';
 import { ProjectApiService } from './project-api.service';
@@ -57,7 +58,10 @@ describe('ProjectApiService', () => {
     });
 
     const req = httpMock.expectOne('/api/projects');
-    req.flush({ message: 'Projects unavailable' }, { status: 503, statusText: 'Service Unavailable' });
+    req.flush(
+      { message: 'Projects unavailable' },
+      { status: 503, statusText: 'Service Unavailable' },
+    );
 
     expect(receivedError).toEqual({
       status: 503,
@@ -68,7 +72,8 @@ describe('ProjectApiService', () => {
 
   it('reads projects from TransferState cache on browser', () => {
     const transferState = TestBed.inject(TransferState);
-    const stateKey = makeStateKey<Array<{ id: string; name: string; createdAt: string }>>('api-projects-list');
+    const stateKey =
+      makeStateKey<Array<{ id: string; name: string; createdAt: string }>>('api-projects-list');
     const cached = [
       {
         id: 'cached-project',

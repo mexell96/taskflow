@@ -1,7 +1,8 @@
-import { makeStateKey, TransferState } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { makeStateKey, TransferState } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { TaskApiService } from './task-api.service';
 
 describe('TaskApiService', () => {
@@ -66,9 +67,17 @@ describe('TaskApiService', () => {
   it('reads tasks from TransferState cache on browser', () => {
     const transferState = TestBed.inject(TransferState);
     const projectId = 'cached-project-id';
-    const stateKey = makeStateKey<Array<{ id: string; projectId: string; title: string; status: 'backlog'; priority: 'low'; tags: string[]; order: number }>>(
-      `api-tasks-${projectId}`,
-    );
+    const stateKey = makeStateKey<
+      Array<{
+        id: string;
+        projectId: string;
+        title: string;
+        status: 'backlog';
+        priority: 'low';
+        tags: string[];
+        order: number;
+      }>
+    >(`api-tasks-${projectId}`);
     const cached = [
       {
         id: 'cached-task',

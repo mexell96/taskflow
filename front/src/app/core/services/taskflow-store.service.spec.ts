@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { vi } from 'vitest';
+
 import type { ApiError } from '@app/core/models/api-error.model';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
@@ -141,7 +142,12 @@ describe('TaskflowStore', () => {
   it('updates project with trimmed optional author', () => {
     const store = TestBed.inject(TaskflowStore);
 
-    store.updateProject('f2f8f1a2-72c5-45f3-8493-7e30cbf140f3', '  API project updated  ', '  updated  ', '  Jane Doe  ');
+    store.updateProject(
+      'f2f8f1a2-72c5-45f3-8493-7e30cbf140f3',
+      '  API project updated  ',
+      '  updated  ',
+      '  Jane Doe  ',
+    );
 
     expect(projectApi.patchProject).toHaveBeenCalledWith('f2f8f1a2-72c5-45f3-8493-7e30cbf140f3', {
       name: 'API project updated',

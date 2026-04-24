@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
+
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import { ProjectCardComponent } from '../card/project-card.component';
 

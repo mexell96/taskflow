@@ -1,13 +1,24 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
+
 import { TaskflowStore } from '@app/core/services/taskflow-store.service';
 import type { TaskPriority } from '@app/shared/models/task.model';
 import { TaskBoardComponent } from '../../tasks/board/task-board.component';
-import { TaskCreateDialogComponent, type CreateTaskDialogValue } from '../../tasks/create-dialog/task-create-dialog.component';
+import {
+  type CreateTaskDialogValue,
+  TaskCreateDialogComponent,
+} from '../../tasks/create-dialog/task-create-dialog.component';
 
 @Component({
   selector: 'app-project-board',
@@ -76,7 +87,9 @@ export class ProjectBoardComponent {
     ),
     { initialValue: '' },
   );
-  readonly priorityFilter = toSignal(this.priorityFilterControl.valueChanges, { initialValue: '' as '' | TaskPriority });
+  readonly priorityFilter = toSignal(this.priorityFilterControl.valueChanges, {
+    initialValue: '' as '' | TaskPriority,
+  });
   readonly tagFilter = toSignal(
     this.tagFilterControl.valueChanges.pipe(map((value: string) => value.trim().toLowerCase())),
     { initialValue: '' },
@@ -125,7 +138,14 @@ export class ProjectBoardComponent {
     if (!p) {
       return;
     }
-    this.store.addTask(p.id, value.title, value.priority, value.dueDate, value.description, value.tags);
+    this.store.addTask(
+      p.id,
+      value.title,
+      value.priority,
+      value.dueDate,
+      value.description,
+      value.tags,
+    );
     this.closeTaskDialog();
   }
 

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
 import type { Project } from '@app/shared/models/project.model';
 
 @Component({

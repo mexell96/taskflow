@@ -1,3 +1,5 @@
+import { IncomingHttpHeaders } from 'node:http';
+import { join } from 'node:path';
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -5,8 +7,6 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express, { NextFunction, Request, Response } from 'express';
-import { IncomingHttpHeaders } from 'node:http';
-import { join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const apiTarget = process.env['API_TARGET'] || 'http://localhost:3001';
@@ -31,7 +31,9 @@ function readRequestBody(req: Request): Promise<Buffer | undefined> {
   }
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
-    req.on('data', (chunk: unknown) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))));
+    req.on('data', (chunk: unknown) =>
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk))),
+    );
     req.on('end', () => resolve(chunks.length ? Buffer.concat(chunks) : undefined));
     req.on('error', reject);
   });
@@ -92,7 +94,9 @@ app.use(
 app.use((req: Request, res: Response, next: NextFunction) => {
   angularApp
     .handle(req)
-    .then((response: globalThis.Response | null) => (response ? writeResponseToNodeResponse(response, res) : next()))
+    .then((response: globalThis.Response | null) =>
+      response ? writeResponseToNodeResponse(response, res) : next(),
+    )
     .catch(next);
 });
 

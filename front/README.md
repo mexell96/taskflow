@@ -73,6 +73,20 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
+## Import sorting
+
+Imports are sorted by ESLint (`eslint-plugin-simple-import-sort`) with this order:
+
+1. External libraries (`@angular/*`, `rxjs`, other packages)
+2. Empty line
+3. File imports (`./` and `../`)
+
+Use autofix to apply sorting:
+
+```bash
+npm run lint:fix
+```
+
 ## Frontend pages and routes
 
 - Place page components in `src/app/features/<feature-name>/`.
