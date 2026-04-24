@@ -5,7 +5,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@env/*": ["src/environments/*"]
     },
     "strict": true,
     "noImplicitOverride": true,

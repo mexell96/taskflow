@@ -4,7 +4,7 @@ import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@a
 import { Observable, of, tap } from 'rxjs';
 
 import type { Project } from '@app/shared/models/project.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 export type CreateProjectDto = {
   name: string;

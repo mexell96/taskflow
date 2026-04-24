@@ -4,7 +4,7 @@ import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@a
 import { Observable, of, tap } from 'rxjs';
 
 import type { Task } from '@app/shared/models/task.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 export type CreateTaskDto = {
   projectId: string;

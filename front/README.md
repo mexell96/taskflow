@@ -79,7 +79,7 @@ Imports are sorted by ESLint (`eslint-plugin-simple-import-sort`) with this orde
 
 1. External libraries (`@angular/*`, `rxjs`, other packages)
 2. Empty line
-3. File imports (`./` and `../`)
+3. Internal aliases (`@app/*`, `@env/*`) and file imports (`./` and `../`)
 
 Use autofix to apply sorting:
 
