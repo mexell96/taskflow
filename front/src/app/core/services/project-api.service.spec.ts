@@ -85,4 +85,39 @@ describe('ProjectApiService', () => {
     httpMock.expectNone('/api/projects');
     expect(transferState.hasKey(stateKey)).toBe(false);
   });
+
+  it('sends optional author on createProject', () => {
+    service
+      .createProject({ name: 'Demo', description: 'Description', author: 'John Doe' })
+      .subscribe();
+
+    const req = httpMock.expectOne('/api/projects');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      name: 'Demo',
+      description: 'Description',
+      author: 'John Doe',
+    });
+    req.flush({
+      id: 'created-project',
+      name: 'Demo',
+      description: 'Description',
+      author: 'John Doe',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    });
+  });
+
+  it('sends optional author on patchProject', () => {
+    service.patchProject('project-1', { author: 'Jane Doe' }).subscribe();
+
+    const req = httpMock.expectOne('/api/projects/project-1');
+    expect(req.request.method).toBe('PATCH');
+    expect(req.request.body).toEqual({ author: 'Jane Doe' });
+    req.flush({
+      id: 'project-1',
+      name: 'Demo',
+      author: 'Jane Doe',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    });
+  });
 });

@@ -103,6 +103,7 @@ export class ProjectBoardComponent {
   readonly projectEditForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
+    author: [''],
   });
 
   openTaskDialog(trigger: HTMLElement) {
@@ -140,6 +141,7 @@ export class ProjectBoardComponent {
     this.projectEditForm.reset({
       name: project.name,
       description: project.description ?? '',
+      author: project.author ?? '',
     });
     this.isProjectEditOpen.set(true);
   }
@@ -153,7 +155,12 @@ export class ProjectBoardComponent {
       return;
     }
     const value = this.projectEditForm.getRawValue();
-    this.store.updateProject(project.id, value.name, value.description || undefined);
+    this.store.updateProject(
+      project.id,
+      value.name,
+      value.description || undefined,
+      value.author || undefined,
+    );
     this.isProjectEditOpen.set(false);
   }
 }

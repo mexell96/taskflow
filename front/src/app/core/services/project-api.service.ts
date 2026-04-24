@@ -8,8 +8,9 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 export type CreateProjectDto = {
   name: string;
   description?: string;
+  author?: string;
 };
-export type UpdateProjectDto = Partial<Pick<Project, 'name' | 'description'>>;
+export type UpdateProjectDto = Partial<Pick<Project, 'name' | 'description' | 'author'>>;
 
 @Injectable({ providedIn: 'root' })
 export class ProjectApiService {

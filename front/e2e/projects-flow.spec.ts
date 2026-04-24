@@ -6,6 +6,7 @@ test('user can create project from list page', async ({ page }) => {
       id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
       name: 'Demo project',
       description: 'Seed data for Taskflow',
+      author: 'John Doe',
       createdAt: '2026-01-01T00:00:00.000Z',
     },
   ];
@@ -18,12 +19,17 @@ test('user can create project from list page', async ({ page }) => {
     }
 
     if (request.method() === 'POST') {
-      const body = request.postDataJSON() as { name: string; description?: string };
+      const body = request.postDataJSON() as {
+        name: string;
+        description?: string;
+        author?: string;
+      };
       const created = {
         id: 'f2f8f1a2-72c5-45f3-8493-7e30cbf140f3',
         name: body.name,
-        description: body.description,
-        createdAt: '2026-02-02T00:00:00.000Z',
+        description: body.description?.trim() ?? undefined,
+        author: body.author?.trim() ?? undefined,
+        createdAt: new Date().toISOString(),
       };
       projects.push(created);
       await route.fulfill({ status: 201, json: created });
@@ -38,8 +44,10 @@ test('user can create project from list page', async ({ page }) => {
 
   await page.getByPlaceholder('Name').fill('New E2E Project');
   await page.getByPlaceholder('Description (optional)').fill('Created in Playwright');
+  await page.getByPlaceholder('Author (optional)').fill('John Doe');
   await page.getByRole('button', { name: 'Create project' }).click();
 
   await expect(page.getByRole('link', { name: 'New E2E Project' })).toBeVisible();
   await expect(page.getByText('Created in Playwright')).toBeVisible();
+  await expect(page.getByText('John Doe')).toBeVisible();
 });

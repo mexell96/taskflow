@@ -17,6 +17,7 @@ const seedProjects: Project[] = [
     id: SEED_PROJECT_ID,
     name: 'Demo project',
     description: 'Seed data for Taskflow (no API yet)',
+    author: 'John Doe',
     createdAt: '2026-01-01T00:00:00.000Z',
   },
 ];
@@ -64,6 +65,11 @@ const seedTasks: Task[] = [
     order: 20,
   },
 ];
+
+const normalizeOptionalText = (value?: string): string | undefined => {
+  const normalized = value?.trim();
+  return normalized || undefined;
+};
 
 @Injectable({ providedIn: 'root' })
 export class TaskflowStore {
@@ -127,11 +133,12 @@ export class TaskflowStore {
     });
   }
 
-  addProject(name: string, description?: string) {
+  addProject(name: string, description?: string, author?: string) {
     this.projectApi
       .createProject({
         name: name.trim(),
-        description: description?.trim() || undefined,
+        description: normalizeOptionalText(description),
+        author: normalizeOptionalText(author),
       })
       .subscribe({
         next: (project: Project) => {
@@ -144,18 +151,20 @@ export class TaskflowStore {
       });
   }
 
-  updateProject(projectId: string, name: string, description?: string) {
+  updateProject(projectId: string, name: string, description?: string, author?: string) {
     const current = this._projects().find((project: Project) => project.id === projectId);
     if (!current) {
       return;
     }
 
     const trimmedName = name.trim();
-    const trimmedDescription = description?.trim();
+    const normalizedDescription = normalizeOptionalText(description);
+    const normalizedAuthor = normalizeOptionalText(author);
     const optimistic: Project = {
       ...current,
       name: trimmedName,
-      description: trimmedDescription || undefined,
+      description: normalizedDescription,
+      author: normalizedAuthor,
     };
     this.clearApiErrorMessage();
     this._projects.update((list: Project[]) =>
@@ -163,7 +172,11 @@ export class TaskflowStore {
     );
 
     this.projectApi
-      .patchProject(projectId, { name: trimmedName, description: trimmedDescription || undefined })
+      .patchProject(projectId, {
+        name: trimmedName,
+        description: normalizedDescription,
+        author: normalizedAuthor,
+      })
       .subscribe({
         next: (project: Project) => {
           this.clearApiErrorMessage();
@@ -195,7 +208,7 @@ export class TaskflowStore {
       id: `temp-${Date.now()}`,
       projectId,
       title: title.trim(),
-      description: description?.trim() || undefined,
+      description: normalizeOptionalText(description),
       status: 'backlog',
       priority,
       dueDate: dueDate || undefined,
@@ -310,7 +323,7 @@ export class TaskflowStore {
       ...current,
       ...patch,
       title: patch.title.trim(),
-      description: patch.description?.trim() || undefined,
+      description: normalizeOptionalText(patch.description),
       dueDate: patch.dueDate || undefined,
       tags: patch.tags.map((tag) => tag.trim()).filter(Boolean),
     };

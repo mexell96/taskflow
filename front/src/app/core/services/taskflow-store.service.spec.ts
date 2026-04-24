@@ -13,6 +13,7 @@ describe('TaskflowStore', () => {
     getProjects: ReturnType<typeof vi.fn>;
     createProject: ReturnType<typeof vi.fn>;
     getProject: ReturnType<typeof vi.fn>;
+    patchProject: ReturnType<typeof vi.fn>;
   };
   let taskApi: {
     getTasks: ReturnType<typeof vi.fn>;
@@ -32,6 +33,7 @@ describe('TaskflowStore', () => {
       getProjects: vi.fn(),
       createProject: vi.fn(),
       getProject: vi.fn(),
+      patchProject: vi.fn(),
     };
     taskApi = {
       getTasks: vi.fn(),
@@ -45,7 +47,8 @@ describe('TaskflowStore', () => {
         id: '87a4fcf3-bf67-4f1b-ae14-6baf6f3d0d56',
         name: 'New project',
         description: 'created',
-        createdAt: '2026-02-02T00:00:00.000Z',
+        author: 'John Doe',
+        createdAt: new Date().toISOString(),
       }),
     );
     taskApi.getTasks.mockReturnValue(of([]));
@@ -69,6 +72,15 @@ describe('TaskflowStore', () => {
         priority: 'low',
         tags: ['demo'],
         order: 0,
+      }),
+    );
+    projectApi.patchProject.mockReturnValue(
+      of({
+        id: 'f2f8f1a2-72c5-45f3-8493-7e30cbf140f3',
+        name: 'API project updated',
+        description: 'updated',
+        author: 'Jane Doe',
+        createdAt: '2026-02-01T00:00:00.000Z',
       }),
     );
 
@@ -106,21 +118,43 @@ describe('TaskflowStore', () => {
     store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
     expect(taskApi.getTasks).toHaveBeenCalledWith('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
-    expect(store.tasks().filter((task: Task) => task.projectId === 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')).toEqual(
-      apiTasks,
-    );
+    expect(
+      store
+        .tasks()
+        .filter((task: Task) => task.projectId === 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'),
+    ).toEqual(apiTasks);
   });
 
   it('creates project with trimmed values and appends response', () => {
     const store = TestBed.inject(TaskflowStore);
 
-    store.addProject('  New project  ', '  created  ');
+    store.addProject('  New project  ', '  created  ', '  John Doe  ');
 
     expect(projectApi.createProject).toHaveBeenCalledWith({
       name: 'New project',
       description: 'created',
+      author: 'John Doe',
     });
     expect(store.projects().at(-1)).toEqual(expect.objectContaining({ name: 'New project' }));
+  });
+
+  it('updates project with trimmed optional author', () => {
+    const store = TestBed.inject(TaskflowStore);
+
+    store.updateProject('f2f8f1a2-72c5-45f3-8493-7e30cbf140f3', '  API project updated  ', '  updated  ', '  Jane Doe  ');
+
+    expect(projectApi.patchProject).toHaveBeenCalledWith('f2f8f1a2-72c5-45f3-8493-7e30cbf140f3', {
+      name: 'API project updated',
+      description: 'updated',
+      author: 'Jane Doe',
+    });
+    expect(store.projects()[0]).toEqual(
+      expect.objectContaining({
+        name: 'API project updated',
+        description: 'updated',
+        author: 'Jane Doe',
+      }),
+    );
   });
 
   it('creates task with computed order and updates store on success', () => {
@@ -150,7 +184,9 @@ describe('TaskflowStore', () => {
     expect(taskApi.patchTask).toHaveBeenCalledWith('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', {
       status: 'in_progress',
     });
-    const updated = store.tasks().find((task: Task) => task.id === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12');
+    const updated = store
+      .tasks()
+      .find((task: Task) => task.id === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12');
     expect(updated?.status).toBe('in_progress');
   });
 
@@ -195,7 +231,10 @@ describe('TaskflowStore', () => {
 
     store.addTask('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'broken');
 
-    expect(logSpy).toHaveBeenCalledWith('Failed to create task: 400 Validation failed', '/api/tasks');
+    expect(logSpy).toHaveBeenCalledWith(
+      'Failed to create task: 400 Validation failed',
+      '/api/tasks',
+    );
     logSpy.mockRestore();
   });
 });

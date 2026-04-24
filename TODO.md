@@ -134,7 +134,7 @@ flowchart LR
 
 - `GET /projects` — список проектов
 - `GET /projects/:id` — один проект (в Nest обычно `GET /api/projects/:id` через контроллер)
-- `POST /projects` — создать (`name`, опционально `description`; сервер: `id`, `createdAt`)
+- `POST /projects` — создать (`name`, опционально `description` и `author`; сервер: `id`, `createdAt`)
 - `GET /tasks?projectId=:id` — задачи проекта
 - `POST /tasks` — создать задачу
 - `PATCH /tasks/:id` — частично (`status`, `order`, поля формы)
@@ -143,7 +143,7 @@ flowchart LR
 
 **Идентификаторы:** `Project.id` и `Task.id` (а также `Task.projectId`) — **строки в формате UUID v4** (RFC 4122). На фронте для новых сущностей до API используйте пакет **`uuid`** (`v4 as uuidv4`); в `back/` в JSON те же строковые UUID.
 
-**Project:** `id` (UUID string), `name`, `description?`, `createdAt` (ISO string).
+**Project:** `id` (UUID string), `name`, `description?`, `author?`, `createdAt` (ISO string).
 
 **Task:** `id` (UUID string), `projectId` (UUID string), `title`, `description?`, `status` (`backlog` | `in_progress` | `review` | `done`), `priority` (`low` | `medium` | `high`), `dueDate?`, `tags[]`, `order` (число, для DnD).
 

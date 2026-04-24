@@ -21,11 +21,13 @@ describe('ProjectBoardComponent', () => {
   const addTask = vi.fn();
   const loadTasks = vi.fn();
   const setTaskStatus = vi.fn();
+  const updateProject = vi.fn();
 
   beforeEach(async () => {
     addTask.mockReset();
     loadTasks.mockReset();
     setTaskStatus.mockReset();
+    updateProject.mockReset();
 
     await TestBed.configureTestingModule({
       imports: [ProjectBoardComponent],
@@ -44,6 +46,7 @@ describe('ProjectBoardComponent', () => {
             addTask,
             loadTasks,
             setTaskStatus,
+            updateProject,
           },
         },
       ],
@@ -119,5 +122,36 @@ describe('ProjectBoardComponent', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(document.activeElement).toBe(openButton);
+  });
+
+  it('saves project edit with optional author', () => {
+    const fixture = TestBed.createComponent(ProjectBoardComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+
+    (host.querySelector('.edit-project-btn') as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    const inputs = fixture.debugElement.queryAll(By.css('.project-edit input'));
+    const nameInput = inputs[0].nativeElement as HTMLInputElement;
+    const descriptionInput = inputs[1].nativeElement as HTMLInputElement;
+    const authorInput = inputs[2].nativeElement as HTMLInputElement;
+    nameInput.value = 'Updated project';
+    nameInput.dispatchEvent(new Event('input'));
+    descriptionInput.value = 'Updated description';
+    descriptionInput.dispatchEvent(new Event('input'));
+    authorInput.value = 'Updated author';
+    authorInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const form = fixture.debugElement.query(By.css('.project-edit')).nativeElement as HTMLFormElement;
+    form.dispatchEvent(new Event('submit'));
+
+    expect(updateProject).toHaveBeenCalledWith(
+      'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+      'Updated project',
+      'Updated description',
+      'Updated author',
+    );
   });
 });

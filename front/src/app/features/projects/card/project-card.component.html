@@ -1,6 +1,9 @@
 <article>
   <a [routerLink]="['/projects', project().id]">{{ project().name }}</a>
   @if (project().description) {
-    <p class="muted">{{ project().description }}</p>
+  <p class="muted">{{ project().description }}</p>
+  }
+  @if (project().author) {
+  <p class="muted">{{ project().author }}</p>
   }
 </article>

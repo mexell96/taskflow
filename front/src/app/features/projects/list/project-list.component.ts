@@ -20,10 +20,12 @@ export class ProjectListComponent {
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
+    author: [''],
   });
 
   readonly nameHasError = () =>
-    this.form.controls.name.invalid && (this.form.controls.name.dirty || this.form.controls.name.touched);
+    this.form.controls.name.invalid &&
+    (this.form.controls.name.dirty || this.form.controls.name.touched);
 
   constructor() {
     this.title.setTitle('Projects | Taskflow');
@@ -38,7 +40,7 @@ export class ProjectListComponent {
       return;
     }
     const v = this.form.getRawValue();
-    this.store.addProject(v.name, v.description || undefined);
+    this.store.addProject(v.name, v.description || undefined, v.author || undefined);
     this.form.reset();
   }
 }

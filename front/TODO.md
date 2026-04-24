@@ -94,7 +94,7 @@
 
 - [x] ✅ Создать каталог для моделей, например `src/app/shared/models/`
 - [x] ✅ **`project.model.ts`**
-  - [x] ✅ Интерфейс или type alias `Project`: `id`, `name`, `description?`, `createdAt`
+  - [x] ✅ Интерфейс или type alias `Project`: `id`, `name`, `description?`, `author?`, `createdAt`
   - [x] ✅ **`id`:** строка **UUID v4** (как в корневом [TODO.md](../TODO.md)); для новых сущностей на фронте — **`import { v4 as uuidv4 } from 'uuid'`** (зависимость `uuid` в `package.json`)
 - [x] ✅ **`task.model.ts`**
   - [x] ✅ `Task`: `id`, `projectId`, `title`, `description?`

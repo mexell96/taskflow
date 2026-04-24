@@ -5,6 +5,9 @@
     @if (p.description) {
       <p class="muted">{{ p.description }}</p>
     }
+    @if (p.author) {
+      <p class="muted">{{ p.author }}</p>
+    }
     <button type="button" class="edit-project-btn" (click)="toggleProjectEdit()">
       {{ isProjectEditOpen() ? 'Cancel edit' : 'Edit project' }}
     </button>
@@ -12,6 +15,7 @@
       <form class="project-edit" [formGroup]="projectEditForm" (ngSubmit)="saveProjectEdit()">
         <input formControlName="name" placeholder="Project name" />
         <input formControlName="description" placeholder="Description (optional)" />
+        <input formControlName="author" placeholder="Author (optional)" />
         <button type="submit" [disabled]="projectEditForm.invalid || projectEditForm.pristine">Save project</button>
       </form>
     }
