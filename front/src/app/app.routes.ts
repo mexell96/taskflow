@@ -2,7 +2,11 @@ import { Routes } from '@angular/router';
 import { projectExistsGuard } from './core/guards/project-exists.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'projects', pathMatch: 'full' },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/home/home.component').then((m) => m.HomeComponent),
+  },
   {
     path: 'projects',
     loadComponent: () =>
@@ -25,4 +29,12 @@ export const routes: Routes = [
         (m) => m.SettingsComponent,
       ),
   },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./features/about/about.component').then(
+        (m) => m.AboutComponent,
+      ),
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

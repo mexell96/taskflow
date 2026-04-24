@@ -202,3 +202,12 @@ npm run lint
   - проверьте, что `front/proxy.conf.json` указывает на `http://localhost:3001`
 - Ошибки зависимостей:
   - выполните `npm install` отдельно в `front` и `back`
+
+## Страницы и роуты frontend
+
+- Страницы размещаются в `front/src/app/features/<feature-name>/`.
+- Главная страница: `front/src/app/features/home/home.component.ts`.
+- About страница: `front/src/app/features/about/about.component.ts`.
+- Корневой маршрут `''` загружает Home через lazy `loadComponent`.
+- Маршрут `'about'` загружает About через lazy `loadComponent`.
+- Маршрут `**` перенаправляет на `''` как fallback.

@@ -72,3 +72,12 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Frontend pages and routes
+
+- Place page components in `src/app/features/<feature-name>/`.
+- Home page: `src/app/features/home/home.component.ts`.
+- About page: `src/app/features/about/about.component.ts`.
+- Root route `''` loads Home with lazy `loadComponent`.
+- `'about'` route loads About with lazy `loadComponent`.
+- Wildcard route `**` redirects to `''`.
