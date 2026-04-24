@@ -6,12 +6,12 @@ import { Observable, of, tap } from 'rxjs';
 import type { Project } from '@app/shared/models/project.model';
 import { environment } from '@env/environment';
 
-export type CreateProjectDto = {
+type CreateProjectDto = {
   name: string;
   description?: string;
   author?: string;
 };
-export type UpdateProjectDto = Partial<Pick<Project, 'name' | 'description' | 'author'>>;
+type UpdateProjectDto = Partial<Pick<Project, 'name' | 'description' | 'author'>>;
 
 @Injectable({ providedIn: 'root' })
 export class ProjectApiService {

@@ -6,7 +6,7 @@ import { Observable, of, tap } from 'rxjs';
 import type { Task } from '@app/shared/models/task.model';
 import { environment } from '@env/environment';
 
-export type CreateTaskDto = {
+type CreateTaskDto = {
   projectId: string;
   title: string;
   description?: string;
@@ -17,7 +17,7 @@ export type CreateTaskDto = {
   order?: number;
 };
 
-export type UpdateTaskDto = Partial<
+type UpdateTaskDto = Partial<
   Pick<
     Task,
     'title' | 'description' | 'status' | 'priority' | 'dueDate' | 'tags' | 'order' | 'projectId'
