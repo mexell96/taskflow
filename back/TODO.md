@@ -15,13 +15,13 @@
 ## 0. Окружение и инструменты (до кода)
 
 - [x] ✅ **Node.js LTS** установлен (как на фронте — см. [front/TODO.md](../front/TODO.md), окружение).
-- [x] ✅ **Команда:** `node -v`  
-  - **Что делает:** показывает версию Node для запуска Nest.  
-  - **Где:** любая директория.  
+- [x] ✅ **Команда:** `node -v`
+  - **Что делает:** показывает версию Node для запуска Nest.
+  - **Где:** любая директория.
   - **Успех:** строка `v…` без ошибки.
-- [x] ✅ **Команда:** `npm -v`  
-  - **Что делает:** версия npm.  
-  - **Где:** любая директория.  
+- [x] ✅ **Команда:** `npm -v`
+  - **Что делает:** версия npm.
+  - **Где:** любая директория.
   - **Успех:** номер версии.
 
 - [x] ✅ **curl** (или другой HTTP-клиент) установлен: в macOS часто уже есть; проверка **`curl --version`** — печатает версию и поддерживаемые протоколы.
@@ -48,21 +48,21 @@
 Этот блок — минимальный путь “сделал и проверил” перед подробными подпунктами ниже.
 
 - [x] ✅ **Шаг 1.** Убедиться, что `back/` не содержит ничего, кроме `TODO.md` (или временно вынести `TODO.md` при генерации)
-- [x] ✅ **Шаг 2. Команда:** `npx @nestjs/cli@latest new back --package-manager npm --skip-git`  
-  - **Что делает:** создаёт Nest-проект в `back/` и ставит зависимости через npm.  
-  - **Где:** корень `taskflow/`.  
+- [x] ✅ **Шаг 2. Команда:** `npx @nestjs/cli@latest new back --package-manager npm --skip-git`
+  - **Что делает:** создаёт Nest-проект в `back/` и ставит зависимости через npm.
+  - **Где:** корень `taskflow/`.
   - **Успех:** в `back/` появились `src/`, `test/`, `package.json`, `nest-cli.json`.
-- [x] ✅ **Шаг 3. Команда:** поправить `start:dev` на порт 3001 в `back/package.json`  
-  - **Что делает:** фиксирует нужный порт API для совместимости с `front/proxy.conf.json`.  
-  - **Где:** `back/package.json`.  
+- [x] ✅ **Шаг 3. Команда:** поправить `start:dev` на порт 3001 в `back/package.json`
+  - **Что делает:** фиксирует нужный порт API для совместимости с `front/proxy.conf.json`.
+  - **Где:** `back/package.json`.
   - **Успех:** скрипт содержит `PORT=3001 nest start --watch`.
-- [x] ✅ **Шаг 4. Команда:** `npm run start:dev`  
-  - **Что делает:** запускает Nest в режиме разработки с автоперезапуском.  
-  - **Где:** каталог `back/`.  
+- [x] ✅ **Шаг 4. Команда:** `npm run start:dev`
+  - **Что делает:** запускает Nest в режиме разработки с автоперезапуском.
+  - **Где:** каталог `back/`.
   - **Успех:** сервер поднимается на `http://localhost:3001` без падений.
-- [x] ✅ **Шаг 5. Команда:** `curl -s http://localhost:3001/api/health` (или другой временный endpoint, если health ещё не реализован)  
-  - **Что делает:** smoke-проверка, что API отвечает по HTTP.  
-  - **Где:** любая директория при запущенном `back`.  
+- [x] ✅ **Шаг 5. Команда:** `curl -s http://localhost:3001/api/health` (или другой временный endpoint, если health ещё не реализован)
+  - **Что делает:** smoke-проверка, что API отвечает по HTTP.
+  - **Где:** любая директория при запущенном `back`.
   - **Успех:** ответ 200 и JSON/текст без `Connection refused`.
 
 ### 1.2. Порт и URL
@@ -94,7 +94,7 @@
 **Task**
 
 - [ ] `id`, `projectId` — **строки UUID v4**; `title`, опционально `description`
-- [ ] `status`: `"backlog"` | `"in_progress"` | `"done"`
+- [ ] `status`: `"backlog"` | `"in_progress"` | `"review"` | `"done"`
 - [ ] `priority`: `"low"` | `"medium"` | `"high"`
 - [ ] `dueDate` — ISO string или `null`
 - [ ] `tags` — массив строк
@@ -109,12 +109,58 @@
 ```json
 {
   "projects": [
-    { "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "name": "Demo", "description": null, "createdAt": "2026-01-01T00:00:00.000Z" }
+    {
+      "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "name": "Demo",
+      "description": null,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
   ],
   "tasks": [
-    { "id": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Backlog task", "description": null, "status": "backlog", "priority": "low", "dueDate": null, "tags": ["demo"], "order": 0 },
-    { "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "In progress", "description": null, "status": "in_progress", "priority": "medium", "dueDate": "2026-12-31", "tags": [], "order": 10 },
-    { "id": "d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14", "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "title": "Done", "description": null, "status": "done", "priority": "high", "dueDate": "2020-01-01", "tags": ["urgent"], "order": 20 }
+    {
+      "id": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+      "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "title": "Backlog task",
+      "description": null,
+      "status": "backlog",
+      "priority": "low",
+      "dueDate": null,
+      "tags": ["demo"],
+      "order": 0
+    },
+    {
+      "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13",
+      "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "title": "In progress",
+      "description": null,
+      "status": "in_progress",
+      "priority": "medium",
+      "dueDate": "2026-12-31",
+      "tags": [],
+      "order": 10
+    },
+    {
+      "id": "c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a63",
+      "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "title": "Review",
+      "description": null,
+      "status": "review",
+      "priority": "medium",
+      "dueDate": "2026-11-31",
+      "tags": [],
+      "order": 10
+    },
+    {
+      "id": "d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14",
+      "projectId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "title": "Done",
+      "description": null,
+      "status": "done",
+      "priority": "high",
+      "dueDate": "2020-01-01",
+      "tags": ["urgent"],
+      "order": 20
+    }
   ]
 }
 ```
@@ -146,11 +192,11 @@
 ### 2.1. Создание проекта
 
 - [x] ✅ **Команда (пример; опции сверьте с подсказками CLI):**  
-  `npx @nestjs/cli@latest new back --package-manager npm --skip-git`  
-  **или** из пустого `back/`: `cd back` затем `npx @nestjs/cli@latest new . --package-manager npm --skip-git`  
-  - **Что делает:** скачивает шаблон NestJS, создаёт файлы (`src/`, `test/`, `package.json`, `nest-cli.json` и т.д.), выполняет `npm install` внутри проекта.  
-  - **Где:** корень **`taskflow/`** (если указали имя каталога `back`) **или** уже **`taskflow/back/`** при создании в `.`.  
-  - **Успех:** каталог `back/` с `package.json` и без ошибки в конце мастера.  
+       `npx @nestjs/cli@latest new back --package-manager npm --skip-git`  
+       **или** из пустого `back/`: `cd back` затем `npx @nestjs/cli@latest new . --package-manager npm --skip-git`
+  - **Что делает:** скачивает шаблон NestJS, создаёт файлы (`src/`, `test/`, `package.json`, `nest-cli.json` и т.д.), выполняет `npm install` внутри проекта.
+  - **Где:** корень **`taskflow/`** (если указали имя каталога `back`) **или** уже **`taskflow/back/`** при создании в `.`.
+  - **Успех:** каталог `back/` с `package.json` и без ошибки в конце мастера.
   - **Частая ошибка:** каталог не пустой — см. §1.1 про `TODO.md`.
 - [x] ✅ В мастере/флагах: TypeScript и npm; проект как API (без лишнего UI).
 - [x] ✅ Откройте **`back/package.json`**: зависимости `@nestjs/*` — стабильные версии.
@@ -163,26 +209,26 @@
 }
 ```
 
-- [x] ✅ **Команда:** `npm run start:dev`  
-  - **Что делает:** запускает скрипт `start:dev` из `package.json` → `nest start --watch` поднимает dev-сервер с hot reload.  
-  - **Где:** каталог **`back/`**.  
-  - **Успех:** в логе URL `http://localhost:3001` (или ваш порт), нет crash сразу после старта.  
+- [x] ✅ **Команда:** `npm run start:dev`
+  - **Что делает:** запускает скрипт `start:dev` из `package.json` → `nest start --watch` поднимает dev-сервер с hot reload.
+  - **Где:** каталог **`back/`**.
+  - **Успех:** в логе URL `http://localhost:3001` (или ваш порт), нет crash сразу после старта.
   - **Частая ошибка:** порт занят — смените `-p` в скрипте и в `front` proxy.
-- [ ] **Команда:** `npm run build`  
-  - **Что делает:** production-сборка Nest: компилирует TypeScript в `dist`, выявляет ошибки до деплоя.  
-  - **Где:** **`back/`**.  
+- [ ] **Команда:** `npm run build`
+  - **Что делает:** production-сборка Nest: компилирует TypeScript в `dist`, выявляет ошибки до деплоя.
+  - **Где:** **`back/`**.
   - **Успех:** завершение без `Failed to compile`; появляется каталог `dist/` (его обычно коммитят только если осознанно нужно — по умолчанию в `.gitignore`).
 
 ### 2.2. Структура маршрутов API (ориентир)
 
 Зафиксируйте в README итоговые URL. Пример с префиксом **`/api`**:
 
-| Метод | Путь (пример) | Файл |
-|--------|----------------|------|
-| GET, POST | `/api/projects` | `src/projects/projects.controller.ts` |
-| PATCH | `/api/projects/:id` | `src/projects/projects.controller.ts` |
-| GET, POST | `/api/tasks` | `src/tasks/tasks.controller.ts` |
-| PATCH | `/api/tasks/:id` | `src/tasks/tasks.controller.ts` |
+| Метод     | Путь (пример)       | Файл                                  |
+| --------- | ------------------- | ------------------------------------- |
+| GET, POST | `/api/projects`     | `src/projects/projects.controller.ts` |
+| PATCH     | `/api/projects/:id` | `src/projects/projects.controller.ts` |
+| GET, POST | `/api/tasks`        | `src/tasks/tasks.controller.ts`       |
+| PATCH     | `/api/tasks/:id`    | `src/tasks/tasks.controller.ts`       |
 
 - [ ] Таблица (или список) в `back/README.md` скопирована/актуализирована под ваш код
 - [ ] **`GET /api/tasks`**: обязательный query **`projectId`**; без него — **400** или пустой массив (решение зафиксировать)
@@ -262,7 +308,6 @@
 
 ## 3. После запуска Nest
 
-
 - [ ] В начале **`back/README.md`** одной строкой: **активен Nest**
 - [ ] Проверить, что `front/environment*.ts` и `front/proxy.conf.json` используют базу `/api` и порт `3001`
 
@@ -274,29 +319,29 @@
 
 Каждый `curl` — вы запускаете в терминале; ниже для первого пункта дан полный разбор, остальные — по тому же смыслу.
 
-- [ ] **Команда:** `curl -s http://localhost:3001/api/projects`  
-  - **Что делает:** `curl` делает HTTP GET; `-s` убирает прогресс-бар; ответ попадает в stdout (обычно JSON массив проектов).  
-  - **Где:** любая директория, пока поднят `npm run start:dev` в `back/`.  
-  - **Успех:** статус 200 (проверить `curl -i` при необходимости); тело — валидный JSON.  
+- [ ] **Команда:** `curl -s http://localhost:3001/api/projects`
+  - **Что делает:** `curl` делает HTTP GET; `-s` убирает прогресс-бар; ответ попадает в stdout (обычно JSON массив проектов).
+  - **Где:** любая директория, пока поднят `npm run start:dev` в `back/`.
+  - **Успех:** статус 200 (проверить `curl -i` при необходимости); тело — валидный JSON.
   - **Частая ошибка:** `Connection refused` — сервер не запущен или другой порт; `404` — неверный путь (нет `/api` или опечатка).
 
 Остальные примеры **`curl`** в этом разделе разберите в том же духе: **`-X POST`** задаёт метод, **`-H`** — заголовок (часто `Content-Type: application/json`), **`-d`** — тело запроса.
 
-- [ ] **Команда:** `curl -s -X POST http://localhost:3001/api/projects -H "Content-Type: application/json" -d '{"name":"Demo"}'`  
-  - **Что делает:** POST создаёт ресурс; тело — JSON с полем `name`.  
-  - **Где:** терминал при работающем `back`.  
+- [ ] **Команда:** `curl -s -X POST http://localhost:3001/api/projects -H "Content-Type: application/json" -d '{"name":"Demo"}'`
+  - **Что делает:** POST создаёт ресурс; тело — JSON с полем `name`.
+  - **Где:** терминал при работающем `back`.
   - **Успех:** ответ **201** и JSON созданного проекта (или ваш принятый код успеха).
-- [ ] **Команда:** `curl -s "http://localhost:3001/api/tasks?projectId=<id>"` (подставьте `id` проекта)  
-  - **Что делает:** GET с query-параметром `projectId` — список задач проекта.  
-  - **Где:** терминал, `back` запущен.  
+- [ ] **Команда:** `curl -s "http://localhost:3001/api/tasks?projectId=<id>"` (подставьте `id` проекта)
+  - **Что делает:** GET с query-параметром `projectId` — список задач проекта.
+  - **Где:** терминал, `back` запущен.
   - **Успех:** JSON-массив задач.
-- [ ] **Команда:** `curl -s -X PATCH "http://localhost:3001/api/tasks/<id>" -H "Content-Type: application/json" -d '{"status":"in_progress"}'`  
-  - **Что делает:** PATCH частично обновляет задачу (здесь — статус).  
-  - **Где:** терминал.  
+- [ ] **Команда:** `curl -s -X PATCH "http://localhost:3001/api/tasks/<id>" -H "Content-Type: application/json" -d '{"status":"in_progress"}'`
+  - **Что делает:** PATCH частично обновляет задачу (здесь — статус).
+  - **Где:** терминал.
   - **Успех:** **200** и тело обновлённой задачи.
-- [x] ✅ **Команда:** `curl -s -X PATCH "http://localhost:3001/api/projects/<id>" -H "Content-Type: application/json" -d '{"name":"Demo updated","description":"Updated from edit flow"}'`  
-  - **Что делает:** PATCH частично обновляет проект (name/description) для фронтового edit-flow.  
-  - **Где:** терминал.  
+- [x] ✅ **Команда:** `curl -s -X PATCH "http://localhost:3001/api/projects/<id>" -H "Content-Type: application/json" -d '{"name":"Demo updated","description":"Updated from edit flow"}'`
+  - **Что делает:** PATCH частично обновляет проект (name/description) для фронтового edit-flow.
+  - **Где:** терминал.
   - **Успех:** **200** и тело обновлённого проекта.
 
 **Общее**

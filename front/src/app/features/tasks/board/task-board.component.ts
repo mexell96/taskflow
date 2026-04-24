@@ -24,6 +24,7 @@ export class TaskBoardComponent {
   readonly columns: { status: TaskStatus; label: string }[] = [
     { status: 'backlog', label: 'Backlog' },
     { status: 'in_progress', label: 'In progress' },
+    { status: 'review', label: 'Review' },
     { status: 'done', label: 'Done' },
   ];
 
@@ -69,6 +70,7 @@ export class TaskBoardComponent {
     return {
       backlog: byStatus('backlog'),
       in_progress: byStatus('in_progress'),
+      review: byStatus('review'),
       done: byStatus('done'),
     };
   });

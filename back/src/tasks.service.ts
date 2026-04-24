@@ -21,7 +21,7 @@ type PatchTaskDto = Partial<
   >
 >;
 
-const allowedStatuses: TaskStatus[] = ['backlog', 'in_progress', 'done'];
+const allowedStatuses: TaskStatus[] = ['backlog', 'in_progress', 'review', 'done'];
 const allowedPriorities: TaskPriority[] = ['low', 'medium', 'high'];
 
 @Injectable()

@@ -13,6 +13,8 @@
           <span i18n="@@taskBoardColumnBacklog">Backlog</span>
         } @else if (col.status === 'in_progress') {
           <span i18n="@@taskBoardColumnInProgress">In progress</span>
+        } @else if (col.status === 'review') {
+          <span i18n="@@taskBoardColumnReview">Review</span>
         } @else {
           <span i18n="@@taskBoardColumnDone">Done</span>
         }

@@ -9,6 +9,7 @@ import { TaskApiService } from './task-api.service';
 const SEED_PROJECT_ID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
 const SEED_TASK_BACKLOG = 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12';
 const SEED_TASK_PROGRESS = 'c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13';
+const SEED_TASK_REVIEW = 'c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a63';
 const SEED_TASK_DONE = 'd3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14';
 
 const seedProjects: Project[] = [
@@ -38,6 +39,17 @@ const seedTasks: Task[] = [
     status: 'in_progress',
     priority: 'medium',
     dueDate: '2026-12-31T00:00:00.000Z',
+    tags: [],
+    order: 10,
+  },
+  {
+    id: SEED_TASK_REVIEW,
+    projectId: SEED_PROJECT_ID,
+    title: 'Review',
+    description: 'Example description',
+    status: 'review',
+    priority: 'medium',
+    dueDate: '2026-11-31T00:00:00.000Z',
     tags: [],
     order: 10,
   },
@@ -146,18 +158,26 @@ export class TaskflowStore {
       description: trimmedDescription || undefined,
     };
     this.clearApiErrorMessage();
-    this._projects.update((list: Project[]) => list.map((item: Project) => (item.id === projectId ? optimistic : item)));
+    this._projects.update((list: Project[]) =>
+      list.map((item: Project) => (item.id === projectId ? optimistic : item)),
+    );
 
-    this.projectApi.patchProject(projectId, { name: trimmedName, description: trimmedDescription || undefined }).subscribe({
-      next: (project: Project) => {
-        this.clearApiErrorMessage();
-        this._projects.update((list: Project[]) => list.map((item: Project) => (item.id === project.id ? project : item)));
-      },
-      error: (error: unknown) => {
-        this._projects.update((list: Project[]) => list.map((item: Project) => (item.id === current.id ? current : item)));
-        this.logApiError('Failed to update project', error);
-      },
-    });
+    this.projectApi
+      .patchProject(projectId, { name: trimmedName, description: trimmedDescription || undefined })
+      .subscribe({
+        next: (project: Project) => {
+          this.clearApiErrorMessage();
+          this._projects.update((list: Project[]) =>
+            list.map((item: Project) => (item.id === project.id ? project : item)),
+          );
+        },
+        error: (error: unknown) => {
+          this._projects.update((list: Project[]) =>
+            list.map((item: Project) => (item.id === current.id ? current : item)),
+          );
+          this.logApiError('Failed to update project', error);
+        },
+      });
   }
 
   addTask(
@@ -204,7 +224,9 @@ export class TaskflowStore {
           );
         },
         error: (error: unknown) => {
-          this._tasks.update((list: Task[]) => list.filter((item: Task) => item.id !== optimisticTask.id));
+          this._tasks.update((list: Task[]) =>
+            list.filter((item: Task) => item.id !== optimisticTask.id),
+          );
           this.logApiError('Failed to create task', error);
         },
       });
@@ -293,7 +315,9 @@ export class TaskflowStore {
       tags: patch.tags.map((tag) => tag.trim()).filter(Boolean),
     };
     this.clearApiErrorMessage();
-    this._tasks.update((list: Task[]) => list.map((task: Task) => (task.id === taskId ? optimistic : task)));
+    this._tasks.update((list: Task[]) =>
+      list.map((task: Task) => (task.id === taskId ? optimistic : task)),
+    );
 
     this.taskApi
       .patchTask(taskId, {
@@ -305,16 +329,18 @@ export class TaskflowStore {
         tags: optimistic.tags,
       })
       .subscribe({
-      next: (updatedTask: Task) => {
-        this.clearApiErrorMessage();
-        this._tasks.update((list: Task[]) =>
-          list.map((task: Task) => (task.id === updatedTask.id ? updatedTask : task)),
-        );
-      },
-      error: (error: unknown) => {
-        this._tasks.update((list: Task[]) => list.map((task: Task) => (task.id === current.id ? current : task)));
-        this.logApiError('Failed to update task', error);
-      },
+        next: (updatedTask: Task) => {
+          this.clearApiErrorMessage();
+          this._tasks.update((list: Task[]) =>
+            list.map((task: Task) => (task.id === updatedTask.id ? updatedTask : task)),
+          );
+        },
+        error: (error: unknown) => {
+          this._tasks.update((list: Task[]) =>
+            list.map((task: Task) => (task.id === current.id ? current : task)),
+          );
+          this.logApiError('Failed to update task', error);
+        },
       });
   }
 

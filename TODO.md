@@ -145,7 +145,7 @@ flowchart LR
 
 **Project:** `id` (UUID string), `name`, `description?`, `createdAt` (ISO string).
 
-**Task:** `id` (UUID string), `projectId` (UUID string), `title`, `description?`, `status` (`backlog` | `in_progress` | `done`), `priority` (`low` | `medium` | `high`), `dueDate?`, `tags[]`, `order` (число, для DnD).
+**Task:** `id` (UUID string), `projectId` (UUID string), `title`, `description?`, `status` (`backlog` | `in_progress` | `review` | `done`), `priority` (`low` | `medium` | `high`), `dueDate?`, `tags[]`, `order` (число, для DnD).
 
 ---
 
