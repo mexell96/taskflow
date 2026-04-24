@@ -6,66 +6,6 @@ import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.mod
 import { ProjectApiService } from './project-api.service';
 import { TaskApiService } from './task-api.service';
 
-const SEED_PROJECT_ID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
-const SEED_TASK_BACKLOG = 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12';
-const SEED_TASK_PROGRESS = 'c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13';
-const SEED_TASK_REVIEW = 'c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a63';
-const SEED_TASK_DONE = 'd3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14';
-
-const seedProjects: Project[] = [
-  {
-    id: SEED_PROJECT_ID,
-    name: 'Demo project',
-    description: 'Seed data for Taskflow (no API yet)',
-    author: 'John Doe',
-    createdAt: '2026-01-01T00:00:00.000Z',
-  },
-];
-
-const seedTasks: Task[] = [
-  {
-    id: SEED_TASK_BACKLOG,
-    projectId: SEED_PROJECT_ID,
-    title: 'Backlog task',
-    status: 'backlog',
-    priority: 'low',
-    tags: ['demo'],
-    order: 0,
-  },
-  {
-    id: SEED_TASK_PROGRESS,
-    projectId: SEED_PROJECT_ID,
-    title: 'In progress',
-    description: 'Example description',
-    status: 'in_progress',
-    priority: 'medium',
-    dueDate: '2026-12-31T00:00:00.000Z',
-    tags: [],
-    order: 10,
-  },
-  {
-    id: SEED_TASK_REVIEW,
-    projectId: SEED_PROJECT_ID,
-    title: 'Review',
-    description: 'Example description',
-    status: 'review',
-    priority: 'medium',
-    dueDate: '2026-11-31T00:00:00.000Z',
-    tags: [],
-    order: 10,
-  },
-  {
-    id: SEED_TASK_DONE,
-    projectId: SEED_PROJECT_ID,
-    title: 'Done',
-    status: 'done',
-    priority: 'high',
-    dueDate: '2020-01-01T00:00:00.000Z',
-    tags: ['urgent'],
-    order: 20,
-  },
-];
-
 const normalizeOptionalText = (value?: string): string | undefined => {
   const normalized = value?.trim();
   return normalized || undefined;
@@ -75,8 +15,8 @@ const normalizeOptionalText = (value?: string): string | undefined => {
 export class TaskflowStore {
   private readonly projectApi = inject(ProjectApiService);
   private readonly taskApi = inject(TaskApiService);
-  private readonly _projects = signal<Project[]>([...seedProjects]);
-  private readonly _tasks = signal<Task[]>([...seedTasks]);
+  private readonly _projects = signal<Project[]>([]);
+  private readonly _tasks = signal<Task[]>([]);
   private readonly _apiErrorMessage = signal<string | null>(null);
   private moveRequestQueue: Promise<void> = Promise.resolve();
 
