@@ -118,12 +118,14 @@ flowchart LR
   - переводы: `front/src/locale/messages.ru.xlf`
 
 - Сборка всех локалей:
+
   ```bash
   cd front
   npm run build:i18n
   ```
 
 - Сборка только русского:
+
   ```bash
   cd front
   npm run build:i18n:ru
@@ -136,6 +138,40 @@ flowchart LR
   ```
 
 Важно: сейчас переключение языка работает как build-time i18n (через локализованные сборки), а не как runtime-переключатель кнопкой внутри UI.
+
+## Pre-commit (Husky + lint-staged)
+
+В репозитории используется root-level pre-commit workflow: hook запускается из корня и проверяет только staged-файлы.
+
+Установка:
+
+```bash
+npm install
+```
+
+- Что делает: ставит root dev-зависимости (`husky`, `lint-staged`) и активирует git hooks через `prepare`.
+- Где запускать: в корне репозитория `taskflow/`.
+- Признак успеха: при `git commit` автоматически запускаются проверки pre-commit.
+
+Какие бывают конфиги:
+
+- `Минимальный` - только `prettier --write` для staged-файлов; самый быстрый, но слабее защищает от проблем.
+- `Сбалансированный` - `prettier` + точечный `eslint` только для staged-файлов (`front/src` и `back/src|test`); лучший дефолт для ежедневной разработки.
+- `Строгий` - добавляет `typecheck`/тесты в pre-commit; выше качество проверки, но медленнее коммиты (обычно лучше переносить в pre-push/CI).
+
+Выбранный режим в Taskflow: `Сбалансированный`.
+
+- Для `front/src/**/*.{ts,js,html,css,scss}` запускаются `eslint --fix` и `prettier --write`.
+- Для `back/{src,test}/**/*.{ts,js}` запускаются `eslint --fix` и `prettier --write`.
+- Для `*.{json,md,yml,yaml}` запускается `prettier --write`.
+
+Временный пропуск hook (только в исключительных случаях):
+
+```bash
+git commit --no-verify -m "your message"
+```
+
+После `--no-verify` обязательно прогоните проверки вручную и исправьте проблемы до PR.
 
 ## Полезные команды
 
