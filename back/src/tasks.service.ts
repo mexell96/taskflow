@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { DbFileService } from './db-file.service';
 import type { Task, TaskPriority, TaskStatus } from './domain.model';
@@ -17,11 +21,23 @@ type CreateTaskDto = {
 type PatchTaskDto = Partial<
   Pick<
     Task,
-    'title' | 'description' | 'status' | 'priority' | 'dueDate' | 'tags' | 'order' | 'projectId'
+    | 'title'
+    | 'description'
+    | 'status'
+    | 'priority'
+    | 'dueDate'
+    | 'tags'
+    | 'order'
+    | 'projectId'
   >
 >;
 
-const allowedStatuses: TaskStatus[] = ['backlog', 'in_progress', 'review', 'done'];
+const allowedStatuses: TaskStatus[] = [
+  'backlog',
+  'in_progress',
+  'review',
+  'done',
+];
 const allowedPriorities: TaskPriority[] = ['low', 'medium', 'high'];
 
 @Injectable()
@@ -40,7 +56,9 @@ export class TasksService {
     const projectId = dto.projectId?.trim();
     const title = dto.title?.trim();
     if (!projectId || !title) {
-      throw new BadRequestException({ message: 'projectId and title are required' });
+      throw new BadRequestException({
+        message: 'projectId and title are required',
+      });
     }
 
     const status = dto.status ?? 'backlog';
@@ -53,13 +71,22 @@ export class TasksService {
     }
 
     const state = await this.db.readDb();
-    const projectExists = state.projects.some((project) => project.id === projectId);
+    const projectExists = state.projects.some(
+      (project) => project.id === projectId,
+    );
     if (!projectExists) {
-      throw new NotFoundException({ message: `Project ${projectId} not found` });
+      throw new NotFoundException({
+        message: `Project ${projectId} not found`,
+      });
     }
 
-    const taskSiblings = state.tasks.filter((task) => task.projectId === projectId);
-    const maxOrder = taskSiblings.reduce((max, task) => Math.max(max, task.order), 0);
+    const taskSiblings = state.tasks.filter(
+      (task) => task.projectId === projectId,
+    );
+    const maxOrder = taskSiblings.reduce(
+      (max, task) => Math.max(max, task.order),
+      0,
+    );
 
     const newTask: Task = {
       id: randomUUID(),
@@ -94,11 +121,17 @@ export class TasksService {
     if (dto.projectId) {
       const projectId = dto.projectId.trim();
       if (!projectId) {
-        throw new BadRequestException({ message: 'projectId must not be empty' });
+        throw new BadRequestException({
+          message: 'projectId must not be empty',
+        });
       }
-      const projectExists = state.projects.some((project) => project.id === projectId);
+      const projectExists = state.projects.some(
+        (project) => project.id === projectId,
+      );
       if (!projectExists) {
-        throw new NotFoundException({ message: `Project ${projectId} not found` });
+        throw new NotFoundException({
+          message: `Project ${projectId} not found`,
+        });
       }
     }
 

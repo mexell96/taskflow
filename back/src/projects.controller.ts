@@ -2,7 +2,9 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import type { Project } from './domain.model';
 
-type PatchProjectBody = Partial<Pick<Project, 'name' | 'description'>>;
+type PatchProjectBody = Partial<
+  Pick<Project, 'name' | 'description' | 'author'>
+>;
 
 @Controller('projects')
 export class ProjectsController {
@@ -19,7 +21,9 @@ export class ProjectsController {
   }
 
   @Post()
-  createProject(@Body() body: { name?: string; description?: string }) {
+  createProject(
+    @Body() body: { name?: string; description?: string; author?: string },
+  ) {
     return this.projectsService.createProject(body);
   }
 

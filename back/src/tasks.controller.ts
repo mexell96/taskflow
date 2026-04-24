@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import type { Task, TaskPriority, TaskStatus } from './domain.model';
 
@@ -16,7 +24,14 @@ type CreateTaskBody = {
 type PatchTaskBody = Partial<
   Pick<
     Task,
-    'title' | 'description' | 'status' | 'priority' | 'dueDate' | 'tags' | 'order' | 'projectId'
+    | 'title'
+    | 'description'
+    | 'status'
+    | 'priority'
+    | 'dueDate'
+    | 'tags'
+    | 'order'
+    | 'projectId'
   >
 >;
 

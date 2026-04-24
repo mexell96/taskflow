@@ -103,7 +103,8 @@ flowchart LR
 
 - `GET /api/projects`
 - `GET /api/projects/:id`
-- `POST /api/projects`
+- `POST /api/projects` (`name` обязателен, `description?`, `author?`)
+- `PATCH /api/projects/:id` (частичное обновление `name?`, `description?`, `author?`)
 - `GET /api/tasks`
 - `POST /api/tasks`
 - `PATCH /api/tasks/:id`

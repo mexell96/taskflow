@@ -25,6 +25,12 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Taskflow API notes
+
+- `POST /api/projects` accepts `name` (required), optional `description` and optional `author`.
+- `PATCH /api/projects/:id` supports partial updates for `name`, `description`, `author`.
+- For optional fields, empty strings are normalized to `undefined`.
+
 ## Project setup
 
 ```bash

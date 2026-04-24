@@ -89,6 +89,7 @@
 - [ ] `id` — **string, UUID v4** (как в корневом [TODO.md](../TODO.md), раздел REST; на фронте генерация через пакет **`uuid`** до появления API)
 - [ ] `name` — string, обязательное
 - [ ] `description` — string, опционально
+- [ ] `author` — string, опционально
 - [ ] `createdAt` — ISO-8601 string
 
 **Task**
@@ -113,6 +114,7 @@
       "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "name": "Demo",
       "description": null,
+      "author": null,
       "createdAt": "2026-01-01T00:00:00.000Z"
     }
   ],
@@ -246,7 +248,7 @@
 
 - [ ] Проверять заголовок **`Content-Type`** для `POST` / `PATCH` (ожидается `application/json`); при невалидном JSON — **400**
 - [ ] **`GET`**: вернуть массив `projects` из файла; `Content-Type: application/json`
-- [ ] **`POST`**: распарсить JSON тела; проверить **`name`** (непустая строка); опционально `description`
+- [ ] **`POST`**: распарсить JSON тела; проверить **`name`** (непустая строка); опционально `description` и `author`
   - [ ] При успехе: новый `id`, `createdAt`, запись в массив, ответ **201** с созданным объектом
   - [ ] При ошибке валидации: **400** + `{ "message": "..." }`
 
@@ -273,7 +275,7 @@
 
 - [x] ✅ **`PATCH`**: найти проект по `id` из params
   - [x] ✅ Нет проекта — **404**
-  - [x] ✅ Частичное слияние: разрешённые поля (`name`, `description`)
+  - [x] ✅ Частичное слияние: разрешённые поля (`name`, `description` и `author`)
   - [x] ✅ Валидация `name`: непустая строка после `trim`
   - [x] ✅ Запрет на изменение системных полей (`id`, `createdAt`)
   - [x] ✅ Ответ **200** с обновлённой сущностью
@@ -339,8 +341,8 @@
   - **Что делает:** PATCH частично обновляет задачу (здесь — статус).
   - **Где:** терминал.
   - **Успех:** **200** и тело обновлённой задачи.
-- [x] ✅ **Команда:** `curl -s -X PATCH "http://localhost:3001/api/projects/<id>" -H "Content-Type: application/json" -d '{"name":"Demo updated","description":"Updated from edit flow"}'`
-  - **Что делает:** PATCH частично обновляет проект (name/description) для фронтового edit-flow.
+- [x] ✅ **Команда:** `curl -s -X PATCH "http://localhost:3001/api/projects/<id>" -H "Content-Type: application/json" -d '{"name":"Demo updated","description":"Updated from edit flow", "author":"John Doe"}'`
+  - **Что делает:** PATCH частично обновляет проект (name/description/author) для фронтового edit-flow.
   - **Где:** терминал.
   - **Успех:** **200** и тело обновлённого проекта.
 

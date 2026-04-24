@@ -4,6 +4,7 @@
       "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "name": "Demo project",
       "description": "Seed data for Taskflow",
+      "author": "John Doe",
       "createdAt": "2026-01-01T00:00:00.000Z"
     }
   ],

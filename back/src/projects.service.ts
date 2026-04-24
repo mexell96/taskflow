@@ -10,8 +10,16 @@ import type { Project } from './domain.model';
 type CreateProjectDto = {
   name?: string;
   description?: string;
+  author?: string;
 };
-type PatchProjectDto = Partial<Pick<Project, 'name' | 'description'>>;
+type PatchProjectDto = Partial<
+  Pick<Project, 'name' | 'description' | 'author'>
+>;
+
+const normalizeOptionalText = (value?: string): string | undefined => {
+  const normalized = value?.trim();
+  return normalized || undefined;
+};
 
 @Injectable()
 export class ProjectsService {
@@ -40,7 +48,8 @@ export class ProjectsService {
     const newProject: Project = {
       id: randomUUID(),
       name,
-      description: dto.description?.trim() || undefined,
+      description: normalizeOptionalText(dto.description),
+      author: normalizeOptionalText(dto.author),
       createdAt: new Date().toISOString(),
     };
 
@@ -69,7 +78,10 @@ export class ProjectsService {
       ...current,
       ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
       ...(dto.description !== undefined
-        ? { description: dto.description.trim() || undefined }
+        ? { description: normalizeOptionalText(dto.description) }
+        : {}),
+      ...(dto.author !== undefined
+        ? { author: normalizeOptionalText(dto.author) }
         : {}),
     };
 
