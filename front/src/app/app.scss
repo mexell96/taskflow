@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+nav {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+a {
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+a:hover {
+  background: #f3f4f6;
+}
+
+a.is-active {
+  background: #e5e7eb;
+  font-weight: 600;
+}
+
+a:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.app-content {
+  padding: 1rem;
+}
