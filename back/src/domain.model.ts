@@ -2,23 +2,23 @@ export type TaskStatus = 'backlog' | 'in_progress' | 'review' | 'done';
 export type TaskPriority = 'low' | 'medium' | 'high';
 
 export interface Project {
-  id: string;
-  name: string;
-  description?: string;
   author?: string;
   createdAt: string;
+  description?: string;
+  id: string;
+  name: string;
 }
 
 export interface Task {
-  id: string;
-  projectId: string;
-  title: string;
   description?: string;
-  status: TaskStatus;
-  priority: TaskPriority;
   dueDate?: string;
-  tags: string[];
+  id: string;
   order: number;
+  priority: TaskPriority;
+  projectId: string;
+  status: TaskStatus;
+  tags: string[];
+  title: string;
 }
 
 export interface DbSchema {

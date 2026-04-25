@@ -12,7 +12,7 @@ module.exports = {
 
     const args = join(scopedFiles);
     return [
-      `npm --prefix front exec eslint --fix --max-warnings=0 -- ${args}`,
+      `npm --prefix front exec -- eslint --fix --max-warnings=0 --config front/eslint.config.mjs -- ${args}`,
       `npm --prefix front exec prettier --write -- ${args}`,
     ];
   },
@@ -22,7 +22,7 @@ module.exports = {
 
     const args = join(scopedFiles);
     return [
-      `npm --prefix back exec eslint --fix --max-warnings=0 -- ${args}`,
+      `npm --prefix back exec -- eslint --fix --max-warnings=0 --config back/eslint.config.mjs -- ${args}`,
       `npm --prefix back exec prettier --write -- ${args}`,
     ];
   },

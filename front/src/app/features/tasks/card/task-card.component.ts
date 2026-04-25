@@ -14,12 +14,12 @@ import type { Task, TaskStatus } from '@app/shared/models/task.model';
 import type { TaskPriority } from '@app/shared/models/task.model';
 
 export type TaskEditValue = {
-  title: string;
   description?: string;
-  priority: TaskPriority;
   dueDate?: string;
-  tags: string[];
+  priority: TaskPriority;
   status: TaskStatus;
+  tags: string[];
+  title: string;
 };
 
 @Component({

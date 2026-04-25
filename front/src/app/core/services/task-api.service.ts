@@ -7,20 +7,20 @@ import type { Task } from '@app/shared/models/task.model';
 import { environment } from '@env/environment';
 
 type CreateTaskDto = {
-  projectId: string;
-  title: string;
   description?: string;
-  status?: Task['status'];
-  priority?: Task['priority'];
   dueDate?: string;
-  tags?: string[];
   order?: number;
+  priority?: Task['priority'];
+  projectId: string;
+  status?: Task['status'];
+  tags?: string[];
+  title: string;
 };
 
 type UpdateTaskDto = Partial<
   Pick<
     Task,
-    'title' | 'description' | 'status' | 'priority' | 'dueDate' | 'tags' | 'order' | 'projectId'
+    'description' | 'dueDate' | 'order' | 'priority' | 'projectId' | 'status' | 'tags' | 'title'
   >
 >;
 

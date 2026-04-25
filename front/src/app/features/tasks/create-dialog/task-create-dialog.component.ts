@@ -18,11 +18,11 @@ import {
 import type { TaskPriority } from '@app/shared/models/task.model';
 
 export type CreateTaskDialogValue = {
-  title: string;
   description?: string;
-  priority: TaskPriority;
   dueDate?: string;
+  priority: TaskPriority;
   tags: string[];
+  title: string;
 };
 
 function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors | null {
