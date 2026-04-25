@@ -15,7 +15,11 @@
           >Task title must be at least 3 characters.</small
         >
       }
-      <input formControlName="description" placeholder="Description (optional)" />
+      <input
+        formControlName="description"
+        placeholder="Description (optional)"
+        i18n-placeholder="@@projectBoardTaskDescriptionPlaceholder"
+      />
       <input
         formControlName="dueDate"
         type="date"
@@ -28,11 +32,11 @@
         >
       }
       <select formControlName="priority">
-        <option value="low">low</option>
-        <option value="medium">medium</option>
-        <option value="high">high</option>
+        <option value="low" i18n="@@taskPriorityLow">low</option>
+        <option value="medium" i18n="@@taskPriorityMedium">medium</option>
+        <option value="high" i18n="@@taskPriorityHigh">high</option>
       </select>
-      <input formControlName="tags" placeholder="tags,comma,separated" />
+      <input formControlName="tags" placeholder="tags,comma,separated" i18n-placeholder="@@taskTagsPlaceholder" />
       <div class="dialog-actions">
         <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>
         <button type="button" (click)="cancel.emit()" i18n="@@projectBoardCancelButton">Cancel</button>

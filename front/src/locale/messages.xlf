@@ -1,17 +1,129 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US">
   <file id="ngi18n" original="ng.template">
+    <unit id="appNavHome">
+      <notes>
+        <note category="location">src/app/app.html:5,7</note>
+      </notes>
+      <segment>
+        <source>Home</source>
+      </segment>
+    </unit>
+    <unit id="appNavProjects">
+      <notes>
+        <note category="location">src/app/app.html:7,8</note>
+      </notes>
+      <segment>
+        <source>Projects</source>
+      </segment>
+    </unit>
+    <unit id="appNavSettings">
+      <notes>
+        <note category="location">src/app/app.html:8,9</note>
+      </notes>
+      <segment>
+        <source>Settings</source>
+      </segment>
+    </unit>
+    <unit id="appNavAbout">
+      <notes>
+        <note category="location">src/app/app.html:9,11</note>
+      </notes>
+      <segment>
+        <source>About</source>
+      </segment>
+    </unit>
+    <unit id="aboutTitle">
+      <notes>
+        <note category="location">src/app/features/about/about.component.html:2,3</note>
+      </notes>
+      <segment>
+        <source>About Taskflow</source>
+      </segment>
+    </unit>
+    <unit id="aboutDescription">
+      <notes>
+        <note category="location">src/app/features/about/about.component.html:4,8</note>
+      </notes>
+      <segment>
+        <source> Taskflow is a lightweight app for managing projects and tasks with a clear board-based workflow. </source>
+      </segment>
+    </unit>
+    <unit id="homeTitle">
+      <notes>
+        <note category="location">src/app/features/home/home.component.html:2,3</note>
+      </notes>
+      <segment>
+        <source>Taskflow</source>
+      </segment>
+    </unit>
+    <unit id="homeSubtitle">
+      <notes>
+        <note category="location">src/app/features/home/home.component.html:3,5</note>
+      </notes>
+      <segment>
+        <source>Simple task and project flow management in one place.</source>
+      </segment>
+    </unit>
     <unit id="projectBoardBackToProjects">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:19,21</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:3,5</note>
       </notes>
       <segment>
         <source>← Projects</source>
       </segment>
     </unit>
+    <unit id="projectBoardCancelEditProject">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:13,15</note>
+      </notes>
+      <segment>
+        <source>Cancel edit</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardEditProject">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:15,18</note>
+      </notes>
+      <segment>
+        <source>Edit project</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectNamePlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:20</note>
+      </notes>
+      <segment>
+        <source>Project name</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectDescriptionPlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:23,24</note>
+      </notes>
+      <segment>
+        <source>Description (optional)</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectAuthorPlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:26</note>
+      </notes>
+      <segment>
+        <source>Author (optional)</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardSaveProject">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:28,30</note>
+      </notes>
+      <segment>
+        <source> Save project </source>
+      </segment>
+    </unit>
     <unit id="projectBoardSearchPlaceholder">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:27,28</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:35,36</note>
       </notes>
       <segment>
         <source>Search tasks by title</source>
@@ -19,15 +131,45 @@
     </unit>
     <unit id="projectBoardAllPriorities">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:33,34</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:41,42</note>
       </notes>
       <segment>
         <source>All priorities</source>
       </segment>
     </unit>
+    <unit id="taskPriorityLow">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:42,43</note>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:41,42</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:35,36</note>
+      </notes>
+      <segment>
+        <source>low</source>
+      </segment>
+    </unit>
+    <unit id="taskPriorityMedium">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:43,44</note>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:42,43</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:36,37</note>
+      </notes>
+      <segment>
+        <source>medium</source>
+      </segment>
+    </unit>
+    <unit id="taskPriorityHigh">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.html:44,46</note>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:43,45</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:37,39</note>
+      </notes>
+      <segment>
+        <source>high</source>
+      </segment>
+    </unit>
     <unit id="projectBoardAllTags">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:39,40</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:47,48</note>
       </notes>
       <segment>
         <source>All tags</source>
@@ -35,7 +177,7 @@
     </unit>
     <unit id="projectBoardOverdueOnly">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:46,49</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:54,58</note>
       </notes>
       <segment>
         <source>overdue only</source>
@@ -43,7 +185,7 @@
     </unit>
     <unit id="projectBoardOpenAddTaskButton">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:59,62</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:67,70</note>
       </notes>
       <segment>
         <source>Add task</source>
@@ -51,7 +193,7 @@
     </unit>
     <unit id="projectBoardNotFound">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:66,67</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:74,75</note>
       </notes>
       <segment>
         <source>Project not found.</source>
@@ -59,15 +201,47 @@
     </unit>
     <unit id="projectBoardBackToList">
       <notes>
-        <note category="location">src/app/features/projects/project-board.component.ts:67,71</note>
+        <note category="location">src/app/features/projects/board/project-board.component.html:75,78</note>
       </notes>
       <segment>
         <source>Back to list</source>
       </segment>
     </unit>
+    <unit id="projectBoardNotFoundTitle">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.ts:53</note>
+      </notes>
+      <segment>
+        <source>Project not found | Taskflow</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardNotFoundDescription">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.ts:56</note>
+      </notes>
+      <segment>
+        <source>Requested Taskflow project was not found.</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectTitle">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.ts:62</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="projectName" disp="project.name"/> | Taskflow</source>
+      </segment>
+    </unit>
+    <unit id="projectBoardMetaDescriptionFallback">
+      <notes>
+        <note category="location">src/app/features/projects/board/project-board.component.ts:68</note>
+      </notes>
+      <segment>
+        <source>Task board for project <ph id="0" equiv="projectName" disp="project.name"/>.</source>
+      </segment>
+    </unit>
     <unit id="projectListTitle">
       <notes>
-        <note category="location">src/app/features/projects/project-list.component.ts:13,15</note>
+        <note category="location">src/app/features/projects/list/project-list.component.html:2,4</note>
       </notes>
       <segment>
         <source>Projects</source>
@@ -75,7 +249,7 @@
     </unit>
     <unit id="projectListNamePlaceholder">
       <notes>
-        <note category="location">src/app/features/projects/project-list.component.ts:23</note>
+        <note category="location">src/app/features/projects/list/project-list.component.html:9</note>
       </notes>
       <segment>
         <source>Name</source>
@@ -83,7 +257,7 @@
     </unit>
     <unit id="projectListNameMinLengthError">
       <notes>
-        <note category="location">src/app/features/projects/project-list.component.ts:29,32</note>
+        <note category="location">src/app/features/projects/list/project-list.component.html:13,16</note>
       </notes>
       <segment>
         <source>Project name must be at least 3 characters.</source>
@@ -91,23 +265,47 @@
     </unit>
     <unit id="projectListDescriptionPlaceholder">
       <notes>
-        <note category="location">src/app/features/projects/project-list.component.ts:34,35</note>
+        <note category="location">src/app/features/projects/list/project-list.component.html:16,17</note>
       </notes>
       <segment>
         <source>Description (optional)</source>
       </segment>
     </unit>
+    <unit id="projectListAuthorPlaceholder">
+      <notes>
+        <note category="location">src/app/features/projects/list/project-list.component.html:18</note>
+      </notes>
+      <segment>
+        <source>Author (optional)</source>
+      </segment>
+    </unit>
     <unit id="projectListCreateButton">
       <notes>
-        <note category="location">src/app/features/projects/project-list.component.ts:37,40</note>
+        <note category="location">src/app/features/projects/list/project-list.component.html:19,22</note>
       </notes>
       <segment>
         <source>Create project</source>
       </segment>
     </unit>
+    <unit id="projectListTitleMeta">
+      <notes>
+        <note category="location">src/app/features/projects/list/project-list.component.ts:32</note>
+      </notes>
+      <segment>
+        <source>Projects | Taskflow</source>
+      </segment>
+    </unit>
+    <unit id="projectListMetaDescription">
+      <notes>
+        <note category="location">src/app/features/projects/list/project-list.component.ts:35</note>
+      </notes>
+      <segment>
+        <source>Taskflow project list: create and manage your projects.</source>
+      </segment>
+    </unit>
     <unit id="settingsTitle">
       <notes>
-        <note category="location">src/app/features/settings/settings.component.ts:10,11</note>
+        <note category="location">src/app/features/settings/settings.component.html:2,3</note>
       </notes>
       <segment>
         <source>Settings</source>
@@ -115,7 +313,7 @@
     </unit>
     <unit id="settingsPlaceholder">
       <notes>
-        <note category="location">src/app/features/settings/settings.component.ts:11,12</note>
+        <note category="location">src/app/features/settings/settings.component.html:3,4</note>
       </notes>
       <segment>
         <source>Settings page placeholder.</source>
@@ -123,7 +321,7 @@
     </unit>
     <unit id="settingsBackToProjects">
       <notes>
-        <note category="location">src/app/features/settings/settings.component.ts:12,16</note>
+        <note category="location">src/app/features/settings/settings.component.html:4,6</note>
       </notes>
       <segment>
         <source>Back to projects</source>
@@ -131,7 +329,7 @@
     </unit>
     <unit id="taskBoardColumnBacklog">
       <notes>
-        <note category="location">src/app/features/tasks/task-board.component.ts:25,26</note>
+        <note category="location">src/app/features/tasks/board/task-board.component.html:13,14</note>
       </notes>
       <segment>
         <source>Backlog</source>
@@ -139,31 +337,136 @@
     </unit>
     <unit id="taskBoardColumnInProgress">
       <notes>
-        <note category="location">src/app/features/tasks/task-board.component.ts:27,29</note>
+        <note category="location">src/app/features/tasks/board/task-board.component.html:15,16</note>
       </notes>
       <segment>
         <source>In progress</source>
       </segment>
     </unit>
+    <unit id="taskBoardColumnReview">
+      <notes>
+        <note category="location">src/app/features/tasks/board/task-board.component.html:17,19</note>
+      </notes>
+      <segment>
+        <source>Review</source>
+      </segment>
+    </unit>
     <unit id="taskBoardColumnDone">
       <notes>
-        <note category="location">src/app/features/tasks/task-board.component.ts:29,31</note>
+        <note category="location">src/app/features/tasks/board/task-board.component.html:19,22</note>
       </notes>
       <segment>
         <source>Done</source>
       </segment>
     </unit>
+    <unit id="taskCardDueLabel">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:10</note>
+      </notes>
+      <segment>
+        <source>due:</source>
+      </segment>
+    </unit>
     <unit id="taskCardStatusLabel">
       <notes>
-        <note category="location">src/app/features/tasks/task-card.component.ts:21,23</note>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:16,17</note>
       </notes>
       <segment>
         <source>Status</source>
       </segment>
     </unit>
+    <unit id="taskStatusBacklog">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:18,19</note>
+      </notes>
+      <segment>
+        <source>backlog</source>
+      </segment>
+    </unit>
+    <unit id="taskStatusInProgress">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:19,20</note>
+      </notes>
+      <segment>
+        <source>in_progress</source>
+      </segment>
+    </unit>
+    <unit id="taskStatusReview">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:20,21</note>
+      </notes>
+      <segment>
+        <source>review</source>
+      </segment>
+    </unit>
+    <unit id="taskStatusDone">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:21,23</note>
+      </notes>
+      <segment>
+        <source>done</source>
+      </segment>
+    </unit>
+    <unit id="taskCardCancelEdit">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:26,28</note>
+      </notes>
+      <segment>
+        <source>Cancel</source>
+      </segment>
+    </unit>
+    <unit id="taskCardEdit">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:28,32</note>
+      </notes>
+      <segment>
+        <source>Edit</source>
+      </segment>
+    </unit>
+    <unit id="taskCardTitlePlaceholder">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:34</note>
+      </notes>
+      <segment>
+        <source>Title</source>
+      </segment>
+    </unit>
+    <unit id="taskCardDescriptionPlaceholder">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:37,38</note>
+      </notes>
+      <segment>
+        <source>Description (optional)</source>
+      </segment>
+    </unit>
+    <unit id="taskTagsPlaceholder">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:46</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:39</note>
+      </notes>
+      <segment>
+        <source>tags,comma,separated</source>
+      </segment>
+    </unit>
+    <unit id="taskCardSaveButton">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:48,49</note>
+      </notes>
+      <segment>
+        <source>Save</source>
+      </segment>
+    </unit>
+    <unit id="taskCardCancelButton">
+      <notes>
+        <note category="location">src/app/features/tasks/card/task-card.component.html:49,52</note>
+      </notes>
+      <segment>
+        <source>Cancel</source>
+      </segment>
+    </unit>
     <unit id="projectBoardDialogTitle">
       <notes>
-        <note category="location">src/app/features/tasks/task-create-dialog.component.ts:36,37</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:3,4</note>
       </notes>
       <segment>
         <source>Add task</source>
@@ -171,7 +474,7 @@
     </unit>
     <unit id="projectBoardTaskTitlePlaceholder">
       <notes>
-        <note category="location">src/app/features/tasks/task-create-dialog.component.ts:41,42</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:8,9</note>
       </notes>
       <segment>
         <source>New task title</source>
@@ -179,15 +482,23 @@
     </unit>
     <unit id="projectBoardTaskTitleMinLengthError">
       <notes>
-        <note category="location">src/app/features/tasks/task-create-dialog.component.ts:48,51</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:15,19</note>
       </notes>
       <segment>
         <source>Task title must be at least 3 characters.</source>
       </segment>
     </unit>
+    <unit id="projectBoardTaskDescriptionPlaceholder">
+      <notes>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:20,21</note>
+      </notes>
+      <segment>
+        <source>Description (optional)</source>
+      </segment>
+    </unit>
     <unit id="projectBoardTaskDueDatePastError">
       <notes>
-        <note category="location">src/app/features/tasks/task-create-dialog.component.ts:59,62</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:31,34</note>
       </notes>
       <segment>
         <source>Due date cannot be in the past for new tasks.</source>
@@ -195,7 +506,7 @@
     </unit>
     <unit id="projectBoardAddTaskButton">
       <notes>
-        <note category="location">src/app/features/tasks/task-create-dialog.component.ts:68,69</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:41,42</note>
       </notes>
       <segment>
         <source>Add task</source>
@@ -203,7 +514,7 @@
     </unit>
     <unit id="projectBoardCancelButton">
       <notes>
-        <note category="location">src/app/features/tasks/task-create-dialog.component.ts:69,71</note>
+        <note category="location">src/app/features/tasks/create-dialog/task-create-dialog.component.html:42,45</note>
       </notes>
       <segment>
         <source>Cancel</source>

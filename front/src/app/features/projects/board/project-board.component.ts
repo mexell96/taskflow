@@ -50,18 +50,22 @@ export class ProjectBoardComponent {
     effect(() => {
       const project = this.project();
       if (!project) {
-        this.title.setTitle('Project not found | Taskflow');
+        this.title.setTitle($localize`:@@projectBoardNotFoundTitle:Project not found | Taskflow`);
         this.meta.updateTag({
           name: 'description',
-          content: 'Requested Taskflow project was not found.',
+          content: $localize`:@@projectBoardNotFoundDescription:Requested Taskflow project was not found.`,
         });
         return;
       }
 
-      this.title.setTitle(`${project.name} | Taskflow`);
+      this.title.setTitle(
+        $localize`:@@projectBoardProjectTitle:${project.name}:projectName: | Taskflow`,
+      );
       this.meta.updateTag({
         name: 'description',
-        content: project.description?.trim() || `Task board for project ${project.name}.`,
+        content:
+          project.description?.trim() ||
+          $localize`:@@projectBoardMetaDescriptionFallback:Task board for project ${project.name}:projectName:.`,
       });
     });
   }

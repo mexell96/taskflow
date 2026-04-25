@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US" trgLang="ru">
+<?xml version='1.0' encoding='UTF-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-US" trgLang="ru">
   <file id="ngi18n" original="ng.template">
     <unit id="projectBoardBackToProjects">
       <segment>
@@ -155,6 +155,230 @@
       <segment>
         <source>Back to projects</source>
         <target>Назад к проектам</target>
+      </segment>
+    </unit>
+    <unit id="appNavHome">
+      <segment>
+        <source>Home</source>
+        <target>Главная</target>
+      </segment>
+    </unit>
+    <unit id="appNavProjects">
+      <segment>
+        <source>Projects</source>
+        <target>Проекты</target>
+      </segment>
+    </unit>
+    <unit id="appNavSettings">
+      <segment>
+        <source>Settings</source>
+        <target>Настройки</target>
+      </segment>
+    </unit>
+    <unit id="appNavAbout">
+      <segment>
+        <source>About</source>
+        <target>О приложении</target>
+      </segment>
+    </unit>
+    <unit id="aboutTitle">
+      <segment>
+        <source>About Taskflow</source>
+        <target>О Taskflow</target>
+      </segment>
+    </unit>
+    <unit id="aboutDescription">
+      <segment>
+        <source> Taskflow is a lightweight app for managing projects and tasks with a clear board-based workflow. </source>
+        <target>Taskflow — легкое приложение для управления проектами и задачами с понятным workflow на основе досок.</target>
+      </segment>
+    </unit>
+    <unit id="homeTitle">
+      <segment>
+        <source>Taskflow</source>
+        <target>Taskflow</target>
+      </segment>
+    </unit>
+    <unit id="homeSubtitle">
+      <segment>
+        <source>Simple task and project flow management in one place.</source>
+        <target>Простое управление проектами и задачами в одном месте.</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardCancelEditProject">
+      <segment>
+        <source>Cancel edit</source>
+        <target>Отменить редактирование</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardEditProject">
+      <segment>
+        <source>Edit project</source>
+        <target>Редактировать проект</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectNamePlaceholder">
+      <segment>
+        <source>Project name</source>
+        <target>Название проекта</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectDescriptionPlaceholder">
+      <segment>
+        <source>Description (optional)</source>
+        <target>Описание (необязательно)</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectAuthorPlaceholder">
+      <segment>
+        <source>Author (optional)</source>
+        <target>Автор (необязательно)</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardSaveProject">
+      <segment>
+        <source> Save project </source>
+        <target>Сохранить проект</target>
+      </segment>
+    </unit>
+    <unit id="taskPriorityLow">
+      <segment>
+        <source>low</source>
+        <target>низкий</target>
+      </segment>
+    </unit>
+    <unit id="taskPriorityMedium">
+      <segment>
+        <source>medium</source>
+        <target>средний</target>
+      </segment>
+    </unit>
+    <unit id="taskPriorityHigh">
+      <segment>
+        <source>high</source>
+        <target>высокий</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardNotFoundTitle">
+      <segment>
+        <source>Project not found | Taskflow</source>
+        <target>Проект не найден | Taskflow</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardNotFoundDescription">
+      <segment>
+        <source>Requested Taskflow project was not found.</source>
+        <target>Запрошенный проект Taskflow не найден.</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardProjectTitle">
+      <segment>
+        <source><ph id="0" equiv="projectName" disp="project.name" /> | Taskflow</source><target><ph id="0" equiv="projectName" disp="project.name" /> | Taskflow</target></segment>
+    </unit>
+    <unit id="projectBoardMetaDescriptionFallback">
+      <segment>
+        <source>Task board for project <ph id="0" equiv="projectName" disp="project.name" />.</source><target>Доска задач для проекта <ph id="0" equiv="projectName" disp="project.name" />.</target></segment>
+    </unit>
+    <unit id="projectListAuthorPlaceholder">
+      <segment>
+        <source>Author (optional)</source>
+        <target>Автор (необязательно)</target>
+      </segment>
+    </unit>
+    <unit id="projectListTitleMeta">
+      <segment>
+        <source>Projects | Taskflow</source>
+        <target>Проекты | Taskflow</target>
+      </segment>
+    </unit>
+    <unit id="projectListMetaDescription">
+      <segment>
+        <source>Taskflow project list: create and manage your projects.</source>
+        <target>Список проектов Taskflow: создавайте проекты и управляйте ими.</target>
+      </segment>
+    </unit>
+    <unit id="taskBoardColumnReview">
+      <segment>
+        <source>Review</source>
+        <target>Ревью</target>
+      </segment>
+    </unit>
+    <unit id="taskCardDueLabel">
+      <segment>
+        <source>due:</source>
+        <target>срок:</target>
+      </segment>
+    </unit>
+    <unit id="taskStatusBacklog">
+      <segment>
+        <source>backlog</source>
+        <target>бэклог</target>
+      </segment>
+    </unit>
+    <unit id="taskStatusInProgress">
+      <segment>
+        <source>in_progress</source>
+        <target>в работе</target>
+      </segment>
+    </unit>
+    <unit id="taskStatusReview">
+      <segment>
+        <source>review</source>
+        <target>на проверке</target>
+      </segment>
+    </unit>
+    <unit id="taskStatusDone">
+      <segment>
+        <source>done</source>
+        <target>сделано</target>
+      </segment>
+    </unit>
+    <unit id="taskCardCancelEdit">
+      <segment>
+        <source>Cancel</source>
+        <target>Отмена</target>
+      </segment>
+    </unit>
+    <unit id="taskCardEdit">
+      <segment>
+        <source>Edit</source>
+        <target>Редактировать</target>
+      </segment>
+    </unit>
+    <unit id="taskCardTitlePlaceholder">
+      <segment>
+        <source>Title</source>
+        <target>Название</target>
+      </segment>
+    </unit>
+    <unit id="taskCardDescriptionPlaceholder">
+      <segment>
+        <source>Description (optional)</source>
+        <target>Описание (необязательно)</target>
+      </segment>
+    </unit>
+    <unit id="taskTagsPlaceholder">
+      <segment>
+        <source>tags,comma,separated</source>
+        <target>теги,через,запятую</target>
+      </segment>
+    </unit>
+    <unit id="taskCardSaveButton">
+      <segment>
+        <source>Save</source>
+        <target>Сохранить</target>
+      </segment>
+    </unit>
+    <unit id="taskCardCancelButton">
+      <segment>
+        <source>Cancel</source>
+        <target>Отмена</target>
+      </segment>
+    </unit>
+    <unit id="projectBoardTaskDescriptionPlaceholder">
+      <segment>
+        <source>Description (optional)</source>
+        <target>Описание (необязательно)</target>
       </segment>
     </unit>
   </file>

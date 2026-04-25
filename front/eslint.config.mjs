@@ -7,6 +7,10 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    files: ['**/*.html'],
+    rules: {},
+  },
+  {
     files: ['**/*.{ts,tsx,js,mjs,cjs}'],
     plugins: {
       'simple-import-sort': simpleImportSort,

@@ -9,14 +9,24 @@
       <p class="muted">{{ p.author }}</p>
     }
     <button type="button" class="edit-project-btn" (click)="toggleProjectEdit()">
-      {{ isProjectEditOpen() ? 'Cancel edit' : 'Edit project' }}
+      @if (isProjectEditOpen()) {
+        <span i18n="@@projectBoardCancelEditProject">Cancel edit</span>
+      } @else {
+        <span i18n="@@projectBoardEditProject">Edit project</span>
+      }
     </button>
     @if (isProjectEditOpen()) {
       <form class="project-edit" [formGroup]="projectEditForm" (ngSubmit)="saveProjectEdit()">
-        <input formControlName="name" placeholder="Project name" />
-        <input formControlName="description" placeholder="Description (optional)" />
-        <input formControlName="author" placeholder="Author (optional)" />
-        <button type="submit" [disabled]="projectEditForm.invalid || projectEditForm.pristine">Save project</button>
+        <input formControlName="name" placeholder="Project name" i18n-placeholder="@@projectBoardProjectNamePlaceholder" />
+        <input
+          formControlName="description"
+          placeholder="Description (optional)"
+          i18n-placeholder="@@projectBoardProjectDescriptionPlaceholder"
+        />
+        <input formControlName="author" placeholder="Author (optional)" i18n-placeholder="@@projectBoardProjectAuthorPlaceholder" />
+        <button type="submit" [disabled]="projectEditForm.invalid || projectEditForm.pristine" i18n="@@projectBoardSaveProject">
+          Save project
+        </button>
       </form>
     }
 
@@ -29,9 +39,9 @@
     <div class="filters">
       <select [formControl]="priorityFilterControl">
         <option value="" i18n="@@projectBoardAllPriorities">All priorities</option>
-        <option value="low">low</option>
-        <option value="medium">medium</option>
-        <option value="high">high</option>
+        <option value="low" i18n="@@taskPriorityLow">low</option>
+        <option value="medium" i18n="@@taskPriorityMedium">medium</option>
+        <option value="high" i18n="@@taskPriorityHigh">high</option>
       </select>
       <select [formControl]="tagFilterControl">
         <option value="" i18n="@@projectBoardAllTags">All tags</option>

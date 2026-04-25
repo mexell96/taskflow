@@ -10,11 +10,16 @@ module.exports = {
     const scopedFiles = toScopedPaths(files, "front");
     if (!scopedFiles.length) return [];
 
-    const args = join(scopedFiles);
-    return [
-      `npm --prefix front exec -- eslint --fix --max-warnings=0 --config front/eslint.config.mjs -- ${args}`,
-      `npm --prefix front exec prettier --write -- ${args}`,
-    ];
+    const eslintFiles = scopedFiles.filter((file) => /\.(ts|js)$/.test(file));
+    const prettierArgs = join(scopedFiles);
+    const commands = [`npm --prefix front exec prettier --write -- ${prettierArgs}`];
+    if (eslintFiles.length) {
+      const eslintArgs = join(eslintFiles);
+      commands.unshift(
+        `npm --prefix front exec -- eslint --fix --max-warnings=0 --config front/eslint.config.mjs -- ${eslintArgs}`,
+      );
+    }
+    return commands;
   },
   "back/{src,test}/**/*.{ts,js}": (files) => {
     const scopedFiles = toScopedPaths(files, "back");

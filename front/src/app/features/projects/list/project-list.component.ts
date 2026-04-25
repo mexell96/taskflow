@@ -29,10 +29,10 @@ export class ProjectListComponent {
     (this.form.controls.name.dirty || this.form.controls.name.touched);
 
   constructor() {
-    this.title.setTitle('Projects | Taskflow');
+    this.title.setTitle($localize`:@@projectListTitleMeta:Projects | Taskflow`);
     this.meta.updateTag({
       name: 'description',
-      content: 'Taskflow project list: create and manage your projects.',
+      content: $localize`:@@projectListMetaDescription:Taskflow project list: create and manage your projects.`,
     });
   }
 
@@ -41,6 +41,7 @@ export class ProjectListComponent {
       return;
     }
     const v = this.form.getRawValue();
+    console.log('v', v);
     this.store.addProject(v.name, v.description || undefined, v.author || undefined);
     this.form.reset();
   }
