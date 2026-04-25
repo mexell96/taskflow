@@ -8,7 +8,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 
-import { TaskflowStore } from '@app/core/services/taskflow-store.service';
+import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
 import { TaskCardComponent, type TaskEditValue } from '../card/task-card.component';
 

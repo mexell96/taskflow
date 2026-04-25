@@ -102,6 +102,15 @@ npm run lint:fix
 - `'about'` route loads About with lazy `loadComponent`.
 - Wildcard route `**` redirects to `''`.
 
+## Service structure
+
+Keep services grouped by responsibility in `src/app/core/services`:
+
+- API clients in `src/app/core/services/api/project` and `src/app/core/services/api/task`
+- application state/orchestration in `src/app/core/services/store` (`taskflow-store.service.ts`)
+
+When creating a new service, place it in the matching folder from the start to avoid a flat `services` directory.
+
 ## Current docs roadmap note
 
 - Frontend checklist is maintained in `front/TODO.md`.

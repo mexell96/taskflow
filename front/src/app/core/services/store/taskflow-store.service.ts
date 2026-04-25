@@ -4,8 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import type { ApiError } from '@app/core/models/api-error.model';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
-import { ProjectApiService } from './project-api.service';
-import { TaskApiService } from './task-api.service';
+import { ProjectApiService } from '../api/project/project-api.service';
+import { TaskApiService } from '../api/task/task-api.service';
 
 const normalizeOptionalText = (value?: string): string | undefined => {
   const normalized = value?.trim();

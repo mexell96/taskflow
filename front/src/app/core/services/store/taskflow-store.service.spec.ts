@@ -5,8 +5,8 @@ import { vi } from 'vitest';
 import type { ApiError } from '@app/core/models/api-error.model';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
-import { ProjectApiService } from './project-api.service';
-import { TaskApiService } from './task-api.service';
+import { ProjectApiService } from '../api/project/project-api.service';
+import { TaskApiService } from '../api/task/task-api.service';
 import { TaskflowStore } from './taskflow-store.service';
 
 describe('TaskflowStore', () => {

@@ -12,7 +12,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 
-import { TaskflowStore } from '@app/core/services/taskflow-store.service';
+import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { TaskPriority } from '@app/shared/models/task.model';
 import { TaskBoardComponent } from '../../tasks/board/task-board.component';
 import {

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
-import { TaskflowStore } from '@app/core/services/taskflow-store.service';
+import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { Project } from '@app/shared/models/project.model';
 import { ProjectListComponent } from './project-list.component';
 
