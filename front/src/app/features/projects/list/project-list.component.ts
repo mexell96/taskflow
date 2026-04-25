@@ -40,9 +40,12 @@ export class ProjectListComponent {
     if (this.form.invalid) {
       return;
     }
-    const v = this.form.getRawValue();
-    console.log('v', v);
-    this.store.addProject(v.name, v.description || undefined, v.author || undefined);
+    const formValue = this.form.getRawValue();
+    this.store.addProject(
+      formValue.name,
+      formValue.description || undefined,
+      formValue.author || undefined,
+    );
     this.form.reset();
   }
 }

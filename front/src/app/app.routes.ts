@@ -5,29 +5,39 @@ import { projectExistsGuard } from './core/guards/project-exists.guard';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
+    loadComponent: () =>
+      import('./features/home/home.component').then(
+        (module) => module.HomeComponent,
+      ),
   },
   {
     path: 'projects',
     loadComponent: () =>
-      import('./features/projects/list/project-list.component').then((m) => m.ProjectListComponent),
+      import('./features/projects/list/project-list.component').then(
+        (module) => module.ProjectListComponent,
+      ),
   },
   {
     path: 'projects/:id',
     canActivate: [projectExistsGuard],
     loadComponent: () =>
       import('./features/projects/board/project-board.component').then(
-        (m) => m.ProjectBoardComponent,
+        (module) => module.ProjectBoardComponent,
       ),
   },
   {
     path: 'settings',
     loadComponent: () =>
-      import('./features/settings/settings.component').then((m) => m.SettingsComponent),
+      import('./features/settings/settings.component').then(
+        (module) => module.SettingsComponent,
+      ),
   },
   {
     path: 'about',
-    loadComponent: () => import('./features/about/about.component').then((m) => m.AboutComponent),
+    loadComponent: () =>
+      import('./features/about/about.component').then(
+        (module) => module.AboutComponent,
+      ),
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

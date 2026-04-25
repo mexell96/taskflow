@@ -43,36 +43,36 @@ export class TaskBoardComponent {
     const overdueOnly = this.overdueOnly();
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const byStatus = (s: TaskStatus) =>
+    const byStatus = (status: TaskStatus) =>
       this.store
         .tasks()
-        .filter((t) => {
-          if (t.projectId !== id || t.status !== s) {
+        .filter((task) => {
+          if (task.projectId !== id || task.status !== status) {
             return false;
           }
-          if (term && !t.title.toLowerCase().includes(term)) {
+          if (term && !task.title.toLowerCase().includes(term)) {
             return false;
           }
-          if (priority && t.priority !== priority) {
+          if (priority && task.priority !== priority) {
             return false;
           }
-          if (tag && !t.tags.some((item) => item.toLowerCase() === tag)) {
+          if (tag && !task.tags.some((item) => item.toLowerCase() === tag)) {
             return false;
           }
           if (!overdueOnly) {
             return true;
           }
-          if (!t.dueDate) {
+          if (!task.dueDate) {
             return false;
           }
-          const due = new Date(t.dueDate);
+          const due = new Date(task.dueDate);
           if (Number.isNaN(due.getTime())) {
             return false;
           }
           due.setHours(0, 0, 0, 0);
           return due < today;
         })
-        .sort((a, b) => a.order - b.order);
+        .sort((leftTask, rightTask) => leftTask.order - rightTask.order);
 
     return {
       backlog: byStatus('backlog'),

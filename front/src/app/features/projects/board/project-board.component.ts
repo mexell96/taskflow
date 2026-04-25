@@ -34,9 +34,12 @@ export class ProjectBoardComponent {
   private restoreFocusElement: HTMLElement | null = null;
   readonly store = inject(TaskflowStore);
 
-  private readonly paramId = toSignal(this.route.paramMap.pipe(map((p: ParamMap) => p.get('id'))), {
+  private readonly paramId = toSignal(
+    this.route.paramMap.pipe(map((paramMap: ParamMap) => paramMap.get('id'))),
+    {
     initialValue: null,
-  });
+    },
+  );
 
   constructor() {
     effect(() => {
@@ -138,12 +141,12 @@ export class ProjectBoardComponent {
   }
 
   createTask(value: CreateTaskDialogValue) {
-    const p = this.project();
-    if (!p) {
+    const project = this.project();
+    if (!project) {
       return;
     }
     this.store.addTask(
-      p.id,
+      project.id,
       value.title,
       value.priority,
       value.dueDate,
