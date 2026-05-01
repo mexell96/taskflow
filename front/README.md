@@ -114,4 +114,4 @@ When creating a new service, place it in the matching folder from the start to a
 ## Current docs roadmap note
 
 - Frontend checklist is maintained in `front/TODO.md`.
-- Sticky top menu is tracked as **Stage 14** in `front/TODO.md`.
+- Sticky top menu (**Stage 14**) is implemented in `src/app/app.html` and `src/app/app.scss` with global route navigation.
