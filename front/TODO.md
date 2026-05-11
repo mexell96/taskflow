@@ -507,12 +507,12 @@ Nest обычно возвращает в `error.error.message` массив с�
 
 ### 15.6. Тесты и документация
 
-- [ ] Добавить/обновить unit/component тесты минимум для двух ролей (например `viewer` и `editor`):
+- [x] Добавить/обновить unit/component тесты минимум для двух ролей (например `viewer` и `editor`):
   - `ProjectBoardComponent` (кнопки edit/add task скрыты/disabled)
   - `TaskCardComponent` (select статуса и edit-flow)
   - `TaskBoardComponent` (drag-drop выключен)
-- [ ] Если toasts участвуют в ошибках: проверить, что на ошибки API появляется корректное уведомление.
-- [ ] Обновить `front/README.md` под новые сущности сервисов:
+- [x] Если toasts участвуют в ошибках: проверить, что на ошибки API появляется корректное уведомление.
+- [x] Обновить `front/README.md` под новые сущности сервисов:
   - куда класть `AuthApiService`/`AuthStore`
   - где разместить `ToastService`
 

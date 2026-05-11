@@ -7,6 +7,7 @@ import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
 import { ProjectApiService } from '../api/project/project-api.service';
 import { TaskApiService } from '../api/task/task-api.service';
+import { ToastService } from '../toast/toast.service';
 import { TaskflowStore } from './taskflow-store.service';
 
 describe('TaskflowStore', () => {
@@ -29,7 +30,15 @@ describe('TaskflowStore', () => {
     },
   ];
 
+  const toast = {
+    showSuccess: vi.fn(),
+    showError: vi.fn(),
+  };
+
   beforeEach(() => {
+    toast.showError.mockReset();
+    toast.showSuccess.mockReset();
+
     projectApi = {
       getProjects: vi.fn(),
       createProject: vi.fn(),
@@ -88,6 +97,7 @@ describe('TaskflowStore', () => {
     TestBed.configureTestingModule({
       providers: [
         TaskflowStore,
+        { provide: ToastService, useValue: toast },
         { provide: ProjectApiService, useValue: projectApi as unknown as ProjectApiService },
         { provide: TaskApiService, useValue: taskApi as unknown as TaskApiService },
       ],
@@ -311,6 +321,7 @@ describe('TaskflowStore', () => {
       'Failed to create task: 400 Validation failed',
       '/api/tasks',
     );
+    expect(toast.showError).toHaveBeenCalledWith('Validation failed');
     logSpy.mockRestore();
   });
 });

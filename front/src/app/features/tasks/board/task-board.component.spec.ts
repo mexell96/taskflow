@@ -11,6 +11,24 @@ import type { Task } from '@app/shared/models/task.model';
 import { TaskBoardComponent } from './task-board.component';
 
 describe('TaskBoardComponent', () => {
+  const defaultPermissions = {
+    canViewProject: true,
+    canCreateTask: true,
+    canEditTask: true,
+    canChangeTaskStatus: true,
+    canMoveTask: true,
+    canEditProject: true,
+  };
+
+  const viewerPermissions = {
+    canViewProject: true,
+    canCreateTask: false,
+    canEditTask: false,
+    canChangeTaskStatus: false,
+    canMoveTask: false,
+    canEditProject: false,
+  };
+
   const projectsSignal = signal<Project[]>([
     {
       id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
@@ -42,6 +60,7 @@ describe('TaskBoardComponent', () => {
   const setTaskStatus = vi.fn();
   const moveTask = vi.fn();
   const announce = vi.fn();
+  const permissionsSignal = signal(defaultPermissions);
 
   beforeEach(async () => {
     setTaskStatus.mockReset();
@@ -54,14 +73,7 @@ describe('TaskBoardComponent', () => {
         {
           provide: AuthStore,
           useValue: {
-            permissions: signal({
-              canViewProject: true,
-              canCreateTask: true,
-              canEditTask: true,
-              canChangeTaskStatus: true,
-              canMoveTask: true,
-              canEditProject: true,
-            }),
+            permissions: permissionsSignal,
           },
         },
         {
@@ -102,6 +114,29 @@ describe('TaskBoardComponent', () => {
 
     expect(moveTask).toHaveBeenCalledWith('task-1', 'done', 10);
     expect(announce).toHaveBeenCalledWith('Task First moved to Done.', 'polite');
+  });
+
+  it('does not move tasks and does not announce for viewer role', () => {
+    permissionsSignal.set(viewerPermissions);
+
+    const fixture = TestBed.createComponent(TaskBoardComponent);
+    fixture.componentRef.setInput('projectId', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance;
+    const backlogTasks = component.columnTasks().backlog;
+    const targetDoneTasks = component.columnTasks().done;
+    const event = {
+      previousContainer: { data: backlogTasks },
+      container: { data: targetDoneTasks },
+      previousIndex: 0,
+      currentIndex: 0,
+    } as CdkDragDrop<Task[]>;
+
+    component.onDrop(event, 'done');
+
+    expect(moveTask).not.toHaveBeenCalled();
+    expect(announce).not.toHaveBeenCalled();
   });
 
   it('does not announce for noop drop in same position', () => {

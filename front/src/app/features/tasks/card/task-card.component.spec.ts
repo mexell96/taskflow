@@ -8,6 +8,15 @@ import type { Task } from '@app/shared/models/task.model';
 import { TaskCardComponent } from './task-card.component';
 
 describe('TaskCardComponent', () => {
+  const defaultPermissions = {
+    canViewProject: true,
+    canCreateTask: true,
+    canEditTask: true,
+    canChangeTaskStatus: true,
+    canMoveTask: true,
+    canEditProject: true,
+  };
+
   const task: Task = {
     id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
     projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
@@ -18,15 +27,10 @@ describe('TaskCardComponent', () => {
     order: 0,
   };
 
+  let permissionsSignal = signal(defaultPermissions);
+
   beforeEach(async () => {
-    const permissionsSignal = signal({
-      canViewProject: true,
-      canCreateTask: true,
-      canEditTask: true,
-      canChangeTaskStatus: true,
-      canMoveTask: true,
-      canEditProject: true,
-    });
+    permissionsSignal = signal(defaultPermissions);
 
     await TestBed.configureTestingModule({
       imports: [TaskCardComponent],
@@ -72,5 +76,38 @@ describe('TaskCardComponent', () => {
     host.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
     fixture.detectChanges();
     expect(document.activeElement).toBe(select);
+  });
+
+  it('hides edit and disables status select for viewer role', () => {
+    permissionsSignal.set({
+      canViewProject: true,
+      canCreateTask: false,
+      canEditTask: false,
+      canChangeTaskStatus: false,
+      canMoveTask: false,
+      canEditProject: false,
+    });
+    expect(permissionsSignal().canChangeTaskStatus).toBe(false);
+
+    const fixture = TestBed.createComponent(TaskCardComponent);
+    fixture.componentRef.setInput('task', task);
+    fixture.detectChanges();
+
+    const emitSpy = vi.spyOn(fixture.componentInstance.statusChange, 'emit');
+    expect(fixture.componentInstance.canChangeTaskStatus()).toBe(false);
+    const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
+
+    select.value = 'done';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    const editButton = fixture.nativeElement.querySelector('button.edit-btn');
+    expect(editButton).toBeNull();
+
+    const host = fixture.nativeElement as HTMLElement;
+    host.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    fixture.detectChanges();
+    expect(document.activeElement).not.toBe(select);
   });
 });

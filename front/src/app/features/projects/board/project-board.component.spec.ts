@@ -12,6 +12,15 @@ import type { Task } from '@app/shared/models/task.model';
 import { ProjectBoardComponent } from './project-board.component';
 
 describe('ProjectBoardComponent', () => {
+  const defaultPermissions = {
+    canViewProject: true,
+    canCreateTask: true,
+    canEditTask: true,
+    canChangeTaskStatus: true,
+    canMoveTask: true,
+    canEditProject: false,
+  };
+
   const projectsSignal = signal<Project[]>([
     {
       id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
@@ -25,6 +34,8 @@ describe('ProjectBoardComponent', () => {
   const setTaskStatus = vi.fn();
   const updateProject = vi.fn();
 
+  const permissionsSignal = signal(defaultPermissions);
+
   beforeEach(async () => {
     addTask.mockReset();
     loadTasks.mockReset();
@@ -37,14 +48,7 @@ describe('ProjectBoardComponent', () => {
         {
           provide: AuthStore,
           useValue: {
-            permissions: signal({
-              canViewProject: true,
-              canCreateTask: true,
-              canEditTask: true,
-              canChangeTaskStatus: true,
-              canMoveTask: true,
-              canEditProject: true,
-            }),
+            permissions: permissionsSignal,
           },
         },
         {
@@ -146,6 +150,15 @@ describe('ProjectBoardComponent', () => {
   });
 
   it('saves project edit with optional author', () => {
+    permissionsSignal.set({
+      canViewProject: true,
+      canCreateTask: true,
+      canEditTask: true,
+      canChangeTaskStatus: true,
+      canMoveTask: true,
+      canEditProject: true,
+    });
+
     const fixture = TestBed.createComponent(ProjectBoardComponent);
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
@@ -175,5 +188,34 @@ describe('ProjectBoardComponent', () => {
       'Updated description',
       'Updated author',
     );
+  });
+
+  it('hides add/edit buttons for viewer role', () => {
+    permissionsSignal.set({
+      canViewProject: true,
+      canCreateTask: false,
+      canEditTask: false,
+      canChangeTaskStatus: false,
+      canMoveTask: false,
+      canEditProject: false,
+    });
+
+    const fixture = TestBed.createComponent(ProjectBoardComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+
+    expect(host.querySelector('.open-add-task')).toBeNull();
+    expect(host.querySelector('.edit-project-btn')).toBeNull();
+  });
+
+  it('shows add task but hides edit project for editor role', () => {
+    permissionsSignal.set(defaultPermissions);
+
+    const fixture = TestBed.createComponent(ProjectBoardComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+
+    expect(host.querySelector('.open-add-task')).not.toBeNull();
+    expect(host.querySelector('.edit-project-btn')).toBeNull();
   });
 });

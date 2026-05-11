@@ -107,7 +107,7 @@ npm run lint:fix
 Keep services grouped by responsibility in `src/app/core/services`:
 
 - API clients in `src/app/core/services/api/project` and `src/app/core/services/api/task`
-- Auth clients / auth state in `src/app/core/services/api/auth` and `src/app/core/services/auth`
+- Auth clients / auth state in `src/app/core/services/api/auth` and `src/app/core/services/store/auth-store.service.ts`
 - UI notifications (toasts) in `src/app/core/services/toast`
 - application state/orchestration in `src/app/core/services/store` (`taskflow-store.service.ts`)
 
