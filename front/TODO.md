@@ -426,6 +426,100 @@
 
 ---
 
+## Этап 15. На вырост (post-MVP, front)
+
+Опциональный этап “на улучшение UX и зрелость”: унифицировать уведомления (toasts), подготовиться к ACL/RBAC и сделать поведение при валидационных ошибках (class-validator) предсказуемым.
+
+### 15.0. Целевой результат
+
+- [ ] Пользователь видит понятное уведомление об ошибках API (валидация / 4xx / 5xx) через toasts (Material).
+- [ ] UI “гейтится” по ролям: скрываем/отключаем действия (создание/редактирование/смена статуса/DnD), когда роль не имеет прав.
+- [ ] При получении ответов от Nest с `class-validator` фронт корректно конвертирует сообщения в строку toast’а.
+
+### 15.1. Material-toasts (подключение)
+
+- [ ] ✅ Зависимости Material подключены:
+  - **Команда:** `ng add @angular/material`
+  - **Что делает:** добавляет `@angular/material` и обновляет конфигурацию стилей/анимаций под Material.
+  - **Где:** каталог `front/`.
+  - **Успех:** собирается без ошибок, в проекте доступны компоненты Material.
+- [ ] ✅ Добавлена поддержка анимаций для Material:
+  - В `src/app/app.config.ts` добавьте провайдер `provideAnimations()` (для SSR на сервере можно использовать noop-режим).
+- [ ] **Частая ошибка:** “No provider for animations” / ошибки анимаций — проверить, что `provideAnimations()` действительно добавлен и импорт корректен.
+
+### 15.2. ToastService (обёртка)
+
+- [ ] Создать сервис-обёртку, например `src/app/core/services/toast/toast.service.ts`, который предоставляет:
+  - `showSuccess(message: string)`
+  - `showError(message: string)`
+- [ ] Подключить `MatSnackBar` внутри сервиса (внутри root).
+- [ ] Интегрировать показ ошибок в текущую точку:
+  - либо в `TaskflowStore.logApiError(...)`,
+  - либо в едином месте вокруг `apiErrorInterceptor`/`apiErrorMessage` (оставив banner как резерв, если хотите).
+- [ ] **Решение для учебного проекта:** минимизировать дублирование UI — либо “banner заменяем toast”, либо “banner остаётся + toast показываем один раз”.
+
+### 15.3. Validation errors mapping (Nest `class-validator`)
+
+Nest обычно возвращает в `error.error.message` массив строк (а не одну строку). Фронту нужно маппить это в `ApiError.message: string`.
+
+- [ ] Обновить `src/app/core/interceptors/api-error.interceptor.ts`:
+  - если `error.error.message` — `string[]`, превратить в строку (например `message[0]` или `message.join(', ')`);
+  - если `message` — массив объектов/сложный формат — извлечь наиболее читаемое поле (по ответу вашего back).
+- [ ] Сохранить текущие `console.log` в интерсепторе (они в проекте уже используются как учебный инструмент).
+- [ ] Добавить тест на маппинг валидационных ошибок (unit) для интерсептора/сервиса (если тесты на интерсептор ещё отсутствуют).
+
+### 15.4. ACL на базе API (ожидаемый контракт)
+
+Раз бэкенд ACL пока “на вырост”, фронт планирует интеграцию так:
+
+- [ ] Добавить ожидаемый endpoint:
+  - `GET /api/auth/me` → JSON с ролью (пример): `{ "role": "viewer" | "editor" | "admin" }`
+- [ ] Реализовать на фронте:
+  - `AuthApiService` (вызов `/api/auth/me`)
+  - `AuthStore` (signals: хранит роль/permissions и вычисляет доступы)
+- [ ] Зафиксировать карту прав (минимум):
+  - `canViewProject`
+  - `canCreateTask`
+  - `canEditTask`
+  - `canChangeTaskStatus`
+  - `canMoveTask`
+  - `canEditProject`
+- [ ] **Решение для этапа:** можно начать с RBAC “по роли глобально”, без пер-проектных ограничений — чтобы не раздувать первую интеграцию.
+
+### 15.5. RBAC/UI gating (где именно ограничивать)
+
+Ограничивайте действия в тех точках, где сейчас выполняются операции:
+
+- [ ] `projects/:id`:
+  - guard рядом с `projectExistsGuard`, который проверяет `canViewProject` (и при отказе редиректит/показывает “not authorized”).
+- [ ] `ProjectBoardComponent` (`src/app/features/projects/board/project-board.component.*`):
+  - скрыть/disable “Edit project”
+  - скрыть/disable “Add task”
+  - не открывать project-edit form при отсутствии прав.
+- [ ] `TaskCardComponent` (`src/app/features/tasks/card/task-card.component.*`):
+  - отключить/скрыть `<select>` статуса при `!canChangeTaskStatus`
+  - отключить/скрыть кнопку `Edit` и save-flow при `!canEditTask`.
+- [ ] `TaskBoardComponent` (`src/app/features/tasks/board/task-board.component.*`):
+  - отключить drag-drop при `!canMoveTask` (например через `[cdkDragDisabled]`/`[cdkDropListDisabled]` в шаблоне),
+  - дополнительно защитить `onDrop(...)` логически (чтобы “клиентская блокировка” не была единственной линией).
+- [ ] `SettingsComponent`:
+  - минимально показать текущую роль и/или “права в режиме viewer/editor”.
+
+### 15.6. Тесты и документация
+
+- [ ] Добавить/обновить unit/component тесты минимум для двух ролей (например `viewer` и `editor`):
+  - `ProjectBoardComponent` (кнопки edit/add task скрыты/disabled)
+  - `TaskCardComponent` (select статуса и edit-flow)
+  - `TaskBoardComponent` (drag-drop выключен)
+- [ ] Если toasts участвуют в ошибках: проверить, что на ошибки API появляется корректное уведомление.
+- [ ] Обновить `front/README.md` под новые сущности сервисов:
+  - куда класть `AuthApiService`/`AuthStore`
+  - где разместить `ToastService`
+
+**Критерий этапа 15:** при разных ролях UI не позволяет совершать запрещённые действия, а ошибки API (включая validation) доходят до пользователя понятным уведомлением.
+
+---
+
 ## Структура папок (ориентир)
 
 - [x] ✅ `src/app/core/` — HTTP, interceptors, guards, глобальные singleton-сервисы

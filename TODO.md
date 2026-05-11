@@ -188,7 +188,9 @@ flowchart LR
 - ✅ **12** PWA
 - ✅ **13** Доступность
 - ✅ **14** Липкое верхнее меню приложения (global sticky header в `front/`, навигация по основным маршрутам)
-- **15** На вырост: ACL, toasts, история, Nest + WebSocket и др. — опциональный post-MVP этап, см. [back/TODO.md](back/TODO.md) §5 «На вырост»; **первый запланированный подшаг** (мини-спека): §5.1 **DTO + `class-validator`**, затем по приоритету БД или JWT.
+- **15** На вырост: ACL/RBAC, toasts, история, Nest + WebSocket и др. — опциональный post-MVP этап, см. [back/TODO.md](back/TODO.md) §5 «На вырост».
+  - **Фронт-часть:** Этап 15 в [front/TODO.md](front/TODO.md) — toasts (Material), валидационные ошибки (mapping `class-validator`) и UI-gating по ролям на основе `GET /api/auth/me`.
+  - **Первые подшаги (бекенд):** §5.1 **DTO + `class-validator`**, затем по приоритету БД или JWT.
 
 **Ориентир папок во `front/`:** `core/`, `shared/`, `features/projects/`, `features/tasks/`; внутри фич допустимы подпапки по компонентам, например `projects/{list,board,card}` и `tasks/{board,card,create-dialog}` — см. [front/TODO.md](front/TODO.md).
 
