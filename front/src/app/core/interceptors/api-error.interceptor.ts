@@ -11,13 +11,25 @@ import { catchError, tap, throwError } from 'rxjs';
 import type { ApiError } from '@app/core/models/api-error.model';
 
 function toApiError(error: HttpErrorResponse): ApiError {
-  const serverMessage =
-    typeof error.error === 'object' &&
-    error.error !== null &&
-    'message' in error.error &&
-    typeof (error.error as { message?: unknown }).message === 'string'
-      ? (error.error as { message: string }).message
+  const serverMessageRaw =
+    typeof error.error === 'object' && error.error !== null
+      ? (error.error as { message?: unknown }).message
       : undefined;
+
+  const serverMessage =
+    typeof serverMessageRaw === 'string'
+      ? serverMessageRaw
+      : Array.isArray(serverMessageRaw)
+        ? serverMessageRaw
+            .flatMap((messagePart) =>
+              typeof messagePart === 'string'
+                ? [messagePart]
+                : typeof (messagePart as { message?: unknown } | null)?.message === 'string'
+                  ? [(messagePart as { message: string }).message]
+                  : [],
+            )
+            .join(', ')
+        : undefined;
 
   return {
     status: error.status,

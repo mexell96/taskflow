@@ -70,6 +70,31 @@ describe('ProjectApiService', () => {
     });
   });
 
+  it('maps HTTP errors with string[] message to ApiError via interceptor', () => {
+    let receivedError: ApiError | undefined;
+
+    service.getProjects().subscribe({
+      next: () => {
+        throw new Error('Expected request to fail');
+      },
+      error: (error: ApiError) => {
+        receivedError = error;
+      },
+    });
+
+    const req = httpMock.expectOne('/api/projects');
+    req.flush(
+      { message: ['Validation failed', 'Second message'] },
+      { status: 400, statusText: 'Bad Request' },
+    );
+
+    expect(receivedError).toEqual({
+      status: 400,
+      message: 'Validation failed, Second message',
+      url: '/api/projects',
+    });
+  });
+
   it('reads projects from TransferState cache on browser', () => {
     const transferState = TestBed.inject(TransferState);
     const stateKey =

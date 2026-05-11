@@ -166,6 +166,21 @@ describe('TaskflowStore', () => {
   it('creates task with computed order and updates store on success', () => {
     const store = TestBed.inject(TaskflowStore);
 
+    taskApi.getTasks.mockReturnValue(
+      of([
+        {
+          id: 'existing-task',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Existing task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 20,
+        },
+      ]),
+    );
+    store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+
     store.addTask('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '  New task  ', 'high');
 
     expect(taskApi.createTask).toHaveBeenCalledWith({
@@ -175,6 +190,7 @@ describe('TaskflowStore', () => {
       dueDate: undefined,
       status: 'backlog',
       tags: [],
+      description: undefined,
       order: 30,
     });
     expect(store.tasks().at(-1)).toEqual(
@@ -184,6 +200,21 @@ describe('TaskflowStore', () => {
 
   it('updates task status using patch endpoint response', () => {
     const store = TestBed.inject(TaskflowStore);
+
+    taskApi.getTasks.mockReturnValue(
+      of([
+        {
+          id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Backlog task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 0,
+        },
+      ]),
+    );
+    store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
     store.setTaskStatus('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'in_progress');
 
@@ -199,6 +230,21 @@ describe('TaskflowStore', () => {
   it('moves task with status and order via patch endpoint', async () => {
     const store = TestBed.inject(TaskflowStore);
 
+    taskApi.getTasks.mockReturnValue(
+      of([
+        {
+          id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Backlog task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 0,
+        },
+      ]),
+    );
+    store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+
     store.moveTask('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'done', 55);
     await Promise.resolve();
 
@@ -210,6 +256,30 @@ describe('TaskflowStore', () => {
 
   it('queues moveTask patch requests sequentially', async () => {
     const store = TestBed.inject(TaskflowStore);
+
+    taskApi.getTasks.mockReturnValue(
+      of([
+        {
+          id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Backlog task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 0,
+        },
+        {
+          id: 'c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Second backlog task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 0,
+        },
+      ]),
+    );
+    store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
     store.moveTask('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'done', 30);
     store.moveTask('c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13', 'backlog', 5);

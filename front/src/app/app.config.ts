@@ -1,10 +1,12 @@
 import { HttpRequest, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {
   provideClientHydration,
   withEventReplay,
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 
@@ -14,6 +16,8 @@ import { apiErrorInterceptor } from './core/interceptors/api-error.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    importProvidersFrom(MatSnackBarModule),
+    provideAnimations(),
     provideHttpClient(withFetch(), withInterceptors([apiErrorInterceptor])),
     provideRouter(routes),
     provideClientHydration(

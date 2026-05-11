@@ -6,6 +6,7 @@ import type { Project } from '@app/shared/models/project.model';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
 import { ProjectApiService } from '../api/project/project-api.service';
 import { TaskApiService } from '../api/task/task-api.service';
+import { ToastService } from '../toast/toast.service';
 
 const normalizeOptionalText = (value?: string): string | undefined => {
   const normalized = value?.trim();
@@ -16,6 +17,7 @@ const normalizeOptionalText = (value?: string): string | undefined => {
 export class TaskflowStore {
   private readonly projectApi = inject(ProjectApiService);
   private readonly taskApi = inject(TaskApiService);
+  private readonly toast = inject(ToastService);
   private readonly _projects = signal<Project[]>([]);
   private readonly _tasks = signal<Task[]>([]);
   private readonly _apiErrorMessage = signal<string | null>(null);
@@ -36,10 +38,12 @@ export class TaskflowStore {
   private logApiError(context: string, error: unknown) {
     if (this.isApiError(error)) {
       console.log(`${context}: ${error.status} ${error.message}`, error.url);
+      this.toast.showError(error.message);
       this.setApiErrorMessage(error.message);
       return;
     }
     console.log(context, error);
+    this.toast.showError('Unexpected API error');
     this.setApiErrorMessage('Unexpected API error');
   }
 
