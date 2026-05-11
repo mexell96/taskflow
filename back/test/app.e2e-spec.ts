@@ -1,10 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
-import { App } from 'supertest/types';
+import type { App } from 'supertest/types';
+
+import type { Project } from './../src/domain.model';
 import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('App (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeEach(async () => {
@@ -13,17 +15,31 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('api');
     await app.init();
-  });
-
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
   });
 
   afterEach(async () => {
     await app.close();
+  });
+
+  it('GET /api/health returns ok', () => {
+    return request(app.getHttpServer())
+      .get('/api/health')
+      .expect(200)
+      .expect({ status: 'ok' });
+  });
+
+  it('GET /api/projects returns seeded demo project', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/api/projects')
+      .expect(200);
+
+    const projects = response.body as Project[];
+    expect(Array.isArray(projects)).toBe(true);
+    const demo = projects.find(
+      (project) => project.id === 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+    );
+    expect(demo?.name).toBe('Demo project');
   });
 });

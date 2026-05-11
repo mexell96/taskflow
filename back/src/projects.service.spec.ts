@@ -82,4 +82,16 @@ describe('ProjectsService', () => {
       service.createProject({ name: '   ', author: 'Jane' }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
+
+  it('returns all projects from getProjects', async () => {
+    const projects = await service.getProjects();
+    expect(projects).toHaveLength(1);
+    expect(projects[0].id).toBe('project-1');
+  });
+
+  it('throws when patch sets empty name', async () => {
+    await expect(
+      service.patchProject('project-1', { name: '   ' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
 });

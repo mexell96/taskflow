@@ -30,34 +30,34 @@ describe('projectExistsGuard', () => {
     });
   });
 
-  it('allows when project id exists in store', () => {
+  it('allows when project id exists in store', async () => {
     const route = { paramMap: convertToParamMap({ id: 'known-id' }) } as Pick<
       ActivatedRouteSnapshot,
       'paramMap'
     > as ActivatedRouteSnapshot;
 
-    const result = TestBed.runInInjectionContext(() => projectExistsGuard(route, {} as never));
+    const result = await TestBed.runInInjectionContext(() => projectExistsGuard(route, {} as never));
 
     expect(result).toBe(true);
   });
 
-  it('redirects to /projects when id is missing', () => {
+  it('redirects to /projects when id is missing', async () => {
     const route = { paramMap: convertToParamMap({}) } as Pick<ActivatedRouteSnapshot, 'paramMap'> as ActivatedRouteSnapshot;
     const router = TestBed.inject(Router);
 
-    const result = TestBed.runInInjectionContext(() => projectExistsGuard(route, {} as never));
+    const result = await TestBed.runInInjectionContext(() => projectExistsGuard(route, {} as never));
 
     expect(result).toEqual(router.createUrlTree(['/projects']));
   });
 
-  it('redirects to /projects when project is not in store', () => {
+  it('redirects to /projects when project is not in store', async () => {
     const route = { paramMap: convertToParamMap({ id: 'missing-id' }) } as Pick<
       ActivatedRouteSnapshot,
       'paramMap'
     > as ActivatedRouteSnapshot;
     const router = TestBed.inject(Router);
 
-    const result = TestBed.runInInjectionContext(() => projectExistsGuard(route, {} as never));
+    const result = await TestBed.runInInjectionContext(() => projectExistsGuard(route, {} as never));
 
     expect(result).toEqual(router.createUrlTree(['/projects']));
   });

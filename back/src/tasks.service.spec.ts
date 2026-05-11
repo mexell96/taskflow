@@ -108,6 +108,12 @@ describe('TasksService', () => {
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
+  it('throws when patch sets invalid priority', async () => {
+    await expect(
+      service.patchTask('task-1', { priority: 'invalid' as never }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
   it('throws when patch moves task to unknown project', async () => {
     await expect(
       service.patchTask('task-1', { projectId: 'no-such-project' }),

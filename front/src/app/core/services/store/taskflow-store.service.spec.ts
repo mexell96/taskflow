@@ -111,6 +111,22 @@ describe('TaskflowStore', () => {
     expect(store.projects()).toEqual(loadedProjects);
   });
 
+  it('shows unexpected toast when loadProjects fails with non-ApiError', () => {
+    projectApi.getProjects.mockReturnValue(throwError(() => new Error('offline')));
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        TaskflowStore,
+        { provide: ToastService, useValue: toast },
+        { provide: ProjectApiService, useValue: projectApi as unknown as ProjectApiService },
+        { provide: TaskApiService, useValue: taskApi as unknown as TaskApiService },
+      ],
+    });
+    TestBed.inject(TaskflowStore);
+
+    expect(toast.showError).toHaveBeenCalledWith('Unexpected API error');
+  });
+
   it('loads tasks for a project and replaces stale tasks for same project', () => {
     const store = TestBed.inject(TaskflowStore);
     const apiTasks: Task[] = [

@@ -49,5 +49,7 @@ test('user can create project from list page', async ({ page }) => {
 
   await expect(page.getByRole('link', { name: 'New E2E Project' })).toBeVisible();
   await expect(page.getByText('Created in Playwright')).toBeVisible();
-  await expect(page.getByText('John Doe')).toBeVisible();
+  await expect(
+    page.getByRole('article').filter({ hasText: 'New E2E Project' }).getByText('John Doe'),
+  ).toBeVisible();
 });
