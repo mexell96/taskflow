@@ -433,7 +433,7 @@
 ### 15.0. Целевой результат
 
 - [x] Пользователь видит понятное уведомление об ошибках API (валидация / 4xx / 5xx) через toasts (Material).
-- [ ] UI “гейтится” по ролям: скрываем/отключаем действия (создание/редактирование/смена статуса/DnD), когда роль не имеет прав.
+- [x] UI “гейтится” по ролям: скрываем/отключаем действия (создание/редактирование/смена статуса/DnD), когда роль не имеет прав.
 - [x] При получении ответов от Nest с `class-validator` фронт корректно конвертирует сообщения в строку toast’а.
 
 ### 15.1. Material-toasts (подключение)
@@ -445,7 +445,7 @@
 - **Успех:** собирается без ошибок, в проекте доступны компоненты Material.
 - [x] ✅ Добавлена поддержка анимаций для Material:
   - В `src/app/app.config.ts` добавьте провайдер `provideAnimations()` (для SSR на сервере можно использовать noop-режим).
-- [ ] **Частая ошибка:** “No provider for animations” / ошибки анимаций — проверить, что `provideAnimations()` действительно добавлен и импорт корректен.
+- [x] **Частая ошибка:** “No provider for animations” / ошибки анимаций — проверить, что `provideAnimations()` действительно добавлен и импорт корректен.
 
 ### 15.2. ToastService (обёртка)
 
@@ -472,37 +472,37 @@ Nest обычно возвращает в `error.error.message` массив с�
 
 Раз бэкенд ACL пока “на вырост”, фронт планирует интеграцию так:
 
-- [ ] Добавить ожидаемый endpoint:
+- [x] Добавить ожидаемый endpoint:
   - `GET /api/auth/me` → JSON с ролью (пример): `{ "role": "viewer" | "editor" | "admin" }`
-- [ ] Реализовать на фронте:
+- [x] Реализовать на фронте:
   - `AuthApiService` (вызов `/api/auth/me`)
   - `AuthStore` (signals: хранит роль/permissions и вычисляет доступы)
-- [ ] Зафиксировать карту прав (минимум):
+- [x] Зафиксировать карту прав (минимум):
   - `canViewProject`
   - `canCreateTask`
   - `canEditTask`
   - `canChangeTaskStatus`
   - `canMoveTask`
   - `canEditProject`
-- [ ] **Решение для этапа:** можно начать с RBAC “по роли глобально”, без пер-проектных ограничений — чтобы не раздувать первую интеграцию.
+- [x] **Решение для этапа:** можно начать с RBAC “по роли глобально”, без пер-проектных ограничений — чтобы не раздувать первую интеграцию.
 
 ### 15.5. RBAC/UI gating (где именно ограничивать)
 
 Ограничивайте действия в тех точках, где сейчас выполняются операции:
 
-- [ ] `projects/:id`:
+- [x] `projects/:id`:
   - guard рядом с `projectExistsGuard`, который проверяет `canViewProject` (и при отказе редиректит/показывает “not authorized”).
-- [ ] `ProjectBoardComponent` (`src/app/features/projects/board/project-board.component.*`):
+- [x] `ProjectBoardComponent` (`src/app/features/projects/board/project-board.component.*`):
   - скрыть/disable “Edit project”
   - скрыть/disable “Add task”
   - не открывать project-edit form при отсутствии прав.
-- [ ] `TaskCardComponent` (`src/app/features/tasks/card/task-card.component.*`):
+- [x] `TaskCardComponent` (`src/app/features/tasks/card/task-card.component.*`):
   - отключить/скрыть `<select>` статуса при `!canChangeTaskStatus`
   - отключить/скрыть кнопку `Edit` и save-flow при `!canEditTask`.
-- [ ] `TaskBoardComponent` (`src/app/features/tasks/board/task-board.component.*`):
+- [x] `TaskBoardComponent` (`src/app/features/tasks/board/task-board.component.*`):
   - отключить drag-drop при `!canMoveTask` (например через `[cdkDragDisabled]`/`[cdkDropListDisabled]` в шаблоне),
   - дополнительно защитить `onDrop(...)` логически (чтобы “клиентская блокировка” не была единственной линией).
-- [ ] `SettingsComponent`:
+- [x] `SettingsComponent`:
   - минимально показать текущую роль и/или “права в режиме viewer/editor”.
 
 ### 15.6. Тесты и документация

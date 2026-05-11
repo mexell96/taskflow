@@ -5,6 +5,7 @@
       cdkDropList
       [id]="dropListId(col.status)"
       [cdkDropListData]="columnTasks()[col.status]"
+      [cdkDropListDisabled]="!canMoveTask()"
       [cdkDropListConnectedTo]="connectedDropListIds(col.status)"
       (cdkDropListDropped)="onDrop($event, col.status)"
     >
@@ -20,7 +21,7 @@
         }
       </h3>
       @for (task of columnTasks()[col.status]; track task.id) {
-        <div cdkDrag [cdkDragData]="task">
+        <div cdkDrag [cdkDragData]="task" [cdkDragDisabled]="!canMoveTask()">
           <app-task-card
             [task]="task"
             (statusChange)="store.setTaskStatus(task.id, $event)"

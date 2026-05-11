@@ -12,6 +12,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { TaskPriority } from '@app/shared/models/task.model';
 import { TaskBoardComponent } from '../../tasks/board/task-board.component';
@@ -33,6 +34,10 @@ export class ProjectBoardComponent {
   private readonly meta = inject(Meta);
   private restoreFocusElement: HTMLElement | null = null;
   readonly store = inject(TaskflowStore);
+  private readonly authStore = inject(AuthStore);
+
+  readonly canCreateTask = computed(() => this.authStore.permissions().canCreateTask);
+  readonly canEditProject = computed(() => this.authStore.permissions().canEditProject);
 
   private readonly paramId = toSignal(
     this.route.paramMap.pipe(map((paramMap: ParamMap) => paramMap.get('id'))),
@@ -127,6 +132,9 @@ export class ProjectBoardComponent {
   });
 
   openTaskDialog(trigger: HTMLElement) {
+    if (!this.canCreateTask()) {
+      return;
+    }
     this.restoreFocusElement = trigger;
     this.isTaskDialogOpen.set(true);
   }
@@ -141,6 +149,9 @@ export class ProjectBoardComponent {
   }
 
   createTask(value: CreateTaskDialogValue) {
+    if (!this.canCreateTask()) {
+      return;
+    }
     const project = this.project();
     if (!project) {
       return;
@@ -157,6 +168,9 @@ export class ProjectBoardComponent {
   }
 
   toggleProjectEdit() {
+    if (!this.canEditProject()) {
+      return;
+    }
     if (this.isProjectEditOpen()) {
       this.isProjectEditOpen.set(false);
       return;
@@ -174,6 +188,9 @@ export class ProjectBoardComponent {
   }
 
   saveProjectEdit() {
+    if (!this.canEditProject()) {
+      return;
+    }
     if (this.projectEditForm.invalid) {
       return;
     }

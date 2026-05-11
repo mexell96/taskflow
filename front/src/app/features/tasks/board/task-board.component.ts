@@ -8,6 +8,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
 import { TaskCardComponent, type TaskEditValue } from '../card/task-card.component';
@@ -21,6 +22,9 @@ import { TaskCardComponent, type TaskEditValue } from '../card/task-card.compone
 })
 export class TaskBoardComponent {
   readonly store = inject(TaskflowStore);
+  private readonly authStore = inject(AuthStore);
+  readonly canMoveTask = computed(() => this.authStore.permissions().canMoveTask);
+  readonly canEditTask = computed(() => this.authStore.permissions().canEditTask);
   private readonly liveAnnouncer = inject(LiveAnnouncer);
   projectId = input.required<string>();
   searchTerm = input('');
@@ -93,6 +97,9 @@ export class TaskBoardComponent {
   }
 
   onDrop(event: CdkDragDrop<Task[]>, targetStatus: TaskStatus) {
+    if (!this.canMoveTask()) {
+      return;
+    }
     if (event.previousContainer === event.container && event.previousIndex === event.currentIndex) {
       return;
     }
@@ -144,6 +151,9 @@ export class TaskBoardComponent {
   }
 
   onEditTask(taskId: string, value: TaskEditValue) {
+    if (!this.canEditTask()) {
+      return;
+    }
     this.store.updateTask(taskId, value);
   }
 }

@@ -8,14 +8,17 @@
     @if (p.author) {
       <p class="muted">{{ p.author }}</p>
     }
-    <button type="button" class="edit-project-btn" (click)="toggleProjectEdit()">
-      @if (isProjectEditOpen()) {
-        <span i18n="@@projectBoardCancelEditProject">Cancel edit</span>
-      } @else {
-        <span i18n="@@projectBoardEditProject">Edit project</span>
-      }
-    </button>
-    @if (isProjectEditOpen()) {
+    @if (canEditProject()) {
+      <button type="button" class="edit-project-btn" (click)="toggleProjectEdit()">
+        @if (isProjectEditOpen()) {
+          <span i18n="@@projectBoardCancelEditProject">Cancel edit</span>
+        } @else {
+          <span i18n="@@projectBoardEditProject">Edit project</span>
+        }
+      </button>
+    }
+
+    @if (canEditProject() && isProjectEditOpen()) {
       <form class="project-edit" [formGroup]="projectEditForm" (ngSubmit)="saveProjectEdit()">
         <input formControlName="name" placeholder="Project name" i18n-placeholder="@@projectBoardProjectNamePlaceholder" />
         <input
@@ -63,11 +66,18 @@
       [overdueOnly]="overdueOnly()"
     />
 
-    <button #openTaskDialogButton type="button" class="open-add-task" (click)="openTaskDialog(openTaskDialogButton)">
-      <span i18n="@@projectBoardOpenAddTaskButton">Add task</span>
-    </button>
+    @if (canCreateTask()) {
+      <button
+        #openTaskDialogButton
+        type="button"
+        class="open-add-task"
+        (click)="openTaskDialog(openTaskDialogButton)"
+      >
+        <span i18n="@@projectBoardOpenAddTaskButton">Add task</span>
+      </button>
+    }
 
-    @if (isTaskDialogOpen()) {
+    @if (canCreateTask() && isTaskDialogOpen()) {
       <app-task-create-dialog (submitTask)="createTask($event)" (cancel)="closeTaskDialog()" />
     }
   } @else {

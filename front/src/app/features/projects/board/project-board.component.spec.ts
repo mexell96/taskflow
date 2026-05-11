@@ -5,6 +5,7 @@ import { ActivatedRoute, convertToParamMap, type ParamMap } from '@angular/route
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
@@ -33,6 +34,19 @@ describe('ProjectBoardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ProjectBoardComponent],
       providers: [
+        {
+          provide: AuthStore,
+          useValue: {
+            permissions: signal({
+              canViewProject: true,
+              canCreateTask: true,
+              canEditTask: true,
+              canChangeTaskStatus: true,
+              canMoveTask: true,
+              canEditProject: true,
+            }),
+          },
+        },
         {
           provide: ActivatedRoute,
           useValue: {

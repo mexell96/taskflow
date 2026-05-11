@@ -4,6 +4,7 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { Project } from '@app/shared/models/project.model';
 import type { Task } from '@app/shared/models/task.model';
@@ -50,6 +51,19 @@ describe('TaskBoardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TaskBoardComponent],
       providers: [
+        {
+          provide: AuthStore,
+          useValue: {
+            permissions: signal({
+              canViewProject: true,
+              canCreateTask: true,
+              canEditTask: true,
+              canChangeTaskStatus: true,
+              canMoveTask: true,
+              canEditProject: true,
+            }),
+          },
+        },
         {
           provide: TaskflowStore,
           useValue: {

@@ -2,7 +2,9 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
+  inject,
   input,
   output,
   signal,
@@ -10,6 +12,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 import type { Task, TaskStatus } from '@app/shared/models/task.model';
 import type { TaskPriority } from '@app/shared/models/task.model';
 
@@ -36,11 +39,14 @@ export type TaskEditValue = {
 })
 export class TaskCardComponent {
   private readonly fb = new FormBuilder();
+  private readonly authStore = inject(AuthStore);
   task = input.required<Task>();
   statusChange = output<TaskStatus>();
   editTask = output<TaskEditValue>();
   private readonly statusSelect = viewChild<ElementRef<HTMLSelectElement>>('statusSelect');
   readonly isEditOpen = signal(false);
+  readonly canChangeTaskStatus = computed(() => this.authStore.permissions().canChangeTaskStatus);
+  readonly canEditTask = computed(() => this.authStore.permissions().canEditTask);
   readonly editForm = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
@@ -50,15 +56,24 @@ export class TaskCardComponent {
   });
 
   onStatus(value: string) {
+    if (!this.canChangeTaskStatus()) {
+      return;
+    }
     this.statusChange.emit(value as TaskStatus);
   }
 
   focusStatusSelect(event: Event) {
+    if (!this.canChangeTaskStatus()) {
+      return;
+    }
     event.preventDefault();
     this.statusSelect()?.nativeElement.focus();
   }
 
   startEdit() {
+    if (!this.canEditTask()) {
+      return;
+    }
     if (this.isEditOpen()) {
       this.cancelEdit();
       return;
@@ -81,6 +96,9 @@ export class TaskCardComponent {
 
   saveEdit() {
     if (this.editForm.invalid) {
+      return;
+    }
+    if (!this.canEditTask()) {
       return;
     }
     const value = this.editForm.getRawValue();

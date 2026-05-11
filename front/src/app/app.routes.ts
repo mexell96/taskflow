@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { projectAccessGuard } from './core/guards/project-access.guard';
 import { projectExistsGuard } from './core/guards/project-exists.guard';
 
 export const routes: Routes = [
@@ -19,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'projects/:id',
-    canActivate: [projectExistsGuard],
+    canActivate: [projectExistsGuard, projectAccessGuard],
     loadComponent: () =>
       import('./features/projects/board/project-board.component').then(
         (module) => module.ProjectBoardComponent,

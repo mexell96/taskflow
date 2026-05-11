@@ -14,22 +14,29 @@
   }
   <label>
     <span i18n="@@taskCardStatusLabel">Status</span>
-    <select #statusSelect [ngModel]="task().status" (ngModelChange)="onStatus($event)">
+    <select
+      #statusSelect
+      [ngModel]="task().status"
+      (ngModelChange)="onStatus($event)"
+      [disabled]="!canChangeTaskStatus()"
+    >
       <option value="backlog" i18n="@@taskStatusBacklog">backlog</option>
       <option value="in_progress" i18n="@@taskStatusInProgress">in_progress</option>
       <option value="review" i18n="@@taskStatusReview">review</option>
       <option value="done" i18n="@@taskStatusDone">done</option>
     </select>
   </label>
-  <button type="button" class="edit-btn" (click)="startEdit()">
-    @if (isEditOpen()) {
-      <span i18n="@@taskCardCancelEdit">Cancel</span>
-    } @else {
-      <span i18n="@@taskCardEdit">Edit</span>
-    }
-  </button>
+  @if (canEditTask()) {
+    <button type="button" class="edit-btn" (click)="startEdit()">
+      @if (isEditOpen()) {
+        <span i18n="@@taskCardCancelEdit">Cancel</span>
+      } @else {
+        <span i18n="@@taskCardEdit">Edit</span>
+      }
+    </button>
+  }
 
-  @if (isEditOpen()) {
+  @if (canEditTask() && isEditOpen()) {
     <form class="edit-form" [formGroup]="editForm" (ngSubmit)="saveEdit()">
       <input formControlName="title" placeholder="Title" i18n-placeholder="@@taskCardTitlePlaceholder" />
       <input

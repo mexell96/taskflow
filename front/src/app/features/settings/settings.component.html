@@ -1,5 +1,10 @@
 <main>
   <h1 i18n="@@settingsTitle">Settings</h1>
   <p i18n="@@settingsPlaceholder">Settings page placeholder.</p>
+  @if (authStore.role(); as role) {
+    <p>Current role: {{ role }}</p>
+  } @else {
+    <p>Loading role...</p>
+  }
   <a routerLink="/projects" i18n="@@settingsBackToProjects">Back to projects</a>
 </main>

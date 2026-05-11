@@ -1,7 +1,9 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 import type { Task } from '@app/shared/models/task.model';
 import { TaskCardComponent } from './task-card.component';
 
@@ -17,8 +19,25 @@ describe('TaskCardComponent', () => {
   };
 
   beforeEach(async () => {
+    const permissionsSignal = signal({
+      canViewProject: true,
+      canCreateTask: true,
+      canEditTask: true,
+      canChangeTaskStatus: true,
+      canMoveTask: true,
+      canEditProject: true,
+    });
+
     await TestBed.configureTestingModule({
       imports: [TaskCardComponent],
+      providers: [
+        {
+          provide: AuthStore,
+          useValue: {
+            permissions: permissionsSignal,
+          },
+        },
+      ],
     }).compileComponents();
   });
 

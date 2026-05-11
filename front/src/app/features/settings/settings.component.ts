@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
+import { AuthStore } from '@app/core/services/store/auth-store.service';
 
 @Component({
   selector: 'app-settings',
@@ -8,4 +10,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css',
 })
-export class SettingsComponent {}
+export class SettingsComponent {
+  readonly authStore = inject(AuthStore);
+}
+
