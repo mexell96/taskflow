@@ -50,3 +50,5 @@ curl -s -X POST http://localhost:3001/api/projects -H "Content-Type: application
 - `POST /api/projects`: `name` обязателен, `description`/`author` опциональны.
 - `PATCH /api/projects/:id`: частичное обновление `name`/`description`/`author`.
 - `GET /api/tasks` требует query `projectId`; без него backend возвращает `400`.
+
+Чеклист реализации и post-MVP шаги — в `back/TODO.md` (§5.1 — следующий рекомендуемый подэтап: DTO + `class-validator`).

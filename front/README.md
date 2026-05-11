@@ -115,3 +115,4 @@ When creating a new service, place it in the matching folder from the start to a
 
 - Frontend checklist is maintained in `front/TODO.md`.
 - Sticky top menu (**Stage 14**) is implemented in `src/app/app.html` and `src/app/app.scss` with global route navigation.
+- Store layout **Variant B** (state colocated under features) remains optional; Taskflow keeps **Variant A** (`core/services/store/taskflow-store.service.ts`) — see `front/TODO.md` §5.0.

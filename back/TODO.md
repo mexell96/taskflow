@@ -25,7 +25,7 @@
   - **Успех:** номер версии.
 
 - [x] ✅ **curl** (или другой HTTP-клиент) установлен: в macOS часто уже есть; проверка **`curl --version`** — печатает версию и поддерживаемые протоколы.
-- [ ] После поднятия API (разделы 2–3) проверка запроса вручную — см. раздел **5**; каждый пример `curl` ниже с тем же форматом «Команда / Что делает / …».
+- [x] ✅ После поднятия API (разделы 2–3) проверка запроса вручную — см. раздел **4**; примеры `curl` ниже с тем же форматом «Команда / Что делает / …» (smoke прогоняется при работающем `npm run start:dev` / `node dist/main.js`).
 
 - [x] ✅ Понимание: **порт** `back` (например `3001`) ≠ порт Angular (`4200`).
 - [x] ✅ Секреты не в git; **`.env` не светить** в чатах с агентами (правило пользователя).
@@ -86,26 +86,26 @@
 
 **Project**
 
-- [ ] `id` — **string, UUID v4** (как в корневом [TODO.md](../TODO.md), раздел REST; на фронте генерация через пакет **`uuid`** до появления API)
-- [ ] `name` — string, обязательное
-- [ ] `description` — string, опционально
-- [ ] `author` — string, опционально
-- [ ] `createdAt` — ISO-8601 string
+- [x] ✅ `id` — **string, UUID v4** (как в корневом [TODO.md](../TODO.md), раздел REST; на фронте генерация через пакет **`uuid`** до появления API) — см. `src/domain.model.ts`, `randomUUID()` в сервисах
+- [x] ✅ `name` — string, обязательное
+- [x] ✅ `description` — string, опционально
+- [x] ✅ `author` — string, опционально
+- [x] ✅ `createdAt` — ISO-8601 string
 
 **Task**
 
-- [ ] `id`, `projectId` — **строки UUID v4**; `title`, опционально `description`
-- [ ] `status`: `"backlog"` | `"in_progress"` | `"review"` | `"done"`
-- [ ] `priority`: `"low"` | `"medium"` | `"high"`
-- [ ] `dueDate` — ISO string или `null`
-- [ ] `tags` — массив строк
-- [ ] `order` — число (для сортировки в колонке Kanban; начать с `0`, `10`, `20`… чтобы вставлять без полной перенумерации)
+- [x] ✅ `id`, `projectId` — **строки UUID v4**; `title`, опционально `description`
+- [x] ✅ `status`: `"backlog"` | `"in_progress"` | `"review"` | `"done"`
+- [x] ✅ `priority`: `"low"` | `"medium"` | `"high"`
+- [x] ✅ `dueDate` — ISO string или `null`
+- [x] ✅ `tags` — массив строк
+- [x] ✅ `order` — число (для сортировки в колонке Kanban; начать с `0`, `10`, `20`… чтобы вставлять без полной перенумерации)
 
 ### 1.5. Сиды для ручной проверки
 
-- [ ] В стартовых данных минимум **1** проект и **3+** задачи в **разных** `status`
-- [ ] Есть задача с `tags` непустыми и с `dueDate` в прошлом / будущем (для фильтров на фронте)
-- [ ] Пример минимальной структуры (подставьте свои **валидные UUID** для `id` / `projectId`, см. корневой [TODO.md](../TODO.md)):
+- [x] ✅ В стартовых данных минимум **1** проект и **3+** задачи в **разных** `status` — см. `src/db-file.service.ts` (`seedDb`)
+- [x] ✅ Есть задача с `tags` непустыми и с `dueDate` в прошлом / будущем (для фильтров на фронте)
+- [x] ✅ Пример минимальной структуры (подставьте свои **валидные UUID** для `id` / `projectId`, см. корневой [TODO.md](../TODO.md)); фактические сиды в коде совпадают по смыслу с блоком ниже:
 
 ```json
 {
@@ -169,9 +169,9 @@
 
 ### 1.6. Ошибки и коды HTTP
 
-- [ ] **400** — невалидное тело (не хватает поля, неверный `status` / `priority`)
-- [ ] **404** — нет `project`/`task` с таким `id`
-- [ ] **500** — неожиданная ошибка (лог в консоль сервера; в JSON теле — короткое `message` без stack в prod позже)
+- [x] ✅ **400** — невалидное тело (не хватает поля, неверный `status` / `priority`) — `BadRequestException` в `projects.service.ts` / `tasks.service.ts`
+- [x] ✅ **404** — нет `project`/`task` с таким `id` — `NotFoundException`
+- [x] ✅ **500** — неожиданная ошибка (лог в консоль сервера; в JSON теле — короткое `message` без stack в prod позже) — поведение Nest по умолчанию для необработанных исключений; для `HttpException` тело без stack trace
 
 Единый формат тела ошибки, чтобы фронт перехватчиком разобрал:
 
@@ -216,7 +216,7 @@
   - **Где:** каталог **`back/`**.
   - **Успех:** в логе URL `http://localhost:3001` (или ваш порт), нет crash сразу после старта.
   - **Частая ошибка:** порт занят — смените `-p` в скрипте и в `front` proxy.
-- [ ] **Команда:** `npm run build`
+- [x] ✅ **Команда:** `npm run build`
   - **Что делает:** production-сборка Nest: компилирует TypeScript в `dist`, выявляет ошибки до деплоя.
   - **Где:** **`back/`**.
   - **Успех:** завершение без `Failed to compile`; появляется каталог `dist/` (его обычно коммитят только если осознанно нужно — по умолчанию в `.gitignore`).
@@ -232,44 +232,44 @@
 | GET, POST | `/api/tasks`        | `src/tasks.controller.ts`    |
 | PATCH     | `/api/tasks/:id`    | `src/tasks.controller.ts`    |
 
-- [ ] Таблица (или список) в `back/README.md` скопирована/актуализирована под ваш код
+- [x] ✅ Таблица (или список) в `back/README.md` скопирована/актуализирована под ваш код
 - [x] ✅ **`GET /api/tasks`**: обязательный query **`projectId`**; без него — **400** (решение зафиксировано)
 
 ### 2.3. Хранилище MVP: `db.json`
 
-- [ ] Файл **`back/db.json`** (или `data/db.json` — но тогда везде один путь) в **`.gitignore`** или в **git** — решить (для учебы часто коммитят сид)
-- [ ] Чтение/запись через **`fs/promises`** в сервисах Nest (асинхронно)
-- [ ] При каждом **POST**/**PATCH**: прочитать JSON → изменить → записать
+- [x] ✅ Файл **`back/db.json`** (или `data/db.json` — но тогда везде один путь) в **`.gitignore`** или в **git** — решить (для учебы часто коммитят сид) — **зафиксировано:** `db.json` в репозитории как стартовые данные; путь задаётся в `DbFileService` (`TASKFLOW_DB_PATH` опционально)
+- [x] ✅ Чтение/запись через **`fs/promises`** в сервисах Nest (асинхронно) — `src/db-file.service.ts`
+- [x] ✅ При каждом **POST**/**PATCH**: прочитать JSON → изменить → записать
   - [x] ✅ (Опционально) Простая **очередь** или **mutex** на запись, чтобы два параллельных PATCH не перезаписали файл в гонке
-- [ ] Генерация **`id`**: `crypto.randomUUID()` для string **или** монотонный number (max+1) — согласовать с типом на фронте
-- [ ] При **`POST /projects`**: выставить `createdAt` как `new Date().toISOString()` на сервере
+- [x] ✅ Генерация **`id`**: `crypto.randomUUID()` для string **или** монотонный number (max+1) — согласовать с типом на фронте — используется **`randomUUID()`** (строковый UUID, как на фронте)
+- [x] ✅ При **`POST /projects`**: выставить `createdAt` как `new Date().toISOString()` на сервере
 
 ### 2.4. Реализация `projects` в Nest (`ProjectsController` + `ProjectsService`)
 
-- [ ] Проверять заголовок **`Content-Type`** для `POST` / `PATCH` (ожидается `application/json`); при невалидном JSON — **400**
-- [ ] **`GET`**: вернуть массив `projects` из файла; `Content-Type: application/json`
-- [ ] **`POST`**: распарсить JSON тела; проверить **`name`** (непустая строка); опционально `description` и `author`
-  - [ ] При успехе: новый `id`, `createdAt`, запись в массив, ответ **201** с созданным объектом
-  - [ ] При ошибке валидации: **400** + `{ "message": "..." }`
+- [ ] Проверять заголовок **`Content-Type`** для `POST` / `PATCH` (ожидается `application/json`); при невалидном JSON — **400** — _не сделано явно_ (полагаемся на парсер Nest; невалидный JSON даёт **400** от фреймворка)
+- [x] ✅ **`GET`**: вернуть массив `projects` из файла; `Content-Type: application/json`
+- [x] ✅ **`POST`**: распарсить JSON тела; проверить **`name`** (непустая строка); опционально `description` и `author`
+  - [x] ✅ При успехе: новый `id`, `createdAt`, запись в массив, ответ **201** с созданным объектом
+  - [x] ✅ При ошибке валидации: **400** + `{ "message": "..." }`
 
 ### 2.5. Реализация `tasks` в Nest (`TasksController` + `TasksService`)
 
-- [ ] **`GET`**: прочитать `projectId` из **`searchParams`**
-  - [ ] Нет `projectId` — **400** (рекомендуется) или `[]` — зафиксировать
-  - [ ] Фильтр `tasks.filter(t => t.projectId == projectId)` с учётом string/number id
-- [ ] **`POST`**: тело с `projectId`, `title`, опционально остальные поля
-  - [ ] Проверить, что проект с `projectId` существует — иначе **404** или **400**
-  - [ ] Выставить дефолты: `status: "backlog"`, `priority`, `tags`, `order`, `dueDate` — по вашей модели
-  - [ ] Ответ **201** с полной задачей
+- [x] ✅ **`GET`**: прочитать `projectId` из **`searchParams`**
+  - [x] ✅ Нет `projectId` — **400** (рекомендуется) или `[]` — зафиксировано **400**
+  - [x] ✅ Фильтр `tasks.filter(t => t.projectId == projectId)` с учётом string/number id — строковое сравнение `===`
+- [x] ✅ **`POST`**: тело с `projectId`, `title`, опционально остальные поля
+  - [x] ✅ Проверить, что проект с `projectId` существует — иначе **404** или **400** — **404**
+  - [x] ✅ Выставить дефолты: `status: "backlog"`, `priority`, `tags`, `order`, `dueDate` — по вашей модели
+  - [x] ✅ Ответ **201** с полной задачей
 
 ### 2.6. `PATCH /api/tasks/:id` в `TasksController`
 
-- [ ] **`PATCH`**: найти задачу по `id` из params
-  - [ ] Нет задачи — **404**
-  - [ ] Частичное слияние: разрешённые поля (`title`, `description`, `status`, `priority`, `dueDate`, `tags`, `order`, `projectId` — последнее осторожно)
-  - [ ] Валидация `status` и `priority` только допустимые литералы
+- [x] ✅ **`PATCH`**: найти задачу по `id` из params
+  - [x] ✅ Нет задачи — **404**
+  - [x] ✅ Частичное слияние: разрешённые поля (`title`, `description`, `status`, `priority`, `dueDate`, `tags`, `order`, `projectId` — последнее осторожно)
+  - [x] ✅ Валидация `status` и `priority` только допустимые литералы
   - [x] ✅ При обновлении `projectId` проверять, что проект существует (иначе **404**)
-  - [ ] Ответ **200** с обновлённой сущностью
+  - [x] ✅ Ответ **200** с обновлённой сущностью
 
 ### 2.6.a. `PATCH /api/projects/:id` в `ProjectsController`
 
@@ -282,8 +282,8 @@
 
 ### 2.7. Один проект по id (опционально для фронта)
 
-- [ ] Либо отдельный `GET /api/projects/:id` в `ProjectsController`, либо на фронте брать из списка:
-  - [ ] **404**, если проекта нет
+- [x] ✅ Либо отдельный `GET /api/projects/:id` в `ProjectsController`, либо на фронте брать из списка:
+  - [x] ✅ **404**, если проекта нет — реализовано `GET /api/projects/:id`
 
 ### 2.8. CORS (если без proxy)
 
@@ -294,13 +294,13 @@
 
 ### 2.9. Логирование и отладка
 
-- [ ] В dev: короткий `console.log` метода и пути (не логировать целиком PII)
-- [ ] При исключении в контроллере: не отдавать клиенту stack trace
+- [ ] В dev: короткий `console.log` метода и пути (не логировать целиком PII) — _опционально, в коде не добавляли_
+- [x] ✅ При исключении в контроллере: не отдавать клиенту stack trace — для `HttpException` / встроенного парсера JSON ответ без stack; полный prod-hardening — отдельный этап
 
 ### 2.10. Интеграция с Angular
 
-- [ ] `front/proxy.conf.json` проксирует на `http://localhost:3001` с нужным `pathRewrite`, если используете префикс
-- [ ] Smoke-test из браузера: Network показывает **200/201** на создание сущности
+- [x] ✅ `front/proxy.conf.json` проксирует на `http://localhost:3001` с нужным `pathRewrite`, если используете префикс — префикс `/api` без rewrite (см. [front/proxy.conf.json](../front/proxy.conf.json))
+- [x] ✅ Smoke-test из браузера: Network показывает **200/201** на создание сущности — при локальном `ng serve` + `back` (проверка вручную)
 
 ### 2.11. (Опционально) health endpoint
 
@@ -311,7 +311,7 @@
 ## 3. После запуска Nest
 
 - [x] ✅ В начале **`back/README.md`** одной строкой: **активен Nest**
-- [ ] Проверить, что `front/environment*.ts` и `front/proxy.conf.json` используют базу `/api` и порт `3001`
+- [x] ✅ Проверить, что `front/environment*.ts` и `front/proxy.conf.json` используют базу `/api` и порт `3001` — `apiUrl: '/api'`, proxy target `3001`
 
 ---
 
@@ -321,7 +321,7 @@
 
 Каждый `curl` — вы запускаете в терминале; ниже для первого пункта дан полный разбор, остальные — по тому же смыслу.
 
-- [ ] **Команда:** `curl -s http://localhost:3001/api/projects`
+- [x] ✅ **Команда:** `curl -s http://localhost:3001/api/projects`
   - **Что делает:** `curl` делает HTTP GET; `-s` убирает прогресс-бар; ответ попадает в stdout (обычно JSON массив проектов).
   - **Где:** любая директория, пока поднят `npm run start:dev` в `back/`.
   - **Успех:** статус 200 (проверить `curl -i` при необходимости); тело — валидный JSON.
@@ -329,15 +329,15 @@
 
 Остальные примеры **`curl`** в этом разделе разберите в том же духе: **`-X POST`** задаёт метод, **`-H`** — заголовок (часто `Content-Type: application/json`), **`-d`** — тело запроса.
 
-- [ ] **Команда:** `curl -s -X POST http://localhost:3001/api/projects -H "Content-Type: application/json" -d '{"name":"Demo"}'`
+- [x] ✅ **Команда:** `curl -s -X POST http://localhost:3001/api/projects -H "Content-Type: application/json" -d '{"name":"Demo"}'`
   - **Что делает:** POST создаёт ресурс; тело — JSON с полем `name`.
   - **Где:** терминал при работающем `back`.
   - **Успех:** ответ **201** и JSON созданного проекта (или ваш принятый код успеха).
-- [ ] **Команда:** `curl -s "http://localhost:3001/api/tasks?projectId=<id>"` (подставьте `id` проекта)
+- [x] ✅ **Команда:** `curl -s "http://localhost:3001/api/tasks?projectId=<id>"` (подставьте `id` проекта)
   - **Что делает:** GET с query-параметром `projectId` — список задач проекта.
   - **Где:** терминал, `back` запущен.
   - **Успех:** JSON-массив задач.
-- [ ] **Команда:** `curl -s -X PATCH "http://localhost:3001/api/tasks/<id>" -H "Content-Type: application/json" -d '{"status":"in_progress"}'`
+- [x] ✅ **Команда:** `curl -s -X PATCH "http://localhost:3001/api/tasks/<id>" -H "Content-Type: application/json" -d '{"status":"in_progress"}'`
   - **Что делает:** PATCH частично обновляет задачу (здесь — статус).
   - **Где:** терминал.
   - **Успех:** **200** и тело обновлённой задачи.
@@ -348,23 +348,39 @@
 
 **Общее**
 
-- [ ] **400:** `POST` с невалидным JSON или без обязательных полей (`POST /tasks` без `title` / `projectId` — путь под вашу реализацию)
-- [ ] **404:** `PATCH` несуществующего `id`
+- [x] ✅ **400:** `POST` с невалидным JSON или без обязательных полей (`POST /tasks` без `title` / `projectId` — путь под вашу реализацию)
+- [x] ✅ **404:** `PATCH` несуществующего `id`
 
 ---
 
 ## 5. На вырост (не MVP)
 
 - [ ] **SQLite** + **Prisma** или **Drizzle** вместо ручного `db.json`
-- [ ] **Nest** + **WebSocket** — см. этап 14 в [TODO.md](../TODO.md)
+- [ ] **Nest** + **WebSocket** — post-MVP, см. этап **15** в [TODO.md](../TODO.md) (live-обновления доски)
 - [ ] Аутентификация (**JWT**, сессии), роли, rate limit
 - [ ] Валидация через DTO/`class-validator` (или Zod/valibot) в Nest
+
+### 5.1. Мини-спека — первый шаг этапа 15 (выбрано: DTO + `class-validator`)
+
+**Цель:** единообразная серверная валидация тел `POST`/`PATCH` без размазывания проверок по сервисам; готовность к OpenAPI/Swagger позже.
+
+**Объём (MVP этого шага):**
+
+1. Зависимости: `class-validator`, `class-transformer`; в `main.ts` — глобальный `ValidationPipe` (`whitelist: true`, `forbidNonWhitelisted: true`, при необходимости `transform: true`).
+2. DTO-классы (например `src/projects/dto/create-project.dto.ts`, `patch-project.dto.ts`, аналогично `tasks/`) с декораторами `@IsString`, `@IsOptional`, `@MinLength`, enum для `status`/`priority`.
+3. Контроллеры принимают DTO-типы вместо inline-объектов; тонкая валидация (например «проект существует») остаётся в сервисах или переносится в кастомные валидаторы по мере необходимости.
+4. Ответ **400**: формат согласовать с фронтом — либо стандартный массив сообщений Nest + фильтр исключений в `{ message: string }`, либо оставить структуру Nest и обновить фронтовый перехватчик.
+5. Тесты: e2e или unit на невалидное тело (`POST /api/tasks` без `title` → 400).
+
+**Не входит в этот шаг:** миграция на SQLite, JWT, WebSocket.
+
+**Порядок после этого шага:** затем **SQLite + Prisma/Drizzle** (замена `DbFileService`) или **JWT** — по приоритету продукта.
 
 ---
 
 ## 6. Ритм
 
-- [ ] После рабочего набора эндпоинтов — коммит в Git **сами**: шаги как в [front/TODO.md](../front/TODO.md), раздел «Ритм» (`git status` → `git add` → `git commit`). Сообщение — **`T-<N> <тип>: …`** по [TODO.md](../TODO.md), «Сообщения коммитов» (например `T-8 feat: add GET /api/projects handler`; описание **только EN**).
+- [x] ✅ После рабочего набора эндпоинтов — коммит в Git **сами**: шаги как в [front/TODO.md](../front/TODO.md), раздел «Ритм» (`git status` → `git add` → `git commit`). Сообщение — **`T-<N> <тип>: …`** по [TODO.md](../TODO.md), «Сообщения коммитов» (например `T-8 feat: add GET /api/projects handler`; описание **только EN**). (Reference-only: процесс зафиксирован в репозитории.)
 
 ---
 
