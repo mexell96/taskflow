@@ -31,11 +31,7 @@
           >Due date cannot be in the past for new tasks.</small
         >
       }
-      <select formControlName="priority">
-        <option value="low" i18n="@@taskPriorityLow">low</option>
-        <option value="medium" i18n="@@taskPriorityMedium">medium</option>
-        <option value="high" i18n="@@taskPriorityHigh">high</option>
-      </select>
+      <app-task-priority-select formControlName="priority" />
       <input formControlName="tags" placeholder="tags,comma,separated" i18n-placeholder="@@taskTagsPlaceholder" />
       <div class="dialog-actions">
         <button type="submit" [disabled]="taskForm.invalid" i18n="@@projectBoardAddTaskButton">Add task</button>

@@ -5,6 +5,7 @@ import type { App } from 'supertest/types';
 
 import type { Project } from './../src/domain.model';
 import { AppModule } from './../src/app.module';
+import { DEMO_PROJECT_ID } from '../../e2e-seed';
 
 describe('App (e2e)', () => {
   let app: INestApplication<App>;
@@ -37,9 +38,7 @@ describe('App (e2e)', () => {
 
     const projects = response.body as Project[];
     expect(Array.isArray(projects)).toBe(true);
-    const demo = projects.find(
-      (project) => project.id === 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
-    );
+    const demo = projects.find((project) => project.id === DEMO_PROJECT_ID);
     expect(demo?.name).toBe('Demo project');
   });
 });

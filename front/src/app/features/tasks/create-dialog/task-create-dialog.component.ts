@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 
 import type { TaskPriority } from '@app/shared/models/task.model';
+import { TaskPrioritySelectComponent } from '@app/shared/ui/task-priority-select.component';
 
 export type CreateTaskDialogValue = {
   description?: string;
@@ -45,7 +46,7 @@ function dueDateNotInPastValidator(control: AbstractControl): ValidationErrors |
 
 @Component({
   selector: 'app-task-create-dialog',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TaskPrioritySelectComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './task-create-dialog.component.html',
   styleUrl: './task-create-dialog.component.css',

@@ -1,15 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+import { SEED_DEMO_PROJECT_ROW } from '../../e2e-seed';
+
 test('user can create project from list page', async ({ page }) => {
-  const projects = [
-    {
-      id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
-      name: 'Demo project',
-      description: 'Seed data for Taskflow',
-      author: 'John Doe',
-      createdAt: '2026-01-01T00:00:00.000Z',
-    },
-  ];
+  const projects = [{ ...SEED_DEMO_PROJECT_ROW }];
 
   await page.route('**/api/projects', async (route) => {
     const request = route.request();

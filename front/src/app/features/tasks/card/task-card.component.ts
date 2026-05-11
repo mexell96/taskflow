@@ -13,8 +13,8 @@ import {
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuthStore } from '@app/core/services/store/auth-store.service';
-import type { Task, TaskStatus } from '@app/shared/models/task.model';
-import type { TaskPriority } from '@app/shared/models/task.model';
+import type { Task, TaskPriority, TaskStatus } from '@app/shared/models/task.model';
+import { TaskPrioritySelectComponent } from '@app/shared/ui/task-priority-select.component';
 
 export type TaskEditValue = {
   description?: string;
@@ -27,7 +27,7 @@ export type TaskEditValue = {
 
 @Component({
   selector: 'app-task-card',
-  imports: [FormsModule, ReactiveFormsModule, DatePipe],
+  imports: [FormsModule, ReactiveFormsModule, DatePipe, TaskPrioritySelectComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     tabindex: '0',

@@ -44,11 +44,7 @@
         placeholder="Description (optional)"
         i18n-placeholder="@@taskCardDescriptionPlaceholder"
       />
-      <select formControlName="priority">
-        <option value="low" i18n="@@taskPriorityLow">low</option>
-        <option value="medium" i18n="@@taskPriorityMedium">medium</option>
-        <option value="high" i18n="@@taskPriorityHigh">high</option>
-      </select>
+      <app-task-priority-select formControlName="priority" />
       <input formControlName="dueDate" type="date" />
       <input formControlName="tags" placeholder="tags,comma,separated" i18n-placeholder="@@taskTagsPlaceholder" />
       <div class="edit-actions">

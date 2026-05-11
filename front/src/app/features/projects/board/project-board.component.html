@@ -40,12 +40,7 @@
       class="search"
     />
     <div class="filters">
-      <select [formControl]="priorityFilterControl">
-        <option value="" i18n="@@projectBoardAllPriorities">All priorities</option>
-        <option value="low" i18n="@@taskPriorityLow">low</option>
-        <option value="medium" i18n="@@taskPriorityMedium">medium</option>
-        <option value="high" i18n="@@taskPriorityHigh">high</option>
-      </select>
+      <app-task-priority-select [showAllOption]="true" [formControl]="priorityFilterControl" />
       <select [formControl]="tagFilterControl">
         <option value="" i18n="@@projectBoardAllTags">All tags</option>
         @for (tag of availableTags(); track tag) {

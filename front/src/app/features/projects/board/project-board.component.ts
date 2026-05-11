@@ -15,6 +15,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { AuthStore } from '@app/core/services/store/auth-store.service';
 import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 import type { TaskPriority } from '@app/shared/models/task.model';
+import { TaskPrioritySelectComponent } from '@app/shared/ui/task-priority-select.component';
 import { TaskBoardComponent } from '../../tasks/board/task-board.component';
 import {
   type CreateTaskDialogValue,
@@ -23,7 +24,13 @@ import {
 
 @Component({
   selector: 'app-project-board',
-  imports: [RouterLink, TaskBoardComponent, TaskCreateDialogComponent, ReactiveFormsModule],
+  imports: [
+    RouterLink,
+    TaskBoardComponent,
+    TaskCreateDialogComponent,
+    ReactiveFormsModule,
+    TaskPrioritySelectComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-board.component.html',
   styleUrl: './project-board.component.css',
