@@ -5,7 +5,8 @@ import { filter, firstValueFrom, map, race, take, timer } from 'rxjs';
 
 import { TaskflowStore } from '@app/core/services/store/taskflow-store.service';
 
-const PROJECT_LIST_LOAD_TIMEOUT_MS = 10_000;
+/** Used by tests with fake timers so the timeout branch stays in sync with production. */
+export const PROJECT_LIST_LOAD_TIMEOUT_MS = 10_000;
 
 function waitForProjectsOrTimeout(store: TaskflowStore): Promise<boolean> {
   return firstValueFrom(

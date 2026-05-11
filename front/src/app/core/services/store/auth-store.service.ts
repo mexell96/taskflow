@@ -78,7 +78,7 @@ export class AuthStore {
         this._role.set(response.role);
       })
       .catch(() => {
-        // Safe default for the учебный проект: allow read-only UI.
+        // Learning app default: if /auth/me fails, keep read-only viewer UI.
         this._role.set('viewer');
       });
     return this._loadPromise;
