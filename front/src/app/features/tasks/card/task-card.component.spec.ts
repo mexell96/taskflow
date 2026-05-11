@@ -78,6 +78,45 @@ describe('TaskCardComponent', () => {
     expect(document.activeElement).toBe(select);
   });
 
+  it('shows edit form and emits editTask for editor role', () => {
+    permissionsSignal.set({
+      canViewProject: true,
+      canCreateTask: true,
+      canEditTask: true,
+      canChangeTaskStatus: true,
+      canMoveTask: true,
+      canEditProject: false,
+    });
+
+    const fixture = TestBed.createComponent(TaskCardComponent);
+    fixture.componentRef.setInput('task', task);
+    fixture.detectChanges();
+
+    const select = fixture.debugElement.query(By.css('select')).nativeElement as HTMLSelectElement;
+    expect(select.disabled).toBe(false);
+
+    const editSpy = vi.spyOn(fixture.componentInstance.editTask, 'emit');
+    (fixture.nativeElement.querySelector('button.edit-btn') as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    const titleInput = fixture.debugElement.query(By.css('.edit-form input[formControlName="title"]'))
+      .nativeElement as HTMLInputElement;
+    titleInput.value = 'Updated title here';
+    titleInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    const form = fixture.debugElement.query(By.css('.edit-form')).nativeElement as HTMLFormElement;
+    form.dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
+
+    expect(editSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: 'Updated title here',
+        status: 'backlog',
+      }),
+    );
+  });
+
   it('hides edit and disables status select for viewer role', () => {
     permissionsSignal.set({
       canViewProject: true,

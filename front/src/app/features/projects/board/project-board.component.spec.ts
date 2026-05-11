@@ -37,6 +37,7 @@ describe('ProjectBoardComponent', () => {
   const permissionsSignal = signal(defaultPermissions);
 
   beforeEach(async () => {
+    permissionsSignal.set(defaultPermissions);
     addTask.mockReset();
     loadTasks.mockReset();
     setTaskStatus.mockReset();

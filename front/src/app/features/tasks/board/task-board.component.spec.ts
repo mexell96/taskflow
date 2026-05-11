@@ -2,6 +2,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import type { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
 import { AuthStore } from '@app/core/services/store/auth-store.service';
@@ -63,6 +64,7 @@ describe('TaskBoardComponent', () => {
   const permissionsSignal = signal(defaultPermissions);
 
   beforeEach(async () => {
+    permissionsSignal.set(defaultPermissions);
     setTaskStatus.mockReset();
     moveTask.mockReset();
     announce.mockReset();
@@ -123,6 +125,11 @@ describe('TaskBoardComponent', () => {
     fixture.componentRef.setInput('projectId', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
     fixture.detectChanges();
 
+    const firstCol = fixture.debugElement.query(By.css('section.col')).nativeElement as HTMLElement;
+    const firstDrag = fixture.debugElement.query(By.css('.board .cdk-drag')).nativeElement as HTMLElement;
+    expect(firstCol.classList.contains('cdk-drop-list-disabled')).toBe(true);
+    expect(firstDrag.classList.contains('cdk-drag-disabled')).toBe(true);
+
     const component = fixture.componentInstance;
     const backlogTasks = component.columnTasks().backlog;
     const targetDoneTasks = component.columnTasks().done;
@@ -137,6 +144,17 @@ describe('TaskBoardComponent', () => {
 
     expect(moveTask).not.toHaveBeenCalled();
     expect(announce).not.toHaveBeenCalled();
+  });
+
+  it('enables CDK drop lists and drag handles for editor role', () => {
+    const fixture = TestBed.createComponent(TaskBoardComponent);
+    fixture.componentRef.setInput('projectId', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+    fixture.detectChanges();
+
+    const firstCol = fixture.debugElement.query(By.css('section.col')).nativeElement as HTMLElement;
+    const firstDrag = fixture.debugElement.query(By.css('.board .cdk-drag')).nativeElement as HTMLElement;
+    expect(firstCol.classList.contains('cdk-drop-list-disabled')).toBe(false);
+    expect(firstDrag.classList.contains('cdk-drag-disabled')).toBe(false);
   });
 
   it('does not announce for noop drop in same position', () => {

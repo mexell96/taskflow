@@ -59,6 +59,8 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ng test
 ```
 
+RBAC-related behaviour is covered in component specs (`project-board`, `task-card`, `task-board`, `settings`), in `auth-store.service.spec.ts` (role → permissions), `project-access.guard.spec.ts`, and in `taskflow-store.service.spec.ts` (API error toasts). Add new cases next to the feature under test.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:

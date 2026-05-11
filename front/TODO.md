@@ -511,6 +511,12 @@ Nest обычно возвращает в `error.error.message` массив с�
   - `ProjectBoardComponent` (кнопки edit/add task скрыты/disabled)
   - `TaskCardComponent` (select статуса и edit-flow)
   - `TaskBoardComponent` (drag-drop выключен)
+- [x] Покрытие вокруг RBAC и маршрута проекта (инвентарь спеков):
+  - `auth-store.service.spec.ts` — маппинг ролей `viewer` / `editor` / `admin`, fallback при ошибке `/me`
+  - `project-access.guard.spec.ts` — `canViewProject` и редирект на `/projects`
+  - `settings.component.spec.ts` — строка «Current role» / «Loading role…»
+  - `task-board.component.spec.ts` — классы CDK `cdk-drop-list-disabled` / `cdk-drag-disabled` для viewer и снятие для editor
+  - `taskflow-store.service.spec.ts` — toast при ошибке `setTaskStatus` (не только `addTask`)
 - [x] Если toasts участвуют в ошибках: проверить, что на ошибки API появляется корректное уведомление.
 - [x] Обновить `front/README.md` под новые сущности сервисов:
   - куда класть `AuthApiService`/`AuthStore`

@@ -305,6 +305,41 @@ describe('TaskflowStore', () => {
     });
   });
 
+  it('shows toast on setTaskStatus API failure and rolls back optimistic status', () => {
+    const store = TestBed.inject(TaskflowStore);
+
+    taskApi.getTasks.mockReturnValue(
+      of([
+        {
+          id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Backlog task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 0,
+        },
+      ]),
+    );
+    store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+
+    const apiError: ApiError = {
+      status: 422,
+      message: 'Invalid transition',
+      url: '/api/tasks/x',
+    };
+    taskApi.patchTask.mockReturnValue(throwError(() => apiError));
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+
+    store.setTaskStatus('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'done');
+
+    expect(toast.showError).toHaveBeenCalledWith('Invalid transition');
+    expect(
+      store.tasks().find((t: Task) => t.id === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12')?.status,
+    ).toBe('backlog');
+    logSpy.mockRestore();
+  });
+
   it('logs typed API errors without throwing from addTask', () => {
     const store = TestBed.inject(TaskflowStore);
     const apiError: ApiError = {
