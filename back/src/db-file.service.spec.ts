@@ -21,6 +21,53 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { DbFileService } from './db-file.service';
 
+function restoreTaskflowDbPath(previous: string | undefined) {
+  if (previous === undefined) {
+    delete process.env.TASKFLOW_DB_PATH;
+  } else {
+    process.env.TASKFLOW_DB_PATH = previous;
+  }
+}
+
+function describeSeedWhenDbPathUnsetAndCwdMocked(
+  suiteTitle: string,
+  caseTitle: string,
+  prepare: () => {
+    mockCwd: string;
+    expectedDbPath: string;
+    teardown: () => void;
+  },
+) {
+  describe(suiteTitle, () => {
+    const previousEnv = process.env.TASKFLOW_DB_PATH;
+    let cwdSpy: jest.SpiedFunction<typeof process.cwd>;
+    let expectedDbPath = '';
+    let teardown: () => void = () => {};
+
+    beforeAll(() => {
+      const ctx = prepare();
+      expectedDbPath = ctx.expectedDbPath;
+      teardown = ctx.teardown;
+      delete process.env.TASKFLOW_DB_PATH;
+      cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue(ctx.mockCwd);
+    });
+
+    afterAll(() => {
+      cwdSpy.mockRestore();
+      restoreTaskflowDbPath(previousEnv);
+      teardown();
+    });
+
+    it(caseTitle, async () => {
+      const moduleRef: TestingModule = await Test.createTestingModule({
+        providers: [DbFileService],
+      }).compile();
+      await moduleRef.get(DbFileService).readDb();
+      expect(existsSync(expectedDbPath)).toBe(true);
+    });
+  });
+}
+
 describe('DbFileService', () => {
   const tempDir = mkdtempSync(join(tmpdir(), 'taskflow-db-spec-'));
   const dbPath = join(tempDir, 'db.json');
@@ -32,11 +79,7 @@ describe('DbFileService', () => {
   });
 
   afterAll(() => {
-    if (previousEnv === undefined) {
-      delete process.env.TASKFLOW_DB_PATH;
-    } else {
-      process.env.TASKFLOW_DB_PATH = previousEnv;
-    }
+    restoreTaskflowDbPath(previousEnv);
     rmSync(tempDir, { recursive: true, force: true });
   });
 
@@ -109,69 +152,31 @@ describe('DbFileService', () => {
   });
 });
 
-describe('DbFileService monorepo db path', () => {
-  const repoRoot = mkdtempSync(join(tmpdir(), 'taskflow-monorepo-'));
-  const previousEnv = process.env.TASKFLOW_DB_PATH;
-  let cwdSpy: jest.SpiedFunction<typeof process.cwd>;
-
-  beforeAll(() => {
+describeSeedWhenDbPathUnsetAndCwdMocked(
+  'DbFileService monorepo db path',
+  'writes seed to cwd/back/db.json when cwd is not the back folder',
+  () => {
+    const repoRoot = mkdtempSync(join(tmpdir(), 'taskflow-monorepo-'));
     mkdirSync(join(repoRoot, 'back'), { recursive: true });
-    delete process.env.TASKFLOW_DB_PATH;
-    cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue(repoRoot);
-  });
+    return {
+      mockCwd: repoRoot,
+      expectedDbPath: join(repoRoot, 'back', 'db.json'),
+      teardown: () => rmSync(repoRoot, { recursive: true, force: true }),
+    };
+  },
+);
 
-  afterAll(() => {
-    cwdSpy.mockRestore();
-    if (previousEnv === undefined) {
-      delete process.env.TASKFLOW_DB_PATH;
-    } else {
-      process.env.TASKFLOW_DB_PATH = previousEnv;
-    }
-    rmSync(repoRoot, { recursive: true, force: true });
-  });
-
-  it('writes seed to cwd/back/db.json when cwd is not the back folder', async () => {
-    const moduleRef: TestingModule = await Test.createTestingModule({
-      providers: [DbFileService],
-    }).compile();
-    const service = moduleRef.get(DbFileService);
-
-    await service.readDb();
-
-    expect(existsSync(join(repoRoot, 'back', 'db.json'))).toBe(true);
-  });
-});
-
-describe('DbFileService cwd is back package root', () => {
-  const parent = mkdtempSync(join(tmpdir(), 'taskflow-back-only-'));
-  const backFolder = join(parent, 'back');
-  const previousEnv = process.env.TASKFLOW_DB_PATH;
-  let cwdSpy: jest.SpiedFunction<typeof process.cwd>;
-
-  beforeAll(() => {
+describeSeedWhenDbPathUnsetAndCwdMocked(
+  'DbFileService cwd is back package root',
+  'writes seed to cwd/db.json when cwd ends with back',
+  () => {
+    const parent = mkdtempSync(join(tmpdir(), 'taskflow-back-only-'));
+    const backFolder = join(parent, 'back');
     mkdirSync(backFolder, { recursive: true });
-    delete process.env.TASKFLOW_DB_PATH;
-    cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue(backFolder);
-  });
-
-  afterAll(() => {
-    cwdSpy.mockRestore();
-    if (previousEnv === undefined) {
-      delete process.env.TASKFLOW_DB_PATH;
-    } else {
-      process.env.TASKFLOW_DB_PATH = previousEnv;
-    }
-    rmSync(parent, { recursive: true, force: true });
-  });
-
-  it('writes seed to cwd/db.json when cwd ends with back', async () => {
-    const moduleRef: TestingModule = await Test.createTestingModule({
-      providers: [DbFileService],
-    }).compile();
-    const service = moduleRef.get(DbFileService);
-
-    await service.readDb();
-
-    expect(existsSync(join(backFolder, 'db.json'))).toBe(true);
-  });
-});
+    return {
+      mockCwd: backFolder,
+      expectedDbPath: join(backFolder, 'db.json'),
+      teardown: () => rmSync(parent, { recursive: true, force: true }),
+    };
+  },
+);

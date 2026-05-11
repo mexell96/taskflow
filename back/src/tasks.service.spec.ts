@@ -104,13 +104,19 @@ describe('TasksService', () => {
 
   it('throws when patch sets invalid status', async () => {
     await expect(
-      service.patchTask('task-1', { status: 'invalid' as never }),
+      service.patchTask('task-1', {
+        // @ts-expect-error intentional invalid status for validation test
+        status: 'invalid',
+      }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it('throws when patch sets invalid priority', async () => {
     await expect(
-      service.patchTask('task-1', { priority: 'invalid' as never }),
+      service.patchTask('task-1', {
+        // @ts-expect-error intentional invalid priority for validation test
+        priority: 'invalid',
+      }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 

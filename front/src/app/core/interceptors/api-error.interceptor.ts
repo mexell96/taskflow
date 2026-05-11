@@ -10,26 +10,39 @@ import { catchError, tap, throwError } from 'rxjs';
 
 import type { ApiError } from '@app/core/models/api-error.model';
 
-function toApiError(error: HttpErrorResponse): ApiError {
-  const serverMessageRaw =
-    typeof error.error === 'object' && error.error !== null
-      ? (error.error as { message?: unknown }).message
-      : undefined;
+function rawMessageFromErrorBody(body: unknown): unknown {
+  if (typeof body !== 'object' || body === null) {
+    return undefined;
+  }
+  return (body as { message?: unknown }).message;
+}
 
-  const serverMessage =
-    typeof serverMessageRaw === 'string'
-      ? serverMessageRaw
-      : Array.isArray(serverMessageRaw)
-        ? serverMessageRaw
-            .flatMap((messagePart) =>
-              typeof messagePart === 'string'
-                ? [messagePart]
-                : typeof (messagePart as { message?: unknown } | null)?.message === 'string'
-                  ? [(messagePart as { message: string }).message]
-                  : [],
-            )
-            .join(', ')
-        : undefined;
+function stringsFromMessagePart(messagePart: unknown): string[] {
+  if (typeof messagePart === 'string') {
+    return [messagePart];
+  }
+  if (
+    typeof messagePart === 'object' &&
+    messagePart !== null &&
+    typeof (messagePart as { message?: unknown }).message === 'string'
+  ) {
+    return [(messagePart as { message: string }).message];
+  }
+  return [];
+}
+
+function normalizeServerMessage(raw: unknown): string | undefined {
+  if (typeof raw === 'string') {
+    return raw;
+  }
+  if (!Array.isArray(raw)) {
+    return undefined;
+  }
+  return raw.flatMap(stringsFromMessagePart).join(', ');
+}
+
+function toApiError(error: HttpErrorResponse): ApiError {
+  const serverMessage = normalizeServerMessage(rawMessageFromErrorBody(error.error));
 
   return {
     status: error.status,

@@ -7,6 +7,7 @@ export const projectAccessGuard: CanActivateFn = async () => {
   const router = inject(Router);
   const authStore = inject(AuthStore);
 
+  // Ensures role is resolved before canViewProject; dedupes with AuthStore constructor via loadMe().
   await authStore.loadMe();
 
   return authStore.permissions().canViewProject ? true : router.createUrlTree(['/projects']);

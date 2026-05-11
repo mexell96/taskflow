@@ -13,48 +13,44 @@ type Permissions = {
   canEditProject: boolean;
 };
 
+const NO_PROJECT_ACCESS: Permissions = {
+  canViewProject: false,
+  canCreateTask: false,
+  canEditTask: false,
+  canChangeTaskStatus: false,
+  canMoveTask: false,
+  canEditProject: false,
+};
+
+const VIEWER_PERMISSIONS: Permissions = {
+  ...NO_PROJECT_ACCESS,
+  canViewProject: true,
+};
+
+const EDITOR_PERMISSIONS: Permissions = {
+  ...VIEWER_PERMISSIONS,
+  canCreateTask: true,
+  canEditTask: true,
+  canChangeTaskStatus: true,
+  canMoveTask: true,
+};
+
+const ADMIN_PERMISSIONS: Permissions = {
+  ...EDITOR_PERMISSIONS,
+  canEditProject: true,
+};
+
 function permissionsForRole(role: AuthRole | null): Permissions {
   if (role === 'admin') {
-    return {
-      canViewProject: true,
-      canCreateTask: true,
-      canEditTask: true,
-      canChangeTaskStatus: true,
-      canMoveTask: true,
-      canEditProject: true,
-    };
+    return ADMIN_PERMISSIONS;
   }
-
   if (role === 'editor') {
-    return {
-      canViewProject: true,
-      canCreateTask: true,
-      canEditTask: true,
-      canChangeTaskStatus: true,
-      canMoveTask: true,
-      canEditProject: false,
-    };
+    return EDITOR_PERMISSIONS;
   }
-
   if (role === 'viewer') {
-    return {
-      canViewProject: true,
-      canCreateTask: false,
-      canEditTask: false,
-      canChangeTaskStatus: false,
-      canMoveTask: false,
-      canEditProject: false,
-    };
+    return VIEWER_PERMISSIONS;
   }
-
-  return {
-    canViewProject: false,
-    canCreateTask: false,
-    canEditTask: false,
-    canChangeTaskStatus: false,
-    canMoveTask: false,
-    canEditProject: false,
-  };
+  return NO_PROJECT_ACCESS;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -67,9 +63,11 @@ export class AuthStore {
   readonly permissions = computed(() => permissionsForRole(this._role()));
 
   constructor() {
+    // Warm /auth/me early so most routes have role before first paint; duplicate loadMe() is a no-op (see _loadPromise).
     void this.loadMe();
   }
 
+  /** Single in-flight request; safe to call from guards and the constructor. */
   loadMe(): Promise<void> {
     if (this._loadPromise) {
       return this._loadPromise;
