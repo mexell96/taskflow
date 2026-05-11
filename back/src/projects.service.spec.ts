@@ -26,9 +26,10 @@ describe('ProjectsService', () => {
   beforeEach(() => {
     dbState = structuredClone(baseDb);
     db = {
-      readDb: jest.fn(async () => dbState),
-      writeDb: jest.fn(async (next: DbSchema) => {
+      readDb: jest.fn(() => Promise.resolve(dbState)),
+      writeDb: jest.fn((next: DbSchema) => {
         dbState = next;
+        return Promise.resolve();
       }),
     };
     service = new ProjectsService(db as never);
@@ -59,15 +60,26 @@ describe('ProjectsService', () => {
     expect(dbState.projects[0].author).toBeUndefined();
   });
 
-  it('throws when patch project id is not found', async () => {
-    await expect(service.patchProject('missing-id', { author: 'Jane' })).rejects.toBeInstanceOf(
+  it('returns project by id', async () => {
+    const project = await service.getProjectById('project-1');
+    expect(project.name).toBe('Demo project');
+  });
+
+  it('throws when get project id is not found', async () => {
+    await expect(service.getProjectById('missing-id')).rejects.toBeInstanceOf(
       NotFoundException,
     );
   });
 
+  it('throws when patch project id is not found', async () => {
+    await expect(
+      service.patchProject('missing-id', { author: 'Jane' }),
+    ).rejects.toBeInstanceOf(NotFoundException);
+  });
+
   it('throws when create has empty name', async () => {
-    await expect(service.createProject({ name: '   ', author: 'Jane' })).rejects.toBeInstanceOf(
-      BadRequestException,
-    );
+    await expect(
+      service.createProject({ name: '   ', author: 'Jane' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 });

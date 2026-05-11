@@ -340,6 +340,66 @@ describe('TaskflowStore', () => {
     logSpy.mockRestore();
   });
 
+  it('shows toast on moveTask API failure and rolls back optimistic move', async () => {
+    const store = TestBed.inject(TaskflowStore);
+
+    taskApi.getTasks.mockReturnValue(
+      of([
+        {
+          id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12',
+          projectId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: 'Backlog task',
+          status: 'backlog',
+          priority: 'medium',
+          tags: [],
+          order: 0,
+        },
+      ]),
+    );
+    store.loadTasks('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+
+    const apiError: ApiError = {
+      status: 409,
+      message: 'Conflict move',
+      url: '/api/tasks/m',
+    };
+    taskApi.patchTask.mockReturnValue(throwError(() => apiError));
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+
+    store.moveTask('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12', 'done', 99);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(toast.showError).toHaveBeenCalledWith('Conflict move');
+    const taskAfter = store
+      .tasks()
+      .find((task: Task) => task.id === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12');
+    expect(taskAfter?.status).toBe('backlog');
+    expect(taskAfter?.order).toBe(0);
+    logSpy.mockRestore();
+  });
+
+  it('shows toast on updateProject API failure and rolls back optimistic project', () => {
+    const store = TestBed.inject(TaskflowStore);
+    const apiError: ApiError = {
+      status: 500,
+      message: 'Patch failed',
+      url: '/api/projects/x',
+    };
+    projectApi.patchProject.mockReturnValue(throwError(() => apiError));
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+
+    store.updateProject(
+      'f2f8f1a2-72c5-45f3-8493-7e30cbf140f3',
+      'Broken optimistic name',
+      'desc',
+      'auth',
+    );
+
+    expect(toast.showError).toHaveBeenCalledWith('Patch failed');
+    expect(store.projects()[0].name).toBe('API project');
+    logSpy.mockRestore();
+  });
+
   it('logs typed API errors without throwing from addTask', () => {
     const store = TestBed.inject(TaskflowStore);
     const apiError: ApiError = {

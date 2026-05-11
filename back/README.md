@@ -24,6 +24,8 @@ npm run test:e2e
 npm run lint
 ```
 
+Unit tests (`npm run test`, Jest in `src/**/*.spec.ts`): `AppController` (`/api/health`), `ProjectsController` / `TasksController` (HTTP wiring with mocked services), `ProjectsService`, `TasksService`, `DbFileService` (temp `TASKFLOW_DB_PATH`).
+
 Примечание: `npm run lint` запускает ESLint с `--fix` и может менять файлы.
 
 ## Структура API (актуальные файлы)
